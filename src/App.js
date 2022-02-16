@@ -6,6 +6,7 @@ import "./App.css";
 import Payer from "./Payer";
 import ResponsiveAppBar from "./ResponsiveAppBar";
 
+
 function App() {
   return (
     <div className="App">
@@ -15,10 +16,6 @@ function App() {
         <Route path="payer" element={<Payer />} />
         <Route path="allbill" element={<Allbill />} />
         <Route path="allget" element={<Allget />} />
-
-
-
-      
       </Routes>
     </div>
   );

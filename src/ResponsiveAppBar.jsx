@@ -11,69 +11,91 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Badge from '@mui/material/Badge';
-// import { makeStyles } from '@mui/styles';
-
-
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Badge from "@mui/material/Badge";
+import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 
-const pages = ["ดูใบแจ้งหนี้ทั้งหมด", "ผู้จ่ายใบแจ้งหนี้ทั้งหมด", "ยอดรวมรายรับ"];
-const settings = ["โปรไฟล์", "แก้ไข้ข้อมูล", "ออกจากระบบ"];
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: "#FFA234",
+    // fontFamily: 'Prompt',
+    fontFamily: "Sarabun",
+  },
+});
 
+const pages = [
+  "ดูใบแจ้งหนี้ทั้งหมด",
+  "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
+  "ยอดรวมรายรับ",
+];
+const settings = ["โปรไฟล์", "แก้ไข้ข้อมูล", "ออกจากระบบ"];
+const notification = [
+  "ดูใบแจ้งหนี้ทั้งหมด",
+  "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
+  "ยอดรวมรายรับ",
+];
 const ResponsiveAppBar = () => {
+  const classes = useStyles();
   let navigate = useNavigate();
 
   const [menu, setMenu] = React.useState("");
   const [notifyCount, setNotifyCount] = React.useState(2);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNoti, setAnchorElNoti] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
-    console.log("keep1");
     setAnchorElNav(event.currentTarget.innerText);
-    console.log(anchorElNav);
   };
   const handleOpenUserMenu = (event) => {
-    setNotifyCount(0)
     setAnchorElUser(event.currentTarget);
   };
-
-  const handleCloseNavMenu = (event) => {
-    console.log("keep2");
+  const handleOpenNotiMenu = (event) => {
+    setNotifyCount(0);
+    setAnchorElNoti(event.currentTarget);
   };
+  const handleCloseNotiMenu = () => {
+    setAnchorElNoti(null);
+  };
+
+  const handleCloseNavMenu = (event) => {};
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
   function changePage(page) {
-    if (page === "ดูใบแจ้งหนี้ทั้งหมด") {
-      navigate("allbill");
-    }
-    else if (page === "ผู้จ่ายใบแจ้งหนี้ทั้งหมด") {
-      navigate("payer");
-    }
-    else if (page === "ยอดรวมรายรับ") {
-      navigate("allget");
+    switch (page) {
+      case "ดูใบแจ้งหนี้ทั้งหมด":
+        navigate("allbill");
+        break;
+      case "ผู้จ่ายใบแจ้งหนี้ทั้งหมด":
+        navigate("payer");
+        break;
+      case "ยอดรวมรายรับ":
+        navigate("allget");
+        break;
+      default:
+        navigate("/");
     }
     // setMenu(event.target.innerText);
-    console.log(page)
-  };
+    console.log(page);
+  }
 
   function notificationsLabel(count) {
     if (count === 0) {
-      return 'no notifications';
+      return "no notifications";
     }
     if (count > 99) {
-      return 'more than 99 notifications';
+      return "more than 99 notifications";
     }
     return `${count} notifications`;
   }
 
   return (
-    <AppBar position="static">
+    <AppBar style={{ backgroundColor: "#FFA234" }} position="static">
       <Container maxWidth="l">
         <Toolbar disableGutters>
           <Typography
@@ -139,11 +161,37 @@ const ResponsiveAppBar = () => {
                 {page}
               </Button>
             ))}
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} aria-label={notificationsLabel(notifyCount)}>
+            <IconButton
+              onClick={handleOpenNotiMenu}
+              sx={{ p: 2 }}
+              aria-label={notificationsLabel(notifyCount)}
+            >
               <Badge badgeContent={notifyCount} color="secondary">
-              <NotificationsIcon sx={{ fontSize: 30 }}/>
+                <NotificationsIcon sx={{ fontSize: 30 }} />
               </Badge>
             </IconButton>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElNoti}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              open={Boolean(anchorElNoti)}
+              onClose={handleCloseNotiMenu}
+            >
+              {notification.map((notis) => (
+                <MenuItem key={notis} onClick={handleCloseNotiMenu}>
+                  <Typography textAlign="center">{notis}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -163,7 +211,7 @@ const ResponsiveAppBar = () => {
               keepMounted
               transformOrigin={{
                 vertical: "top",
-                horizontal: "right",
+                horizontal: "center",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}

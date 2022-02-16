@@ -13,7 +13,7 @@ const Allbill = () => {
     }));
     return (
         <div>
-            All bill
+            All bill บิลทั้งหมด
         </div>
         
     );
