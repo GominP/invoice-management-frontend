@@ -1,68 +1,91 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
+// import { makeStyles } from '@mui/styles';
+
+
 import { useNavigate } from "react-router-dom";
 
-
-const pages = ['ดูบิลทั้งหมด', 'ผู้จ่ายบิลทั้งหมด', 'ยอดรวมรายรับ'];
-const settings = ['โปรไฟล์', 'แก้ไข้ข้อมูล', 'ออกจากระบบ'];
+const pages = ["ดูใบแจ้งหนี้ทั้งหมด", "ผู้จ่ายใบแจ้งหนี้ทั้งหมด", "ยอดรวมรายรับ"];
+const settings = ["โปรไฟล์", "แก้ไข้ข้อมูล", "ออกจากระบบ"];
 
 const ResponsiveAppBar = () => {
-  let navigate = useNavigate(); 
+  let navigate = useNavigate();
 
-  const [menu, setMenu] = React.useState("")
+  const [menu, setMenu] = React.useState("");
+  const [notifyCount, setNotifyCount] = React.useState(2);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
-    console.log("keep1")
+    console.log("keep1");
     setAnchorElNav(event.currentTarget.innerText);
-    console.log(anchorElNav)
-
+    console.log(anchorElNav);
   };
   const handleOpenUserMenu = (event) => {
+    setNotifyCount(0)
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = (event) => {
-    console.log("keep2")
+    console.log("keep2");
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const changePage =(event) =>{
-    navigate("payer")
-
+  function changePage(page) {
+    if (page === "ดูใบแจ้งหนี้ทั้งหมด") {
+      navigate("allbill");
+    }
+    else if (page === "ผู้จ่ายใบแจ้งหนี้ทั้งหมด") {
+      navigate("payer");
+    }
+    else if (page === "ยอดรวมรายรับ") {
+      navigate("allget");
+    }
     // setMenu(event.target.innerText);
-    // console.log(menu)
+    console.log(page)
+  };
+
+  function notificationsLabel(count) {
+    if (count === 0) {
+      return 'no notifications';
+    }
+    if (count > 99) {
+      return 'more than 99 notifications';
+    }
+    return `${count} notifications`;
   }
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <Container maxWidth="l">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 1, display: { xs: "none", md: "flex" } }}
           >
             BILLGUARD
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -77,18 +100,18 @@ const ResponsiveAppBar = () => {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -102,20 +125,25 @@ const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={changePage}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={() => changePage(page)}
+                sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
               </Button>
             ))}
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} aria-label={notificationsLabel(notifyCount)}>
+              <Badge badgeContent={notifyCount} color="secondary">
+              <NotificationsIcon sx={{ fontSize: 30 }}/>
+              </Badge>
+            </IconButton>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -125,17 +153,17 @@ const ResponsiveAppBar = () => {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
