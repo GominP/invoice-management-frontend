@@ -1,12 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300&family=Sarabun:wght@300&display=swap');
-body{
-  font-family: "Prompt", sans-serif;
-  font-family: "Sarabun", sans-serif;
-}
 .App {
-  text-align: center;
-  font-family: "Prompt", sans-serif;
-  font-family: "Sarabun", sans-serif;
+  font-family: 'Mitr', sans-serif;
 }
 
 .App-logo {

@@ -11,25 +11,18 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import Badge from "@mui/material/Badge";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import Logout from "@mui/icons-material/Logout";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { red } from "@mui/material/colors";
-import Stack from '@mui/material/Stack';
+import Divider from "@mui/material/Divider";
 
-// import { pink } from "@mui/material/colors";
-
-const useStyles = makeStyles({
-  root: {
-    backgroundColor: "#FFA234",
-    // fontFamily: 'Prompt',
-    fontFamily: "Sarabun",
-  },
-});
+import Stack from "@mui/material/Stack";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const pages = [
   "ดูใบแจ้งหนี้ทั้งหมด",
@@ -42,7 +35,7 @@ const notification = [
   "ยอดรวมรายรับ",
 ];
 const ResponsiveAppBar = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   let navigate = useNavigate();
 
   const [menu, setMenu] = React.useState("");
@@ -50,29 +43,16 @@ const ResponsiveAppBar = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElNoti, setAnchorElNoti] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    console.log("Nav");
-    // setAnchorElNav(event.currentTarget.innerText);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+ 
+
   const handleOpenNotiMenu = (event) => {
     setNotifyCount(0);
     setAnchorElNoti(event.currentTarget);
   };
   const handleCloseNotiMenu = () => {
     setAnchorElNoti(null);
-  };
-
-  const handleCloseNavMenu = (event) => {};
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const open = Boolean(anchorEl);
@@ -82,6 +62,12 @@ const ResponsiveAppBar = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [value, setValue] = React.useState("ดูใบแจ้งหนี้ทั้งหมด");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   function changePage(page) {
@@ -114,7 +100,11 @@ const ResponsiveAppBar = () => {
 
   return (
     <AppBar
-      style={{ backgroundColor: "#FFA234", color: "black" }}
+      style={{
+        backgroundColor: "white",
+        color: "black",
+        boxShadow: "0px 0px 0px 0px",
+      }}
       position="static"
     >
       <Container maxWidth="l">
@@ -123,21 +113,29 @@ const ResponsiveAppBar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 1, display: { xs: "none", md: "flex" } }}
+            sx={{ mr: 1, display: { xs: "none", md: "flex", fontSize: 40 } }}
           >
             BILLGUARD
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => changePage(page)}
-                sx={{ my: 2, color: "black", display: "block"}}
-              >
-                {page}
-              </Button>
-            ))}
-            
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="secondary"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
+            >
+              {pages.map((page) => (
+                <Tab
+                  value={page}
+                  label={page}
+                  onClick={() => changePage(page)}
+                  sx={{ my: 2, color: "black", display: "block", fontSize: 20 }}
+                >
+                  {page}
+                </Tab>
+              ))}
+            </Tabs>
           </Box>
 
           <Box
@@ -149,7 +147,7 @@ const ResponsiveAppBar = () => {
               aria-label={notificationsLabel(notifyCount)}
             >
               <Badge badgeContent={notifyCount} color="error">
-                <NotificationsOutlinedIcon sx={{ fontSize: 25 }} />
+                <NotificationsOutlinedIcon sx={{ fontSize: 40 }} />
               </Badge>
             </IconButton>
             <Menu
@@ -169,10 +167,17 @@ const ResponsiveAppBar = () => {
               onClose={handleCloseNotiMenu}
             >
               {notification.map((noti) => (
-                <MenuItem key={noti} onClick={handleCloseNotiMenu} >
+                <MenuItem key={noti} onClick={handleCloseNotiMenu}>
                   <Stack direction="row" spacing={2}>
-                    <ReceiptOutlinedIcon/>
-                    <Typography textAlign="left"  noWrap sx={{ display: "inline-block", whiteSpace: "pre-line"}} width={200}>{noti}</Typography>
+                    <ReceiptOutlinedIcon />
+                    <Typography
+                      textAlign="left"
+                      noWrap
+                      sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+                      width={200}
+                    >
+                      {noti}
+                    </Typography>
                   </Stack>
                 </MenuItem>
               ))}
@@ -186,7 +191,7 @@ const ResponsiveAppBar = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 52, height: 52 }}>M</Avatar>
+                <Avatar sx={{ width: 62, height: 62 }}>M</Avatar>
               </IconButton>
             </Tooltip>
           </Box>
@@ -232,7 +237,7 @@ const ResponsiveAppBar = () => {
             </MenuItem>
             <Divider />
             <MenuItem sx={{ color: red[500] }}>
-              <ListItemIcon >
+              <ListItemIcon>
                 <Logout fontSize="small" sx={{ color: red[500] }} />
               </ListItemIcon>
               ลงชื่อออก
