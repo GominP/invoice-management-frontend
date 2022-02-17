@@ -5,23 +5,23 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import Badge from "@mui/material/Badge";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { red } from "@mui/material/colors";
-import { pink } from "@mui/material/colors";
+import Stack from '@mui/material/Stack';
+
+// import { pink } from "@mui/material/colors";
 
 const useStyles = makeStyles({
   root: {
@@ -36,10 +36,9 @@ const pages = [
   "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
   "ยอดรวมรายรับ",
 ];
-const settings = ["โปรไฟล์", "แก้ไข้ข้อมูล", "ออกจากระบบ"];
 const notification = [
-  "ดูใบแจ้งหนี้ทั้งหมด",
-  "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
+  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
+  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว",
   "ยอดรวมรายรับ",
 ];
 const ResponsiveAppBar = () => {
@@ -114,9 +113,12 @@ const ResponsiveAppBar = () => {
   }
 
   return (
-    <AppBar style={{ backgroundColor: "#FFA234" }} position="static">
+    <AppBar
+      style={{ backgroundColor: "#FFA234", color: "black" }}
+      position="static"
+    >
       <Container maxWidth="l">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ color: "black" }}>
           <Typography
             variant="h6"
             noWrap
@@ -125,52 +127,33 @@ const ResponsiveAppBar = () => {
           >
             BILLGUARD
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={() => changePage(page)}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "black", display: "block"}}
               >
                 {page}
               </Button>
             ))}
+            
+          </Box>
+
+          <Box
+            sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
+          >
             <IconButton
               onClick={handleOpenNotiMenu}
               sx={{ p: 1 }}
               aria-label={notificationsLabel(notifyCount)}
             >
-              <Badge badgeContent={notifyCount} color="secondary">
-                <NotificationsIcon sx={{ fontSize: 25 }} />
+              <Badge badgeContent={notifyCount} color="error">
+                <NotificationsOutlinedIcon sx={{ fontSize: 25 }} />
               </Badge>
             </IconButton>
             <Menu
-              sx={{ mt: "45px",width: 320}}
+              sx={{ mt: "45px", width: 320 }}
               id="menu-appbar"
               anchorEl={anchorElNoti}
               anchorOrigin={{
@@ -180,22 +163,20 @@ const ResponsiveAppBar = () => {
               keepMounted
               transformOrigin={{
                 vertical: "top",
-                horizontal: "center",
+                horizontal: "right",
               }}
               open={Boolean(anchorElNoti)}
               onClose={handleCloseNotiMenu}
             >
-              {notification.map((notis) => (
-                <MenuItem key={notis} onClick={handleCloseNotiMenu}>
-                  <Typography textAlign="center">{notis}</Typography>
+              {notification.map((noti) => (
+                <MenuItem key={noti} onClick={handleCloseNotiMenu} >
+                  <Stack direction="row" spacing={2}>
+                    <ReceiptOutlinedIcon/>
+                    <Typography textAlign="left"  noWrap sx={{ display: "inline-block", whiteSpace: "pre-line"}} width={200}>{noti}</Typography>
+                  </Stack>
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
-
-          <Box
-            sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
-          >
             <Tooltip title="Account settings">
               <IconButton
                 onClick={handleClick}
@@ -205,7 +186,7 @@ const ResponsiveAppBar = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
               >
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar sx={{ width: 52, height: 52 }}>M</Avatar>
               </IconButton>
             </Tooltip>
           </Box>
@@ -250,55 +231,13 @@ const ResponsiveAppBar = () => {
               <Avatar /> โปรไฟล์
             </MenuItem>
             <Divider />
-            {/* <MenuItem>
-              <ListItemIcon>
-                <PersonAdd fontSize="small" />
-              </ListItemIcon>
-              Add another account
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem> */}
-            <MenuItem>
-              <ListItemIcon>
+            <MenuItem sx={{ color: red[500] }}>
+              <ListItemIcon >
                 <Logout fontSize="small" sx={{ color: red[500] }} />
               </ListItemIcon>
               ลงชื่อออก
             </MenuItem>
           </Menu>
-
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
