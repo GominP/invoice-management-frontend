@@ -9,6 +9,7 @@ import Payer from "./Payer";
 import Testbar from "./Testbar"
 import Newbar from "./component/Newbar"
 import ButtonAppBar from "./component/ButtonAppBar"
+import EnhancedTable from "./EnhancedTable"
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
 
@@ -34,7 +35,8 @@ function App() {
           <Route path="/" element={<Allbill />} />
           <Route path="payer" element={<Payer />} />
           <Route path="allbill" element={<Allbill />} />
-          <Route path="allget" element={<Allget />} />
+          <Route path="allget" element={<EnhancedTable />} />
+
         </Routes>
       </ThemeProvider>
     </div>
