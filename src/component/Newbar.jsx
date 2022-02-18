@@ -92,8 +92,8 @@ const Newbar = () => {
         boxShadow: "0px 0px 0px 0px",
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      {/* <Container maxWidth="xl"> */}
+        <Toolbar disableGutters sx={{p: 3}}>
           <Typography
             variant="h6"
             noWrap
@@ -230,7 +230,7 @@ const Newbar = () => {
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
+      {/* </Container> */}
     </AppBar>
   );
 };

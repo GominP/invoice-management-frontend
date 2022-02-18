@@ -7,7 +7,8 @@ import Allget from "./Allget";
 import "./App.css";
 import Payer from "./Payer";
 import Testbar from "./Testbar"
-import Newbar from "./Newbar"
+import Newbar from "./component/Newbar"
+import ButtonAppBar from "./component/ButtonAppBar"
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
 
@@ -26,8 +27,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Newbar></Newbar>
-        {/* <Testbar></Testbar> */}
-        {/* <ResponsiveAppBar></ResponsiveAppBar> */}
+        {/* <ButtonAppBar></ButtonAppBar> */}
+        {/* <Testbar></Testbar>
+        <ResponsiveAppBar></ResponsiveAppBar> */}
         <Routes>
           <Route path="/" element={<Allbill />} />
           <Route path="payer" element={<Payer />} />
