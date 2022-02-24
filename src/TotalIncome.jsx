@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
-const Allget = () => {
+const TotalIncome = () => {
     const Item = styled(Paper)(({ theme }) => ({
         ...theme.typography.body2,
         padding: theme.spacing(1),
@@ -20,4 +20,4 @@ const Allget = () => {
 
 }
 
-export default Allget
+export default TotalIncome

@@ -21,6 +21,15 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
+import { makeStyles } from "@mui/styles";
+import SearchBar from "./SearchBar";
+
+const useStyles = makeStyles((theme) => ({
+  th: {
+    backgroundColor: "#48A0AC"
+  },
+
+}));
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -83,40 +92,39 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Dessert (100g serving)",
+    label: "วันที่",
   },
   {
     id: "calories",
     numeric: true,
     disablePadding: false,
-    label: "Calories",
+    label: "เลขที่ใบแจ้งหนี้",
   },
   {
     id: "fat",
     numeric: true,
     disablePadding: false,
-    label: "Fat (g)",
+    label: "ชื่อลูกค้า",
   },
   {
     id: "carbs",
     numeric: true,
     disablePadding: false,
-    label: "Carbs (g)",
+    label: "วันครบกำหนด",
   },
   {
     id: "protein",
     numeric: true,
     disablePadding: false,
-    label: "Protein (g)",
+    label: "ยอดรวมสุทธิ",
   },
 ];
 
 function EnhancedTableHead(props) {
+  const classes = useStyles();
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
     rowCount,
     onRequestSort,
   } = props;
@@ -127,22 +135,12 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          {/* <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          /> */}
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            className={classes.th}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            padding= "normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -183,14 +181,15 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
       }}
     >
-      <Typography
+      <SearchBar></SearchBar>
+      {/* <Typography
         sx={{ flex: "1 1 100%" }}
         variant="h6"
         id="tableTitle"
         component="div"
       >
-        Nutrition
-      </Typography>
+        ใบแจ้งหนี้ทั้งหมด
+      </Typography> */}
     </Toolbar>
   );
 };
@@ -298,20 +297,11 @@ export default function EnhancedTable() {
                       key={row.name}
                       // selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        {/* <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        /> */}
-                      </TableCell>
                       <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        padding="normal"
                       >
                         {row.name}
                       </TableCell>

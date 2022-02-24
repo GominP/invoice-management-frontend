@@ -26,7 +26,7 @@ const pages = [
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const Newbar = () => {
+const ResponsiveAppBar = () => {
   let navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -234,4 +234,4 @@ const Newbar = () => {
     </AppBar>
   );
 };
-export default Newbar;
+export default ResponsiveAppBar;

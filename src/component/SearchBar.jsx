@@ -93,7 +93,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const Allbill = () => {
+const SearchBar = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
@@ -177,9 +177,9 @@ const Allbill = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} sm={8}>
+          {/* <Grid item xs={6} sm={8}>
             <Item>xs=6 md=8</Item>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
       
@@ -187,4 +187,4 @@ const Allbill = () => {
   );
 };
 
-export default Allbill;
+export default SearchBar;
