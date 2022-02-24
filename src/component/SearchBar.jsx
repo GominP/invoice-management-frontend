@@ -6,41 +6,19 @@ import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Avatar,
   Box,
-  Card,
-  Checkbox,
-  Container,
   TextField,
   InputAdornment,
   OutlinedInput,
   InputLabel,
   MenuItem,
   FormControl,
-  FormControlLabel,
   IconButton,
   Chip,
   Select,
-  Table,
-  Stack,
-  Switch,
-  Button,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableHead,
   Typography,
-  TableContainer,
-  TablePagination,
-  TableSortLabel,
-  Toolbar,
-  Tooltip,
+
 } from "@mui/material";
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -55,14 +33,6 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: 150,
     },
   },
-}));
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
 }));
 
 const ITEM_HEIGHT = 48;
@@ -107,8 +77,6 @@ const SearchBar = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
-  const [value, setValue] = React.useState("");
 
   return (
     <div>
