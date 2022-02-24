@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,9 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { red } from "@mui/material/colors";
@@ -17,36 +16,43 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 const pages = [
   "ดูใบแจ้งหนี้ทั้งหมด",
   "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
   "ยอดรวมรายรับ",
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+
 
 const ResponsiveAppBar = () => {
   let navigate = useNavigate();
+  let path =  useLocation();
+
+  useEffect(() => {
+    currentTab()
+  }, []);
+
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  // const handleOpenUserMenu = (event) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -57,10 +63,26 @@ const ResponsiveAppBar = () => {
     setAnchorEl(null);
   };
 
-  const [value, setValue] = React.useState("ดูใบแจ้งหนี้ทั้งหมด");
+  const [tab, setTab] = React.useState(0);
+
+  const currentTab = () => {
+    let a = 0;
+    if (path.pathname === "/"){
+    }
+    else if (path.pathname === "/allbill") {
+    }
+    else if (path.pathname === "/payer") {
+      a = 1 
+    }
+    else if (path.pathname === "/allget") {
+      a = 2
+    }
+    setTab(a)
+};  
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    console.log(newValue)
+    setTab(newValue);
   };
 
   function changePage(page) {
@@ -149,15 +171,15 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Tabs
-              value={value}
+              value={tab}
               onChange={handleChange}
               textColor="secondary"
               indicatorColor="secondary"
               aria-label="secondary tabs example"
             >
-              {pages.map((page) => (
+              {pages.map((page,index) => (
                 <Tab
-                  value={page}
+                  value={index}
                   label={page}
                   onClick={() => changePage(page)}
                   sx={{ my: 2, color: "black", display: "block", fontSize: 20 }}
@@ -171,7 +193,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Account settings">
               <IconButton
-                onClick={handleClick}
+                onClick={currentTab}
                 size="small"
                 sx={{ ml: 2 }}
                 aria-controls={open ? "account-menu" : undefined}
