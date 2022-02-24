@@ -23,12 +23,12 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { makeStyles } from "@mui/styles";
 import SearchBar from "./SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   th: {
-    backgroundColor: "#48A0AC"
+    backgroundColor: "#48A0AC",
   },
-
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -122,12 +122,7 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const classes = useStyles();
-  const {
-    order,
-    orderBy,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -140,14 +135,12 @@ function EnhancedTableHead(props) {
             className={classes.th}
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding= "normal"
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
+            padding="normal"
+            sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
+              onClick={createSortHandler(headCell.id)}>
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
@@ -179,8 +172,7 @@ const EnhancedTableToolbar = (props) => {
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-      }}
-    >
+      }}>
       <SearchBar></SearchBar>
       {/* <Typography
         sx={{ flex: "1 1 100%" }}
@@ -199,6 +191,8 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
+  let navigate = useNavigate();
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
@@ -222,23 +216,23 @@ export default function EnhancedTable() {
   };
 
   const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+    navigate("/allbill/billinfo");
+    // const selectedIndex = selected.indexOf(name);
+    // let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
+    // if (selectedIndex === -1) {
+    //   newSelected = newSelected.concat(selected, name);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(
+    //     selected.slice(0, selectedIndex),
+    //     selected.slice(selectedIndex + 1)
+    //   );
+    // }
+    // setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -268,13 +262,12 @@ export default function EnhancedTable() {
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
+            size="medium">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
@@ -301,8 +294,7 @@ export default function EnhancedTable() {
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="normal"
-                      >
+                        padding="normal">
                         {row.name}
                       </TableCell>
                       <TableCell align="right">{row.calories}</TableCell>
