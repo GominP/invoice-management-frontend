@@ -113,7 +113,7 @@ const SearchBar = () => {
   return (
     <div>
       <Box
-        sx={{ flexGrow: 1, p: 8 }}
+        sx={{ flexGrow: 1, p: 5 }}
         display="flex"
         direction="row"
         alignItems="center"
