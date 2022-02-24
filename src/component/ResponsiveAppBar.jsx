@@ -69,7 +69,7 @@ const ResponsiveAppBar = () => {
     let a = 0;
     if (path.pathname === "/"){
     }
-    else if (path.pathname === "/allbill") {
+    else if (path.pathname.includes("/allbill")) {
     }
     else if (path.pathname === "/payer") {
       a = 1 
