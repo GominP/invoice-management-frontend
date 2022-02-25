@@ -10,7 +10,6 @@ import ResponsiveAppBar from "./component/ResponsiveAppBar"
 import EnhancedTable from "./component/EnhancedTable"
 import TotalIncome from "./TotalIncome";
 import CheckBillInfo from "./CheckBillInfo";
-import User from "./table/User";
 
 const theme = createTheme({
   typography: {
@@ -30,10 +29,10 @@ function App() {
         <Routes>
           <Route path="/" element={<EnhancedTable />} />
           <Route path="/payer" element={<Payer />} />
-          {/* <Route path="/allget" element={<TotalIncome />} /> */}
+          <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<EnhancedTable />} />
           <Route path="/allbill/billinfo" element={<CheckBillInfo />} />
-          <Route path="/allget" element={<CheckBillInfo />} />
+          {/* <Route path="/allget" element={<TestTable />} /> */}
 
 
 

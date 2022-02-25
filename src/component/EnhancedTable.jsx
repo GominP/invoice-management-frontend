@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,12 +10,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,6 +20,18 @@ import { visuallyHidden } from "@mui/utils";
 import { makeStyles } from "@mui/styles";
 import SearchBar from "./SearchBar";
 import { useNavigate } from "react-router-dom";
+import { filter } from "lodash";
+import {
+  TextField,
+  Box,
+  Toolbar,
+  Tooltip,
+  IconButton,
+  Typography,
+  OutlinedInput,
+  InputAdornment,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -75,17 +83,17 @@ function getComparator(order, orderBy) {
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+// function stableSort(array, comparator) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) {
+//       return order;
+//     }
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 const headCells = [
   {
@@ -156,38 +164,46 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+  const { filterName, onFilterName } = props;
 
   return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-      }}>
-      <SearchBar></SearchBar>
-      {/* <Typography
+    <Toolbar>
+      <Typography
         sx={{ flex: "1 1 100%" }}
         variant="h6"
         id="tableTitle"
-        component="div"
-      >
-        ใบแจ้งหนี้ทั้งหมด
-      </Typography> */}
+        component="div">
+        Nutrition
+      </Typography>
+      <TextField
+        value={filterName}
+        onChange={onFilterName}
+        // label="ค้นหา"
+        placeholder="ค้นหา"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
     </Toolbar>
   );
 };
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+  filterName: PropTypes.string,
+  onFilterName: PropTypes.func,
 };
 
 export default function EnhancedTable() {
@@ -199,6 +215,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [filterName, setFilterName] = React.useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -206,14 +223,32 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
   };
+
+  const filteredUsers = applySortFilter(
+    rows,
+    getComparator(order, orderBy),
+    filterName
+  );
+
+  function applySortFilter(array, comparator, query) {
+    console.log("applySortFilter");
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    if (query) {
+      return filter(
+        array,
+        (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    }
+    return stabilizedThis.map((el) => el[0]);
+  }
 
   const handleClick = (event, name) => {
     navigate("/allbill/billinfo");
@@ -244,10 +279,6 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -255,31 +286,28 @@ export default function EnhancedTable() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="medium">
+    <Box>
+      <Card sx={{ p: 2, mb: 2 }}>
+        <EnhancedTableToolbar
+          filterName={filterName}
+          onFilterName={handleFilterByName}
+        />
+        <TableContainer sx={{ minWidth: 800 }}>
+          <Table aria-labelledby="tableTitle" size="medium">
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              // onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
+              {filteredUsers
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -304,15 +332,6 @@ export default function EnhancedTable() {
                     </TableRow>
                   );
                 })}
-              {/* {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
             </TableBody>
           </Table>
         </TableContainer>
@@ -325,7 +344,7 @@ export default function EnhancedTable() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Paper>
+      </Card>
     </Box>
   );
 }
