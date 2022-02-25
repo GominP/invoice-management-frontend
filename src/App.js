@@ -32,7 +32,6 @@ function App() {
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<EnhancedTable />} />
           <Route path="/allbill/billinfo" element={<CheckBillInfo />} />
-          {/* <Route path="/allget" element={<TestTable />} /> */}
 
 
 

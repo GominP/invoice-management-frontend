@@ -17,7 +17,6 @@ import {
   Chip,
   Select,
   Typography,
-
 } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,8 +83,7 @@ const SearchBar = () => {
         sx={{ flexGrow: 1, p: 5 }}
         display="flex"
         direction="row"
-        alignItems="center"
-      >
+        alignItems="center">
         <Grid container spacing={1}>
           <Grid item xs={12} md={3}>
             <Typography variant="h5" marginTop={1}>
@@ -131,26 +129,20 @@ const SearchBar = () => {
                     ))}
                   </Box>
                 )}
-                MenuProps={MenuProps}
-              >
+                MenuProps={MenuProps}>
                 {names.map((name) => (
                   <MenuItem
                     key={name}
                     value={name}
-                    style={getStyles(name, personName, theme)}
-                  >
+                    style={getStyles(name, personName, theme)}>
                     {name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6} sm={8}>
-            <Item>xs=6 md=8</Item>
-          </Grid> */}
         </Grid>
       </Box>
-      
     </div>
   );
 };

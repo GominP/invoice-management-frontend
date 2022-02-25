@@ -30,14 +30,44 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment,
+  Grid,
+  FormControl,
+  InputLabel,
+  Chip,
+  MenuItem,
+  Select,
+  Stack,
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useTheme } from "@mui/material/styles";
 
 const useStyles = makeStyles((theme) => ({
   th: {
     backgroundColor: "#48A0AC",
   },
+  form: {
+    width: 600,
+    [theme.breakpoints.down("sm")]: {
+      width: 250,
+    },
+  },
+  search: {
+    maxWidth: 200,
+    [theme.breakpoints.down("md")]: {
+      maxWidth: 150,
+    },
+  },
 }));
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 function createData(name, calories, fat, carbs, protein) {
   return {
@@ -98,15 +128,15 @@ function getComparator(order, orderBy) {
 const headCells = [
   {
     id: "name",
-    numeric: false,
+    numeric: true,
     disablePadding: true,
-    label: "วันที่",
+    label: "เลขที่ใบแจ้งหนี้",
   },
   {
     id: "calories",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: "เลขที่ใบแจ้งหนี้",
+    label: "วันที่",
   },
   {
     id: "fat",
@@ -142,7 +172,7 @@ function EnhancedTableHead(props) {
           <TableCell
             className={classes.th}
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
+            align={headCell.numeric ? "left" : "right"}
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
@@ -171,7 +201,38 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
+  const classes = useStyles();
+  const theme = useTheme();
   const { filterName, onFilterName } = props;
+  const [personName, setPersonName] = React.useState([]);
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const names = [
+    "จ่ายแล้ว",
+    "เลยกำหนดชำระ",
+    "คำร้องแก้ไขบิล",
+    "บิลที่กำลังรอดำเนินการ",
+    "บิลที่ถูกยกเลิก",
+  ];
+
+  const handleChangeFilter = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
   return (
     <Toolbar>
@@ -180,23 +241,61 @@ const EnhancedTableToolbar = (props) => {
         variant="h6"
         id="tableTitle"
         component="div">
-        Nutrition
+        ใบแจ้งหนี้ทั้งหมด
       </Typography>
-      <TextField
-        value={filterName}
-        onChange={onFilterName}
-        // label="ค้นหา"
-        placeholder="ค้นหา"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <IconButton>
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 1, sm: 2, md: 4 }}>
+        <TextField
+          value={filterName}
+          onChange={onFilterName}
+          // label="ค้นหา"
+          placeholder="ค้นหา"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton>
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <FormControl className={classes.form}>
+          <InputLabel id="demo-multiple-chip-label">
+            ตัวกรองใบแจ้งหนี้
+          </InputLabel>
+          <Select
+            labelId="demo-multiple-chip-label"
+            multiple
+            label="ตัวกรองใบแจ้งหนี้"
+            value={personName}
+            onChange={handleChangeFilter}
+            input={
+              <OutlinedInput
+                id="select-multiple-chip"
+                label="ตัวกรองใบแจ้งหนี้"
+              />
+            }
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}>
+            {names.map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, personName, theme)}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Stack>
     </Toolbar>
   );
 };
@@ -227,7 +326,7 @@ export default function EnhancedTable() {
     setFilterName(event.target.value);
   };
 
-  const filteredUsers = applySortFilter(
+  const filteredInvoice = applySortFilter(
     rows,
     getComparator(order, orderBy),
     filterName
@@ -281,19 +380,24 @@ export default function EnhancedTable() {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
+  const isInvoiceNotFound = filteredInvoice.length === 0;
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box>
-      <Card sx={{ p: 2, mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}
         />
-        <TableContainer sx={{ minWidth: 800 }}>
-          <Table aria-labelledby="tableTitle" size="medium">
+        <TableContainer>
+          <Table
+            aria-labelledby="tableTitle"
+            size="medium"
+            sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -303,7 +407,7 @@ export default function EnhancedTable() {
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {filteredUsers
+              {filteredInvoice
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
@@ -344,7 +448,7 @@ export default function EnhancedTable() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Card>
+      </Paper>
     </Box>
   );
 }
