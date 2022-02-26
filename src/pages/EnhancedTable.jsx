@@ -18,7 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { makeStyles } from "@mui/styles";
-import SearchBar from "./SearchBar";
+import SearchBar from "../component/SearchBar";
 import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
 import {
@@ -249,7 +249,7 @@ const EnhancedTableToolbar = (props) => {
   return (
     <Toolbar>
       <Typography
-        sx={{ flex: "1 1 100%" }}
+        sx={{ flex: "1 100%" }}
         variant="h6"
         id="tableTitle"
         component="div">

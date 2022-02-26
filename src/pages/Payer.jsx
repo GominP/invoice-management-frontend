@@ -14,7 +14,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import { experimentalStyled as styled } from "@mui/material/styles";
-import ResponsiveHeader from "./component/ResponsiveHeader";
+import ResponsiveHeader from "../component/ResponsiveHeader";
 
 const useStyles = makeStyles((theme) => ({
   root: {

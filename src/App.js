@@ -2,14 +2,14 @@ import * as React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import Allbill from "./component/SearchBar";
-import Allget from "./TotalIncome";
 import "./App.css";
-import Payer from "./Payer";
+import Payer from "./pages/Payer";
 import ResponsiveAppBar from "./component/ResponsiveAppBar"
-import EnhancedTable from "./component/EnhancedTable"
-import TotalIncome from "./TotalIncome";
-import CheckBillInfo from "./CheckBillInfo";
+import EnhancedTable from "./pages/EnhancedTable"
+import TotalIncome from "./pages/TotalIncome";
+import CheckBillInfo from "./pages/CheckBillInfo";
+import ProductCard from "./component/ProductCard";
+import EarningCard from "./component/EarningCard";
 
 const theme = createTheme({
   typography: {
@@ -31,7 +31,7 @@ function App() {
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<EnhancedTable />} />
-          <Route path="/allbill/billinfo" element={<CheckBillInfo />} />
+          <Route path="/allbill/billinfo" element={<EarningCard />} />
 
 
 
