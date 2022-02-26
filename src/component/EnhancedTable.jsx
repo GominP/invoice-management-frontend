@@ -35,9 +35,11 @@ import {
   InputLabel,
   Chip,
   MenuItem,
+  Button,
   Select,
   Stack,
   Divider,
+  Menu,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
@@ -52,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
       width: 250,
     },
   },
-  search: {
-    maxWidth: 200,
-    [theme.breakpoints.down("md")]: {
-      maxWidth: 150,
-    },
-  },
+  // search: {
+  //   maxWidth: 800,
+  //   [theme.breakpoints.down("md")]: {
+  //     maxWidth: 450,
+  //   },
+  // },
 }));
 
 function getStyles(name, personName, theme) {
@@ -80,7 +82,7 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData("Cupcake", 305, 3.7, 67, 4.3),
+  createData("17", 305, 3.7, 67, 4.3),
   createData("Donut", 452, 25.0, 51, 4.9),
   createData("Eclair", 262, 16.0, 24, 6.0),
   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
@@ -205,6 +207,8 @@ const EnhancedTableToolbar = (props) => {
   const theme = useTheme();
   const { filterName, onFilterName } = props;
   const [personName, setPersonName] = React.useState([]);
+  const [anchorFilter, setAnchorFilter] = React.useState(null);
+  const open = Boolean(anchorFilter);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -216,7 +220,7 @@ const EnhancedTableToolbar = (props) => {
       },
     },
   };
-  const names = [
+  const filters = [
     "จ่ายแล้ว",
     "เลยกำหนดชำระ",
     "คำร้องแก้ไขบิล",
@@ -224,14 +228,22 @@ const EnhancedTableToolbar = (props) => {
     "บิลที่ถูกยกเลิก",
   ];
 
-  const handleChangeFilter = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+  // const handleChangeFilter = (event) => {
+  //   const {
+  //     target: { value },
+  //   } = event;
+  //   setPersonName(
+  //     // On autofill we get a stringified value.
+  //     typeof value === "string" ? value.split(",") : value
+  //   );
+  // };
+
+  const handleClickFilter = (event) => {
+    setAnchorFilter(event.currentTarget);
+  };
+  const handleChangeFilter = (string) => {
+    console.log(string);
+    setAnchorFilter(null);
   };
 
   return (
@@ -244,7 +256,7 @@ const EnhancedTableToolbar = (props) => {
         ใบแจ้งหนี้ทั้งหมด
       </Typography>
       <Stack
-        direction={{ xs: "column", sm: "row" }}
+        direction={{ xs: "row", sm: "row" }}
         spacing={{ xs: 1, sm: 2, md: 4 }}>
         <TextField
           value={filterName}
@@ -261,40 +273,28 @@ const EnhancedTableToolbar = (props) => {
             ),
           }}
         />
-        <FormControl className={classes.form}>
-          <InputLabel id="demo-multiple-chip-label">
-            ตัวกรองใบแจ้งหนี้
-          </InputLabel>
-          <Select
-            labelId="demo-multiple-chip-label"
-            multiple
-            label="ตัวกรองใบแจ้งหนี้"
-            value={personName}
-            onChange={handleChangeFilter}
-            input={
-              <OutlinedInput
-                id="select-multiple-chip"
-                label="ตัวกรองใบแจ้งหนี้"
-              />
-            }
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}>
-            {names.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, personName, theme)}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Button
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClickFilter}>
+          <FilterListIcon />
+        </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorFilter}
+          open={open}
+          onClose={handleChangeFilter}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}>
+          {filters.map((filterItem) => (
+            <MenuItem onClick={() => handleChangeFilter(filterItem)}>
+              {filterItem}
+            </MenuItem>
+          ))}
+        </Menu>
       </Stack>
     </Toolbar>
   );
