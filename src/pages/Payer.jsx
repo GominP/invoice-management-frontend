@@ -17,7 +17,8 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  card: {
+    borderRadius: 10,
     // display: "flex",
     // flexDirection: "column",
     // justifyContent: "space-between",
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: 140,
+    // height: 140,
     // [theme.breakpoints.down("sm")]: {
     //     height: 70,
     //   },
@@ -88,7 +89,7 @@ const Payer = () => {
           columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
           {data.map((info, index) => (
             <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
-              <Card className={classes.root}>
+              <Card className={classes.card}>
                 <CardActionArea>
                   <CardMedia
                     className={classes.media}

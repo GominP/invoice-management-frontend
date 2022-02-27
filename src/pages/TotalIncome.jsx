@@ -14,51 +14,48 @@ import {
 import Grid from "@mui/material/Grid";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import EarningCard from "../component/EarningCard";
-import { gridSpacing } from '../store/constant';
-
+import { gridSpacing } from "../store/constant";
+import TotalOrderLineChartCard from "../component/TotalOrderLineChartCard";
 
 const TotalIncome = () => {
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+
   return (
-    <div>
-      <Grid container spacing={gridSpacing}>
-        <Grid item xs={12}>
-          <Grid container spacing={gridSpacing}>
-            <Grid item lg={4} md={6} sm={6} xs={12}>
-              <EarningCard />
-            </Grid>
-            <Grid item lg={4} md={6} sm={6} xs={12}>
-            Test
-            </Grid>
-            <Grid item lg={4} md={12} sm={12} xs={12}>
-              <Grid container spacing={gridSpacing}>
-                <Grid item sm={6} xs={12} md={6} lg={12}>
-                Test
-                </Grid>
-                <Grid item sm={6} xs={12} md={6} lg={12}>
-                Test
+    <>
+      <Box padding={5}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item lg={4} md={6} sm={6} xs={12}>
+                <EarningCard />
+              </Grid>
+              <Grid item lg={4} md={6} sm={6} xs={12}>
+                <TotalOrderLineChartCard/>
+              </Grid>
+              <Grid item lg={4} md={12} sm={12} xs={12}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item sm={6} xs={12} md={6} lg={12}>
+                    Test
+                  </Grid>
+                  <Grid item sm={6} xs={12} md={6} lg={12}>
+                    Test
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container spacing={gridSpacing}>
-            <Grid item xs={12} md={8}>
-            Test
-            </Grid>
-            <Grid item xs={12} md={4}>
-              Test
+          <Grid item xs={12}>
+            <Grid container spacing={gridSpacing}>
+              <Grid item xs={12} md={8}>
+                Test
+              </Grid>
+              <Grid item xs={12} md={4}>
+                Test
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </Box>
+    </>
   );
 };
 
