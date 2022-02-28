@@ -14,11 +14,11 @@ import MainCard from "./MainCard";
 // assets
 // import EarningIcon from "asset/images/earning.svg";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
 import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -26,35 +26,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   color: "#fff",
   overflow: "hidden",
   position: "relative",
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    width: 210,
-    height: 610,
-    background: blue[800],
-    borderRadius: "80%",
-    top: -85,
-    right: -95,
-    [theme.breakpoints.down("sm")]: {
-      top: -105,
-      right: -140,
-    },
-  },
-  "&:before": {
-    content: '""',
-    position: "absolute",
-    width: 210,
-    height: 610,
-    background: blue[600],
-    borderRadius: "50%",
-    top: -125,
-    right: -15,
-    opacity: 0.5,
-    [theme.breakpoints.down("sm")]: {
-      top: -155,
-      right: -70,
-    },
-  },
+
 }));
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //

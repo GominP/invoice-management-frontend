@@ -16,6 +16,9 @@ import ResponsiveHeader from "../component/ResponsiveHeader";
 import EarningCard from "../component/EarningCard";
 import { gridSpacing } from "../store/constant";
 import TotalOrderLineChartCard from "../component/TotalOrderLineChartCard";
+import TotalIncomeDarkCard from "../component/TotalIncomeDarkCard";
+import TotalIncomeLightCard from "../component/TotalIncomeLightCard";
+import TotalGrowthBarChart from "../component/TotalGrowthBarChart";
 
 const TotalIncome = () => {
 
@@ -34,10 +37,10 @@ const TotalIncome = () => {
               <Grid item lg={4} md={12} sm={12} xs={12}>
                 <Grid container spacing={gridSpacing}>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    Test
+                    <TotalIncomeDarkCard/>
                   </Grid>
                   <Grid item sm={6} xs={12} md={6} lg={12}>
-                    Test
+                    <TotalIncomeLightCard/>
                   </Grid>
                 </Grid>
               </Grid>
@@ -46,7 +49,7 @@ const TotalIncome = () => {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12} md={8}>
-                Test
+                <TotalGrowthBarChart/>
               </Grid>
               <Grid item xs={12} md={4}>
                 Test

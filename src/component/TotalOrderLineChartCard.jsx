@@ -75,7 +75,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
   return (
     <>
       <CardWrapper border={false} content={false}>
-        <Box sx={{ p: 2.25 }}>
+        <Box sx={{ p: 2.5 }}>
           <Grid container direction="column">
             <Grid item>
               <Grid container justifyContent="space-between">
