@@ -11,10 +11,10 @@ import { green, pink,indigo,blue } from '@mui/material/colors';
 import Chart from "react-apexcharts";
 
 // project imports
-import MainCard from "./MainCard";
+import MainCard from "../MainCard";
 
-import ChartDataMonth from "../chart/chart-data/total-order-month-line-chart";
-import ChartDataYear from "../chart/chart-data/total-order-year-line-chart";
+import ChartDataMonth from "../../chart/chart-data/total-order-month-line-chart";
+import ChartDataYear from "../../chart/chart-data/total-order-year-line-chart";
 
 // assets
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
@@ -99,7 +99,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                     size="small"
                     sx={{ color: "inherit" }}
                     onClick={(e) => handleChangeTime(e, true)}>
-                    Month
+                    เดือน
                   </Button>
                   <Button
                     disableElevation
@@ -107,7 +107,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                     size="small"
                     sx={{ color: "inherit" }}
                     onClick={(e) => handleChangeTime(e, false)}>
-                    Year
+                    ปี
                   </Button>
                 </Grid>
               </Grid>
@@ -162,7 +162,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                           fontWeight: 500,
                           color: theme.palette.primary[200],
                         }}>
-                        Total Order
+                        ยอดรวมออกใบแจ้งหนี้
                       </Typography>
                     </Grid>
                   </Grid>

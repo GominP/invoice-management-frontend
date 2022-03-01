@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 // material-ui
-import { useTheme, styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
@@ -11,15 +11,17 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 
 // project imports
-import MainCard from "./MainCard";
+import MainCard from "../MainCard";
 
 // assets
+import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: theme.palette.primary.light,
   overflow: "hidden",
   position: "relative",
   "&:after": {
@@ -27,7 +29,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    background: `linear-gradient(210.04deg, ${theme.palette.primary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
     borderRadius: "50%",
     top: -30,
     right: -180,
@@ -37,16 +39,16 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
+    background: `linear-gradient(140.9deg, ${theme.palette.primary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
     borderRadius: "50%",
     top: -160,
     right: -130,
   },
 }));
 
-// ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
+// ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
 
-const TotalIncomeLightCard = ({ isLoading }) => {
+const TotalIncomeDarkCard = ({ isLoading }) => {
   const theme = useTheme();
 
   return (
@@ -61,10 +63,10 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                   sx={{
                     ...theme.typography.commonAvatar,
                     ...theme.typography.largeAvatar,
-                    backgroundColor: theme.palette.warning.light,
-                    color: theme.palette.warning.dark,
+                    backgroundColor: theme.palette.primary[800],
+                    color: "#fff",
                   }}>
-                  <StorefrontTwoToneIcon fontSize="inherit" />
+                  <TableChartOutlinedIcon fontSize="inherit" />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -73,14 +75,15 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4">$203k</Typography>}
+                primary={
+                  <Typography variant="h4" sx={{ color: "#fff" }}>
+                    $203k
+                  </Typography>
+                }
                 secondary={
                   <Typography
                     variant="subtitle2"
-                    sx={{
-                      color: theme.palette.grey[500],
-                      mt: 0.5,
-                    }}>
+                    sx={{ color: "primary.light", mt: 0.25 }}>
                     Total Income
                   </Typography>
                 }
@@ -93,8 +96,8 @@ const TotalIncomeLightCard = ({ isLoading }) => {
   );
 };
 
-TotalIncomeLightCard.propTypes = {
+TotalIncomeDarkCard.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-export default TotalIncomeLightCard;
+export default TotalIncomeDarkCard;

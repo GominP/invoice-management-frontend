@@ -5,11 +5,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import "./App.css";
 import Payer from "./pages/Payer";
 import ResponsiveAppBar from "./component/ResponsiveAppBar"
-import EnhancedTable from "./pages/EnhancedTable"
+import AllInvoices from "./pages/AllInvoices"
 import TotalIncome from "./pages/TotalIncome";
 import CheckBillInfo from "./pages/CheckBillInfo";
-import ProductCard from "./component/ProductCard";
-import EarningCard from "./component/EarningCard";
+import EarningCard from "./component/dashboardTotal/EarningCard";
+import EditProfile from "./pages/EditProfile";
+import Register from "./pages/Register"
 
 const theme = createTheme({
   typography: {
@@ -27,11 +28,14 @@ function App() {
         <CssBaseline />
         <ResponsiveAppBar></ResponsiveAppBar>
         <Routes>
-          <Route path="/" element={<EnhancedTable />} />
+          <Route path="/" element={<AllInvoices />} />
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
-          <Route path="/allbill" element={<EnhancedTable />} />
+          <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo" element={<EarningCard />} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/editprofie" element={<EditProfile />} />
+
 
 
 

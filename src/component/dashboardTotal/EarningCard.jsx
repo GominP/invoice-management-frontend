@@ -8,7 +8,7 @@ import { green, pink,indigo,blue } from '@mui/material/colors';
 
 
 // project imports
-import MainCard from "./MainCard";
+import MainCard from "../MainCard";
 // import SkeletonEarningCard from "ui-component/cards/Skeleton/EarningCard";
 
 // assets
@@ -100,7 +100,7 @@ const EarningCard = ({ isLoading }) => {
                   fontWeight: 500,
                   color: theme.palette.secondary[200],
                 }}>
-                Total Earning
+                ยอดรวมรายรับใบแจ้งหนี้
               </Typography>
             </Grid>
           </Grid>

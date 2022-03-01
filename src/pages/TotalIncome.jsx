@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ResponsiveHeader from "../component/ResponsiveHeader";
-import EarningCard from "../component/EarningCard";
+import EarningCard from "../component/dashboardTotal/EarningCard";
 import { gridSpacing } from "../store/constant";
-import TotalOrderLineChartCard from "../component/TotalOrderLineChartCard";
-import TotalIncomeDarkCard from "../component/TotalIncomeDarkCard";
-import TotalIncomeLightCard from "../component/TotalIncomeLightCard";
-import TotalGrowthBarChart from "../component/TotalGrowthBarChart";
+import TotalOrderLineChartCard from "../component/dashboardTotal/TotalOrderLineChartCard";
+import TotalIncomeDarkCard from "../component/dashboardTotal/TotalIncomeDarkCard";
+import TotalIncomeLightCard from "../component/dashboardTotal/TotalIncomeLightCard";
+import TotalGrowthBarChart from "../component/dashboardTotal/TotalGrowthBarChart";
 
 const TotalIncome = () => {
 

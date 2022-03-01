@@ -305,7 +305,7 @@ EnhancedTableToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function EnhancedTable() {
+export default function AllInvoices() {
   let navigate = useNavigate();
 
   const [order, setOrder] = React.useState("asc");
