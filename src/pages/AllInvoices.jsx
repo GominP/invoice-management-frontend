@@ -62,19 +62,19 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+// function getStyles(name, personName, theme) {
+//   return {
+//     fontWeight:
+//       personName.indexOf(name) === -1
+//         ? theme.typography.fontWeightRegular
+//         : theme.typography.fontWeightMedium,
+//   };
+// }
 
-function createData(name, calories, fat, carbs, protein) {
+function createData(name, date, fat, carbs, protein) {
   return {
     name,
-    calories,
+    date,
     fat,
     carbs,
     protein,
@@ -82,19 +82,19 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData("17", 305, 3.7, 67, 4.3),
-  createData("Donut", 452, 25.0, 51, 4.9),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Honeycomb", 408, 3.2, 87, 6.5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0),
-  createData("KitKat", 518, 26.0, 65, 7.0),
-  createData("Lollipop", 392, 0.2, 98, 0.0),
-  createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0),
+  createData("1235", "1/12/2561", 3.7, 67, 4.3),
+  createData("67901", "2/12/2561", 25.0, 51, 4.9),
+  createData("q3467", "3/12/2561", 16.0, 24, 6.0),
+  createData("2345260", "4/12/2561", 6.0, 24, 4.0),
+  createData("Gingerbread", "5/12/2561", 16.0, 49, 3.9),
+  createData("Honeycomb", "6/12/2561", 3.2, 87, 6.5),
+  createData("Ice cream sandwich", "7/12/2561", 9.0, 37, 4.3),
+  createData("Jelly Bean", "8/12/2561", 0.0, 94, 0.0),
+  createData("KitKat", "9/12/2561", 26.0, 65, 7.0),
+  createData("Lollipop", "10/12/2561", 0.2, 98, 0.0),
+  createData("Marshmallow", "30/12/2561", 0, 81, 2.0),
+  createData("Nougat", "30/12/2561", 19.0, 9, 37.0),
+  createData("Oreo", "30/12/2561", 18.0, 63, 4.0),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -135,8 +135,8 @@ const headCells = [
     label: "เลขที่ใบแจ้งหนี้",
   },
   {
-    id: "calories",
-    numeric: false,
+    id: "date",
+    numeric: true,
     disablePadding: false,
     label: "วันที่",
   },
@@ -387,7 +387,7 @@ export default function AllInvoices() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box>
+    <Box sx={{ width: "85%", margin: "auto"}}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           filterName={filterName}
@@ -429,7 +429,7 @@ export default function AllInvoices() {
                         padding="normal">
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
+                      <TableCell align="left">{row.date}</TableCell>
                       <TableCell align="right">{row.fat}</TableCell>
                       <TableCell align="right">{row.carbs}</TableCell>
                       <TableCell align="right">{row.protein}</TableCell>
