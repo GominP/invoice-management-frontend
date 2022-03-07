@@ -18,7 +18,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { makeStyles } from "@mui/styles";
-import SearchBar from "../component/SearchBar";
 import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
 import {
@@ -62,39 +61,43 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-// function getStyles(name, personName, theme) {
-//   return {
-//     fontWeight:
-//       personName.indexOf(name) === -1
-//         ? theme.typography.fontWeightRegular
-//         : theme.typography.fontWeightMedium,
-//   };
-// }
-
-function createData(name, date, fat, carbs, protein) {
+function createData(billId, date, customerName, expiredDate, total) {
   return {
-    name,
+    billId,
     date,
-    fat,
-    carbs,
-    protein,
+    customerName,
+    expiredDate,
+    total,
   };
 }
 
+const time = new Date("2019-2-22").toLocaleString("th-TH").split(" ")[0]
+const time2 = new Date("2019-2-11").toLocaleString("th-TH").split(" ")[0];
+const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
+const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
+const time5 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
+
 const rows = [
-  createData("1235", "1/12/2561", 3.7, 67, 4.3),
-  createData("67901", "2/12/2561", 25.0, 51, 4.9),
-  createData("q3467", "3/12/2561", 16.0, 24, 6.0),
-  createData("2345260", "4/12/2561", 6.0, 24, 4.0),
-  createData("Gingerbread", "5/12/2561", 16.0, 49, 3.9),
-  createData("Honeycomb", "6/12/2561", 3.2, 87, 6.5),
-  createData("Ice cream sandwich", "7/12/2561", 9.0, 37, 4.3),
-  createData("Jelly Bean", "8/12/2561", 0.0, 94, 0.0),
-  createData("KitKat", "9/12/2561", 26.0, 65, 7.0),
-  createData("Lollipop", "10/12/2561", 0.2, 98, 0.0),
-  createData("Marshmallow", "30/12/2561", 0, 81, 2.0),
-  createData("Nougat", "30/12/2561", 19.0, 9, 37.0),
-  createData("Oreo", "30/12/2561", 18.0, 63, 4.0),
+  {
+    billId: "test",
+    date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+    customerName: "สินชัย",
+    expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+    total: 17,
+  },
+  createData("1235", time, "โชคชัย คงมั่น", time, 4.3),
+  createData("67901", time2, "โชคชัย ดีเด่น", time2, 4.9),
+  createData("q3467", time3, "โชคชัย", time3, 6.0),
+  createData("2345260", time4, "โชคชัย", time4, 4.0),
+  createData("Gingerbread", time5, "โชคชัย", time5, 3.9),
+  // createData("Honeycomb", "6/12/2561", 3.2, 87, 6.5),
+  // createData("Ice cream sandwich", "7/12/2561", 9.0, 37, 4.3),
+  // createData("Jelly Bean", "8/12/2561", 0.0, 94, 0.0),
+  // createData("KitKat", "9/12/2561", 26.0, 65, 7.0),
+  // createData("Lollipop", "10/12/2561", 0.2, 98, 0.0),
+  // createData("Marshmallow", "30/12/2561", 0, 81, 2.0),
+  // createData("Nougat", "30/12/2561", 19.0, 9, 37.0),
+  // createData("Oreo", "30/12/2561", 18.0, 63, 4.0),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -129,31 +132,31 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: "name",
-    numeric: true,
+    id: "billname",
+    numeric: false,
     disablePadding: true,
     label: "เลขที่ใบแจ้งหนี้",
   },
   {
     id: "date",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "วันที่",
   },
   {
-    id: "fat",
-    numeric: true,
+    id: "customerName",
+    numeric: false,
     disablePadding: false,
     label: "ชื่อลูกค้า",
   },
   {
-    id: "carbs",
-    numeric: true,
+    id: "expiredDate",
+    numeric: false,
     disablePadding: false,
     label: "วันครบกำหนด",
   },
   {
-    id: "protein",
+    id: "total",
     numeric: true,
     disablePadding: false,
     label: "ยอดรวมสุทธิ",
@@ -174,20 +177,25 @@ function EnhancedTableHead(props) {
           <TableCell
             className={classes.th}
             key={headCell.id}
-            align={headCell.numeric ? "left" : "right"}
+            align={headCell.numeric ? "right" : "left"}
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}>
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}>
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {headCell.label}
+            
+              {/* <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}>
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel> */}
+
           </TableCell>
         ))}
       </TableRow>
@@ -343,7 +351,7 @@ export default function AllInvoices() {
     if (query) {
       return filter(
         array,
-        (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        (bill) => bill.billId.toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     }
     return stabilizedThis.map((el) => el[0]);
@@ -387,7 +395,7 @@ export default function AllInvoices() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "85%", margin: "auto"}}>
+    <Box sx={{ width: "85%", margin: "auto" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           filterName={filterName}
@@ -419,7 +427,7 @@ export default function AllInvoices() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.billId}
                       // selected={isItemSelected}
                     >
                       <TableCell
@@ -427,12 +435,12 @@ export default function AllInvoices() {
                         id={labelId}
                         scope="row"
                         padding="normal">
-                        {row.name}
+                        {row.billId}
                       </TableCell>
                       <TableCell align="left">{row.date}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="left">{row.customerName}</TableCell>
+                      <TableCell align="left">{row.expiredDate}</TableCell>
+                      <TableCell align="right">{row.total}</TableCell>
                     </TableRow>
                   );
                 })}
