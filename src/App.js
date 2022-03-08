@@ -32,7 +32,7 @@ function App() {
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
-          <Route path="/allbill/billinfo" element={<EarningCard />} />
+          <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
           <Route path="/register" element={<Register/>} />
           <Route path="/editprofie" element={<EditProfile />} />
 

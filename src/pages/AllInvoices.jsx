@@ -61,10 +61,10 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-function createData(billId, date, customerName, expiredDate, total) {
+function createData(billId,customerName, expiredDate, total) {
   return {
     billId,
-    date,
+    // date,
     customerName,
     expiredDate,
     total,
@@ -80,24 +80,16 @@ const time5 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
 const rows = [
   {
     billId: "test",
-    date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+    // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
     customerName: "สินชัย",
     expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
     total: 17,
   },
-  createData("1235", time, "โชคชัย คงมั่น", time, 4.3),
-  createData("67901", time2, "โชคชัย ดีเด่น", time2, 4.9),
-  createData("q3467", time3, "โชคชัย", time3, 6.0),
-  createData("2345260", time4, "โชคชัย", time4, 4.0),
-  createData("Gingerbread", time5, "โชคชัย", time5, 3.9),
-  // createData("Honeycomb", "6/12/2561", 3.2, 87, 6.5),
-  // createData("Ice cream sandwich", "7/12/2561", 9.0, 37, 4.3),
-  // createData("Jelly Bean", "8/12/2561", 0.0, 94, 0.0),
-  // createData("KitKat", "9/12/2561", 26.0, 65, 7.0),
-  // createData("Lollipop", "10/12/2561", 0.2, 98, 0.0),
-  // createData("Marshmallow", "30/12/2561", 0, 81, 2.0),
-  // createData("Nougat", "30/12/2561", 19.0, 9, 37.0),
-  // createData("Oreo", "30/12/2561", 18.0, 63, 4.0),
+  createData("1235","โชคชัย คงมั่น", time, 4.3),
+  createData("67901", "โชคชัย ดีเด่น", time2, 4.9),
+  createData("q3467", "โชคชัย", time3, 6.0),
+  createData("2345260", "โชคชัย", time4, 4.0),
+  createData("Gingerbread", "โชคชัย", time5, 3.9),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -137,12 +129,12 @@ const headCells = [
     disablePadding: true,
     label: "เลขที่ใบแจ้งหนี้",
   },
-  {
-    id: "date",
-    numeric: false,
-    disablePadding: false,
-    label: "วันที่",
-  },
+  // {
+  //   id: "date",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "วันที่",
+  // },
   {
     id: "customerName",
     numeric: false,
@@ -270,9 +262,9 @@ const EnhancedTableToolbar = (props) => {
           value={filterName}
           onChange={onFilterName}
           // label="ค้นหา"
-          placeholder="ค้นหา"
+          placeholder="ค้นหาด้วยเลขใบแจ้งหนี้"
           InputProps={{
-            startAdornment: (
+            endAdornment: (
               <InputAdornment position="start">
                 <IconButton>
                   <SearchIcon />
@@ -357,8 +349,8 @@ export default function AllInvoices() {
     return stabilizedThis.map((el) => el[0]);
   }
 
-  const handleClick = (event, name) => {
-    navigate("/allbill/billinfo");
+  const handleClick = (event, billId) => {
+    navigate("/allbill/billinfo/"+billId);
     // const selectedIndex = selected.indexOf(name);
     // let newSelected = [];
 
@@ -403,6 +395,7 @@ export default function AllInvoices() {
         />
         <TableContainer>
           <Table
+        
             aria-labelledby="tableTitle"
             size="medium"
             sx={{ minWidth: 750 }}>
@@ -423,7 +416,7 @@ export default function AllInvoices() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.billId)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -437,7 +430,7 @@ export default function AllInvoices() {
                         padding="normal">
                         {row.billId}
                       </TableCell>
-                      <TableCell align="left">{row.date}</TableCell>
+                      {/* <TableCell align="left">{row.date}</TableCell> */}
                       <TableCell align="left">{row.customerName}</TableCell>
                       <TableCell align="left">{row.expiredDate}</TableCell>
                       <TableCell align="right">{row.total}</TableCell>
