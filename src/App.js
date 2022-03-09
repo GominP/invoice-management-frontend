@@ -12,6 +12,10 @@ import EarningCard from "./component/dashboardTotal/EarningCard";
 import EditProfile from "./pages/EditProfile";
 import Register from "./pages/Register";
 import CreateBill from "./pages/CreateBill";
+import DateAdapter from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { thTH } from "@mui/material/locale";
+// import OverwriteMomentBE from "./component/date/OverwriteMomentBE";
 
 const theme = createTheme({
   typography: {
@@ -22,24 +26,27 @@ const theme = createTheme({
       default: "#e4f0e2",
     },
   },
-});
+  
+},thTH);
 
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ResponsiveAppBar></ResponsiveAppBar>
-        <Routes>
-          <Route path="/" element={<AllInvoices />} />
-          <Route path="/payer" element={<Payer />} />
-          <Route path="/allget" element={<TotalIncome />} />
-          <Route path="/allbill" element={<AllInvoices />} />
-          <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/editprofie" element={<EditProfile />} />
-          <Route path="/payer/bill" element={<CreateBill />} />
-        </Routes>
+        {/* <LocalizationProvider dateAdapter={DateAdapter} locale={"th"}> */}
+          <CssBaseline />
+          <ResponsiveAppBar></ResponsiveAppBar>
+          <Routes>
+            <Route path="/" element={<AllInvoices />} />
+            <Route path="/payer" element={<Payer />} />
+            <Route path="/allget" element={<TotalIncome />} />
+            <Route path="/allbill" element={<AllInvoices />} />
+            <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/editprofie" element={<EditProfile />} />
+            <Route path="/payer/bill" element={<CreateBill />} />
+          </Routes>
+        {/* </LocalizationProvider> */}
       </ThemeProvider>
     </div>
   );

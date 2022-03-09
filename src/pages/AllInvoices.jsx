@@ -71,7 +71,7 @@ function createData(billId, customerName, expiredDate, total) {
   };
 }
 
-const time = new Date("2019-2-22").toLocaleString("th-TH").split(" ")[0];
+const time = new Date(1646892000).toLocaleString("th-TH").split(" ")[0];
 const time2 = new Date("2019-2-11").toLocaleString("th-TH").split(" ")[0];
 const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
 const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
@@ -422,7 +422,6 @@ export default function AllInvoices() {
                         padding="normal">
                         {row.billId}
                       </TableCell>
-                      {/* <TableCell align="left">{row.date}</TableCell> */}
                       <TableCell align="left">{row.customerName}</TableCell>
                       <TableCell align="left">{row.expiredDate}</TableCell>
                       <TableCell align="right">{row.total}</TableCell>
