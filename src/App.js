@@ -1,28 +1,31 @@
 import * as React from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import "./App.css";
 import Payer from "./pages/Payer";
-import ResponsiveAppBar from "./component/ResponsiveAppBar"
-import AllInvoices from "./pages/AllInvoices"
+import ResponsiveAppBar from "./component/ResponsiveAppBar";
+import AllInvoices from "./pages/AllInvoices";
 import TotalIncome from "./pages/TotalIncome";
 import CheckBillInfo from "./pages/CheckBillInfo";
 import EarningCard from "./component/dashboardTotal/EarningCard";
 import EditProfile from "./pages/EditProfile";
-import Register from "./pages/Register"
+import Register from "./pages/Register";
+import CreateBill from "./pages/CreateBill";
 
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Mitr',
-      'sans-serif',
-    ].join(','),
-  },});
+    fontFamily: ["Mitr", "sans-serif"].join(","),
+  },
+  palette: {
+    background: {
+      default: "#e4f0e2",
+    },
+  },
+});
 
 function App() {
   return (
-    
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -33,12 +36,9 @@ function App() {
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
-          <Route path="/register" element={<Register/>} />
+          <Route path="/register" element={<Register />} />
           <Route path="/editprofie" element={<EditProfile />} />
-
-
-
-
+          <Route path="/payer/bill" element={<CreateBill />} />
         </Routes>
       </ThemeProvider>
     </div>

@@ -4,6 +4,8 @@ import { forwardRef } from 'react';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { blue } from '@mui/material/colors';
+
 
 // constant
 const headerSX = {
@@ -38,11 +40,11 @@ const MainCard = forwardRef(
                 {...others}
                 sx={{
                     border: border ? '1px solid' : 'none',
-                    borderColor: theme.palette.primary[200] + 75,
+                    borderColor: blue[300] + 75,
                     ':hover': {
                         boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
                     },
-                    borderRadius: 8,
+                    borderRadius: 6,
                     ...sx
                 }}
             >

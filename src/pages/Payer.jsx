@@ -15,6 +15,8 @@ import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
+import { useNavigate } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -77,6 +79,7 @@ const data = [
   },
 ];
 const Payer = () => {
+  let navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -108,11 +111,11 @@ const Payer = () => {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button size="small" color="primary">
-                    Share
+                  <Button size="small" color="primary" >
+                    รายละเอียด
                   </Button>
-                  <Button size="small" color="primary">
-                    Learn More
+                  <Button size="small" color="primary" onClick={()=> navigate("bill")}>
+                    สร้างบิล
                   </Button>
                 </CardActions>
               </Card>

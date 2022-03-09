@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-function createData(billId,customerName, expiredDate, total) {
+function createData(billId, customerName, expiredDate, total) {
   return {
     billId,
     // date,
@@ -71,7 +71,7 @@ function createData(billId,customerName, expiredDate, total) {
   };
 }
 
-const time = new Date("2019-2-22").toLocaleString("th-TH").split(" ")[0]
+const time = new Date("2019-2-22").toLocaleString("th-TH").split(" ")[0];
 const time2 = new Date("2019-2-11").toLocaleString("th-TH").split(" ")[0];
 const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
 const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
@@ -85,7 +85,7 @@ const rows = [
     expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
     total: 17,
   },
-  createData("1235","โชคชัย คงมั่น", time, 4.3),
+  createData("1235", "โชคชัย คงมั่น", time, 4.3),
   createData("67901", "โชคชัย ดีเด่น", time2, 4.9),
   createData("q3467", "โชคชัย", time3, 6.0),
   createData("2345260", "โชคชัย", time4, 4.0),
@@ -173,8 +173,8 @@ function EnhancedTableHead(props) {
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}>
             {headCell.label}
-            
-              {/* <TableSortLabel
+
+            {/* <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
                 onClick={createSortHandler(headCell.id)}>
@@ -187,7 +187,6 @@ function EnhancedTableHead(props) {
                   </Box>
                 ) : null}
               </TableSortLabel> */}
-
           </TableCell>
         ))}
       </TableRow>
@@ -248,16 +247,10 @@ const EnhancedTableToolbar = (props) => {
 
   return (
     <Toolbar>
-      <Typography
-        sx={{ flex: "1 100%" }}
-        variant="h6"
-        id="tableTitle"
-        component="div">
+      <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle" >
         ใบแจ้งหนี้ทั้งหมด
       </Typography>
-      <Stack
-        direction={{ xs: "row", sm: "row" }}
-        spacing={{ xs: 1, sm: 2, md: 4 }}>
+      <Stack direction={{ xs: "row", sm: "row" }}>
         <TextField
           value={filterName}
           onChange={onFilterName}
@@ -350,7 +343,7 @@ export default function AllInvoices() {
   }
 
   const handleClick = (event, billId) => {
-    navigate("/allbill/billinfo/"+billId);
+    navigate("/allbill/billinfo/" + billId);
     // const selectedIndex = selected.indexOf(name);
     // let newSelected = [];
 
@@ -387,7 +380,7 @@ export default function AllInvoices() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "85%", margin: "auto" }}>
+    <Box sx={{ width: "85%", margin: "auto" ,p:3 }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           filterName={filterName}
@@ -395,7 +388,6 @@ export default function AllInvoices() {
         />
         <TableContainer>
           <Table
-        
             aria-labelledby="tableTitle"
             size="medium"
             sx={{ minWidth: 750 }}>
