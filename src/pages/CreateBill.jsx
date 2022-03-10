@@ -26,6 +26,9 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import moment from "moment";
 import { set } from "date-fns";
+import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+
+
 
 export default function CreateBill() {
   const [name, setName] = useState("");
@@ -33,7 +36,7 @@ export default function CreateBill() {
   const today = new Date().toLocaleString("th-TH").split(" ")[0];
   const [value, setValue] = React.useState(moment().add(543, "year"));
   const [allProduct, setAllProduct] = useState([]);
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [unit, setUnit] = useState();
 
   const headProduct = [
@@ -45,25 +48,40 @@ export default function CreateBill() {
   ];
 
   function handleChangeUnit(e, row_index, key) {
-    setUnit(e.target.value);
+    // setUnit(e.target.value);
     console.log(row_index);
     console.log(allProduct[row_index - 1]);
     let arr = [...allProduct];
+
+    if (key === "quantity") {
+      if (arr[row_index - 1]["priceUnit"] === 0) {
+        arr[row_index - 1]["totalPrice"] = 0;
+      } else {
+        arr[row_index - 1]["totalPrice"] =
+          e.target.value * arr[row_index - 1]["priceUnit"];
+      }
+    } else if (key === "priceUnit") {
+      if (arr[row_index - 1]["quantity"] === 0) {
+        arr[row_index - 1]["totalPrice"] = e.target.value * 1;
+      } else {
+        arr[row_index - 1]["totalPrice"] =
+          e.target.value * arr[row_index - 1]["quantity"];
+      }
+    }
     arr[row_index - 1][key] = e.target.value;
     setAllProduct(arr);
+    let priceAllProduct = 0;
+    allProduct.map((data, index) => {
+      priceAllProduct += data["totalPrice"];
+    });
+    setPrice(priceAllProduct);
+    console.log(priceAllProduct);
+
     console.log(allProduct);
-
-    // allProduct.map((product, index) => {
-    //   if (product.index === row_index) {
-    //     setAllProduct(...allProduct, {
-
-    //     })
-    //   }
-    // });
   }
 
   const handleChange = () => {
-    console.log(allProduct[0]);
+    console.log(allProduct);
   };
   const addProduct = () => {
     setAllProduct([
@@ -80,6 +98,10 @@ export default function CreateBill() {
 
     console.log(allProduct);
   };
+
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
 
   return (
     <>
@@ -152,7 +174,7 @@ export default function CreateBill() {
                           <Typography sx={{ color: "purple" }} variant="h5">
                             จำนวนเงินทั้งสิ้น
                           </Typography>
-                          <Typography>{total} บาท</Typography>
+                          <Typography>{currencyFormat(price)} บาท</Typography>
                           <Box>
                             <Grid container spacing={2}>
                               <Grid item xs={12} md={3}>
@@ -292,13 +314,23 @@ export default function CreateBill() {
                                           id="outlined-price"
                                           label="ราคา"
                                           type={"number"}
+                                          maxLength={6}
                                           inputProps={{
                                             inputMode: "numeric",
                                             pattern: "[0-9]*",
-                                          }}></TextField>
+                                            maxLength: 10,
+                                            step: "1",
+                                          }}
+                                          onChange={(event) =>
+                                            handleChangeUnit(
+                                              event,
+                                              row.index,
+                                              "priceUnit"
+                                            )
+                                          }></TextField>
                                       </TableCell>
                                       <TableCell align="center">
-                                        price
+                                        {currencyFormat(row.totalPrice)}
                                       </TableCell>
                                     </TableRow>
                                   );

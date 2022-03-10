@@ -16,6 +16,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { thTH } from "@mui/material/locale";
 // import OverwriteMomentBE from "./component/date/OverwriteMomentBE";
+import FormattedInputs from "./pages/FormattedInputs";
 
 const theme = createTheme({
   typography: {
@@ -38,7 +39,7 @@ function App() {
           <ResponsiveAppBar></ResponsiveAppBar>
           <Routes>
             <Route path="/" element={<AllInvoices />} />
-            <Route path="/payer" element={<Payer />} />
+            <Route path="/payer" element={<FormattedInputs />} />
             <Route path="/allget" element={<TotalIncome />} />
             <Route path="/allbill" element={<AllInvoices />} />
             <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
