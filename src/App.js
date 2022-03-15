@@ -16,6 +16,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { thTH } from "@mui/material/locale";
 import BillInfo from "./pages/BillInfo";
+import DetailUser from "./pages/DetailUser";
 
 const theme = createTheme(
   {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
+          <Route path="/detailUser" element={<DetailUser />} />
           <Route path="/register" element={<Register />} />
           <Route path="/editprofie" element={<EditProfile />} />
           <Route path="/payer/bill" element={<CreateBill />} />

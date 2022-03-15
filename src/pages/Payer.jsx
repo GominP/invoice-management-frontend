@@ -16,7 +16,7 @@ import { useTheme } from "@mui/material/styles";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useNavigate } from "react-router-dom";
-
+import img from "../asset/images/contemplative-reptile.jpg";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -97,6 +97,10 @@ const Payer = () => {
                   <CardMedia
                     className={classes.media}
                     title="Contemplative Reptile"
+                    component="img"
+                    height="140"
+                    image={img}
+                    alt="green iguana"
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -111,10 +115,13 @@ const Payer = () => {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button size="small" color="primary" >
+                  <Button size="small" color="primary" onClick={() => navigate("/detailUser")} >
                     รายละเอียด
                   </Button>
-                  <Button size="small" color="primary" onClick={()=> navigate("bill")}>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => navigate("bill")}>
                     สร้างบิล
                   </Button>
                 </CardActions>
