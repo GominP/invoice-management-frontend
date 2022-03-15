@@ -125,7 +125,7 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: "billname",
+    id: "billId",
     numeric: false,
     disablePadding: true,
     label: "เลขที่ใบแจ้งหนี้",

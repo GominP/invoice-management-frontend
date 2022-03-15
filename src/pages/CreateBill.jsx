@@ -47,8 +47,8 @@ export default function CreateBill() {
 
   function handleChangeUnit(e, row_index, key) {
     // setUnit(e.target.value);
-    console.log(row_index);
-    console.log(allProduct[row_index - 1]);
+    // console.log(row_index);
+    // console.log(allProduct[row_index - 1]);
     let arr = [...allProduct];
 
     if (key === "quantity") {
@@ -73,9 +73,9 @@ export default function CreateBill() {
       priceAllProduct += data["totalPrice"];
     });
     setPrice(priceAllProduct);
-    console.log(priceAllProduct);
+    // console.log(priceAllProduct);
 
-    console.log(allProduct);
+    // console.log(allProduct);
   }
 
   const handleChange = () => {
@@ -335,7 +335,7 @@ export default function CreateBill() {
                             </Table>
                           </TableContainer>
                         </Grid>
-                        <Button onClick={() => addProduct()}>เพิ่ม</Button>
+                        <Button onClick={() => addProduct()}>เพิ่มรายการสินค้า</Button>
                         <Button onClick={() => handleChange()}>mf]vsd</Button>
                       </Grid>
                     </Grid>
