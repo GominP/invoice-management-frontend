@@ -19,6 +19,15 @@ import TableRow from "@mui/material/TableRow";
 import { gridSpacing } from "../store/constant";
 import MainCard from "../component/MainCard";
 import CreateBill from "./CreateBill";
+import PropTypes from "prop-types";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import ResponsiveDialog from "../component/ResponsiveDialog";
 
 const TAX_RATE = 0.07;
 
@@ -26,40 +35,27 @@ function ccyFormat(num) {
   return `${num.toFixed(2)}`;
 }
 
-function priceRow(qty, unit) {
-  return qty * unit;
-}
+export default function CheckBillInfo(props) {
+  const theme = useTheme();
+  const { isPayerBill, rows, status,requestEdit } = props;
 
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
+  const invoiceSubtotal = subtotal(rows);
+  const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
-
-const rows = [
-  createRow("Paperclips (Box)", 100, 1.15),
-  createRow("Paper (Case)", 10, 45.99),
-  createRow("Waste Basket", 2, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-export default function CheckBillInfo() {
+  function subtotal(items) {
+    return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  }
   return (
     <>
-      <Box sx={{p: 3}}>
+      <Box sx={{ p: 3 }}>
         <Grid container>
           <Grid item xs={12} md={7}>
             <MainCard>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
                 <ResponsiveHeader text="ตรวจสอบบิล" />
                 <Button variant="outlined" color="error">
-                  เลยกำหนดชำระ
+                  {status}
                 </Button>
               </Stack>
 
@@ -199,31 +195,37 @@ export default function CheckBillInfo() {
                             </Table>
                           </TableContainer>
                         </Grid>
-                        {/* <Grid item xs={12} md={4}>
-                    Test2
-                  </Grid> */}
                       </Grid>
                     </Grid>
                   </Grid>
-                  {/* <Grid>
-            <Stack direction={{sm: "column"}}>
-              <Button>Test</Button>
-              <Button>Test</Button>
-            </Stack>
-          </Grid> */}
                 </Stack>
               </Box>
             </MainCard>
           </Grid>
-          {/* <Grid>
-            <Stack direction={{ xs: "column", sm: "row" ,md:"column" ,lg: "column",xl: "column"}}>
-              <Button>Test</Button>
-              <Button>Test</Button>
-            </Stack>
-          </Grid> */}
+          {isPayerBill ? (
+            <Grid>
+              <Stack
+                direction={{
+                  xs: "column",
+                  sm: "row",
+                  md: "column",
+                }}
+                spacing={1}>
+                <ResponsiveDialog textButton="จ่ายบิล" requestEdit={false}></ResponsiveDialog>
+                <ResponsiveDialog textButton="ส่งคำร้องขอแก้ไข" requestEdit={true}></ResponsiveDialog>
+              </Stack>
+            </Grid>
+          ) : null}
         </Grid>
       </Box>
-      <CreateBill headTitle="Test12312445"></CreateBill>
     </>
   );
 }
+CheckBillInfo.propTypes = {
+  isPayerBill: PropTypes.func.isRequired,
+  rows: PropTypes.array.isRequired,
+  status: PropTypes.string.isRequired,
+  requestEdit: PropTypes.bool.isRequired,
+
+
+};

@@ -15,39 +15,38 @@ import CreateBill from "./pages/CreateBill";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { thTH } from "@mui/material/locale";
-// import OverwriteMomentBE from "./component/date/OverwriteMomentBE";
-import FormattedInputs from "./pages/FormattedInputs";
+import BillInfo from "./pages/BillInfo";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: ["Mitr", "sans-serif"].join(","),
-  },
-  palette: {
-    background: {
-      default: "#e4f0e2",
+const theme = createTheme(
+  {
+    typography: {
+      fontFamily: ["Mitr", "sans-serif"].join(","),
+    },
+    palette: {
+      background: {
+        default: "#e4f0e2",
+      },
     },
   },
-  
-},thTH);
+  thTH
+);
 
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        {/* <LocalizationProvider dateAdapter={DateAdapter} locale={"th"}> */}
-          <CssBaseline />
-          <ResponsiveAppBar></ResponsiveAppBar>
-          <Routes>
-            <Route path="/" element={<AllInvoices />} />
-            <Route path="/payer" element={<FormattedInputs />} />
-            <Route path="/allget" element={<TotalIncome />} />
-            <Route path="/allbill" element={<AllInvoices />} />
-            <Route path="/allbill/billinfo/:id" element={<CheckBillInfo />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/editprofie" element={<EditProfile />} />
-            <Route path="/payer/bill" element={<CreateBill />} />
-          </Routes>
-        {/* </LocalizationProvider> */}
+        <CssBaseline />
+        <ResponsiveAppBar></ResponsiveAppBar>
+        <Routes>
+          <Route path="/" element={<AllInvoices />} />
+          <Route path="/payer" element={<Payer />} />
+          <Route path="/allget" element={<TotalIncome />} />
+          <Route path="/allbill" element={<AllInvoices />} />
+          <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/editprofie" element={<EditProfile />} />
+          <Route path="/payer/bill" element={<CreateBill />} />
+        </Routes>
       </ThemeProvider>
     </div>
   );

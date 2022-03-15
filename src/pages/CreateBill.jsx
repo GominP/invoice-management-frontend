@@ -28,8 +28,6 @@ import moment from "moment";
 import { set } from "date-fns";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
-
-
 export default function CreateBill() {
   const [name, setName] = useState("");
   const [total, setTotal] = useState(400);
@@ -100,8 +98,8 @@ export default function CreateBill() {
   };
 
   function currencyFormat(num) {
-    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <>
@@ -149,19 +147,19 @@ export default function CreateBill() {
                             <Box>
                               <Grid container>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>ผู้ติดต่อ</Typography>
+                                  <Typography>ผู้ติดต่อ :</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>สิ่นชัย มั่นคง</Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>อีเมลล์</Typography>
+                                  <Typography>อีเมลล์ :</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>test@gmail.com</Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>เบอร์โทร</Typography>
+                                  <Typography>เบอร์โทร :</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>0958654531</Typography>
@@ -177,10 +175,10 @@ export default function CreateBill() {
                           <Typography>{currencyFormat(price)} บาท</Typography>
                           <Box>
                             <Grid container spacing={2}>
-                              <Grid item xs={12} md={3}>
+                              <Grid item xs={12} md={4}>
                                 <Typography>วันที่</Typography>
                               </Grid>
-                              <Grid item xs={12} md={9}>
+                              <Grid item xs={12} md={8}>
                                 <TextField
                                   id="outlined-name"
                                   label="วันที่"
@@ -188,10 +186,10 @@ export default function CreateBill() {
                                   value={today}
                                 />
                               </Grid>
-                              <Grid item xs={12} md={3}>
+                              <Grid item xs={12} md={4}>
                                 <Typography>ครบกำหนด</Typography>
                               </Grid>
-                              <Grid item xs={12} md={9}>
+                              <Grid item xs={12} md={8}>
                                 <DatePicker
                                   label="ครบกำหนด"
                                   openTo="year"
@@ -205,10 +203,10 @@ export default function CreateBill() {
                                   )}
                                 />
                               </Grid>
-                              <Grid item xs={12} md={3}>
+                              <Grid item xs={12} md={4}>
                                 <Typography>ผู้ออกใบแจ้งหนี้</Typography>
                               </Grid>
-                              <Grid item xs={12} md={9}>
+                              <Grid item xs={12} md={8}>
                                 <TextField
                                   id="outlined-name"
                                   label="ผู้ออกใบแจ้งหนี้"
@@ -262,8 +260,6 @@ export default function CreateBill() {
                               <TableBody>
                                 {allProduct.map((row, index) => {
                                   const labelId = `enhanced-table-checkbox-${index}`;
-                                  //   const unit = 0;
-                                  //   const totalprice = unit * 0;
 
                                   return (
                                     <TableRow
