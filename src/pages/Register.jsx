@@ -31,20 +31,16 @@ const Register = () => {
           columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
           <Grid item xs={2} sm={5} md={8} xl={12}>
             <Card>
-              <CardActionArea>
-                <CardMedia/>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Testss
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p">
-                    Des
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+              <CardMedia />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  Testss
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Des
+                </Typography>
+              </CardContent>
+
               <CardActions>
                 <Button size="small" color="primary">
                   Share
@@ -58,7 +54,7 @@ const Register = () => {
           <Grid item xs={2} sm={3} md={4} xl={8}>
             <Card>
               <CardActionArea>
-                <CardMedia/>
+                <CardMedia />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
                     Testss

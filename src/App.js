@@ -46,7 +46,7 @@ function App() {
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
           <Route path="/detailUser" element={<DetailUser />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/editprofie" element={<EditProfile />} />
+          <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/payer/bill" element={<CreateBill />} />
         </Routes>
       </ThemeProvider>
