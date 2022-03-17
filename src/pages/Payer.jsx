@@ -118,7 +118,7 @@ const Payer = () => {
                   <Button
                     size="small"
                     color="primary"
-                    onClick={() => navigate("/detailUser")}>
+                    onClick={() => navigate("/detailUser/1")}>
                     รายละเอียด
                   </Button>
                   <Button
