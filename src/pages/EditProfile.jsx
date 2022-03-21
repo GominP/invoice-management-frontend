@@ -82,21 +82,66 @@ const EditProfile = () => {
     // arr[index]["edit"] = true;
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const data = new FormData(event.currentTarget);
+
+    // if (passwordText !== confirmPasswordText) {
+    //   setTextError("รหัสผ่านไม่ตรงกัน");
+    //   setOpenError(true);
+    // } else if (data.get("username") === "") {
+    //   setTextError("ใส่ข้อมูลให้ครบถ้วน");
+    //   setOpenError(true);
+    // }
+
+    console.log({
+      email: data.get("email"),
+      // password: passwordText,
+    });
+
+    // axios
+    //   .post("http://localhost:8080/register", {
+    //     name: "mississii",
+    //     lastname: "jaidee",
+    //     phone: "0913671456",
+    //     citizenId: "1100452139456",
+    //     taxId: "1100452139456",
+    //     isCitizen: true,
+    //     addressDetail: "2210 soi2",
+    //     road: "Krungthep-Nonthaburi",
+    //     district: "Bangsue",
+    //     subDistrict: "Wong Sawang",
+    //     province: "Bangkok",
+    //     zipCode: "10800",
+    //     username: "nattanon456",
+    //     password: "1234password",
+    //     role: params.id,
+    //   })
+    //   .then(function (response) {
+    //     // localStorage.setItem("token", response.data["jwtToken"]);
+    //     // console.log(response.data["jwtToken"]);
+    //     navigate("/login");
+    //   });
+    // setOpenSuccess(true);
+  };
+
   return (
     <div>
       <ResponsiveHeader text="รายละเอียดของผู้จ่ายบิล"></ResponsiveHeader>
-      <Box sx={{ px: 5 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ display: "flex", justifyContent: "center" }}>
         <Grid
-          container
-          spacing={{ xs: 2 }}
-          columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
-          <Grid item xs={2} sm={5} md={8} xl={12}>
+          >
+          <Grid item xs={12} >
             <Card>
               <CardMedia />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
+                {/* <Typography gutterBottom variant="h5" component="h2">
                   Testss
-                </Typography>
+                </Typography> */}
                 <Grid spacing={3}>
                   <Grid
                     item
@@ -158,7 +203,7 @@ const EditProfile = () => {
                     defaultValue={"Ew24T"}
                   />
                 </Box>
-                <Grid item xs={6} sm={6} md={6} xl={6}>
+                <Grid item xs={12} md={8} >
                   <TableContainer>
                     <Table aria-labelledby="tableTitle" size="medium">
                       <TableHead>
@@ -228,7 +273,7 @@ const EditProfile = () => {
               </CardActions> */}
             </Card>
           </Grid>
-          <Grid item xs={2} sm={3} md={4} xl={8}>
+          {/* <Grid item xs={2} sm={3} md={4} xl={8}>
             <Card>
               <CardMedia />
               <CardContent>
@@ -239,16 +284,16 @@ const EditProfile = () => {
                   Des
                 </Typography>
               </CardContent>
-              <CardActions sx={{display: "flex",justifyContent: "flex-end"}} >
+              <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button size="small" color="primary">
                   อัพโหลดรูปภาพ
                 </Button>
               </CardActions>
             </Card>
-            <Grid container sx={{display: "flex",justifyContent: "center"}}>
-              <Button >แก้ไข</Button>
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+              <Button>แก้ไข</Button>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </div>

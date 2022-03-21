@@ -17,7 +17,7 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { thTH } from "@mui/material/locale";
 import BillInfo from "./pages/BillInfo";
 import DetailUser from "./pages/DetailUser";
-import LoginPage from "./pages/LoginPage"
+import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 
 const theme = createTheme(
@@ -45,13 +45,12 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
 
-
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
           <Route path="/detailUser/:id" element={<DetailUser />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register/:id" element={<Register />} />
           <Route path="/editprofile" element={<EditProfile />} />
           <Route path="/payer/bill" element={<CreateBill />} />
         </Routes>

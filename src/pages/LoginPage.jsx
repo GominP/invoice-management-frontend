@@ -23,7 +23,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 
-
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -135,18 +134,18 @@ export default function SignIn() {
         <Grid item xs={12} md={4}>
           <Card>
             <CardHeader title={"ยังไม่ได้เป็นสมาชิก? สมัครสมาชิกกับเราเลย"} />
-            <CardActionArea>
+            <CardActionArea onClick={() => navigate("/register/biller")}>
               <CardContent sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography gutterBottom variant="h5" component="div">
-                  สมัครสมาชิกเพื่อวางบิล
+                  สมัครสมาชิกเพื่อสร้างใบแจ้งหนี้
                 </Typography>
               </CardContent>
             </CardActionArea>
             <Divider />
-            <CardActionArea>
+            <CardActionArea onClick={() => navigate("/register/payer")}>
               <CardContent sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography gutterBottom variant="h5" component="div">
-                  สมัครสมาชิกเพื่อจ่ายบิล
+                  สมัครสมาชิกเพื่อจ่ายใบแจ้งหนี้
                 </Typography>
               </CardContent>
             </CardActionArea>

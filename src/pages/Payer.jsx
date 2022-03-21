@@ -93,7 +93,7 @@ const Payer = () => {
           {data.map((info, index) => (
             <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
               <Card className={classes.card}>
-                <CardActionArea onClick={() => navigate("/detailUser")}>
+                <CardActionArea onClick={() => navigate("/detailUser/1")}>
                   <CardMedia
                     className={classes.media}
                     title="Contemplative Reptile"
