@@ -358,7 +358,7 @@ export default function AllInvoices() {
 
   const handleClick = (event, billId) => {
     console.log(localStorage.getItem('token'))
-    // navigate("/allbill/billinfo/" + billId);
+    navigate("/allbill/billinfo/" + billId);
 
   };
 

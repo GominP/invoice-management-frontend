@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import {
+  Box,
   Paper,
   Card,
   CardActionArea,

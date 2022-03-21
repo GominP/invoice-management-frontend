@@ -44,7 +44,7 @@ function ResponsiveDialog(props) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} fullWidth>
         {textButton}
       </Button>
       {requestEdit === false ? (

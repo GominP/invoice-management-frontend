@@ -19,6 +19,7 @@ import BillInfo from "./pages/BillInfo";
 import DetailUser from "./pages/DetailUser";
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
+import AddBiller from "./pages/AddBiller";
 
 const theme = createTheme(
   {
@@ -44,6 +45,8 @@ function App() {
           <Route path="/" element={<AllInvoices />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
+          <Route path="/addBiller" element={<AddBiller />} />
+
 
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
@@ -51,7 +54,7 @@ function App() {
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
           <Route path="/detailUser/:id" element={<DetailUser />} />
           <Route path="/register/:id" element={<Register />} />
-          <Route path="/editprofile" element={<EditProfile />} />
+          <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill" element={<CreateBill />} />
         </Routes>
       </ThemeProvider>

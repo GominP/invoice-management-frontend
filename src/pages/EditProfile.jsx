@@ -26,6 +26,7 @@ import { useTheme } from "@mui/material/styles";
 import Dropzone from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   previewChip: {
@@ -42,7 +43,11 @@ const headName = [
 const EditProfile = () => {
   const classes = useStyles();
   const theme = useTheme();
+  let params = useParams();
+
   const { getRootProps, getInputProps } = useDropzone();
+  const [editFlag, setEditFlag] = useState(true);
+
   const [stuff, setStuff] = useState([
     {
       // index: 1,
@@ -126,16 +131,25 @@ const EditProfile = () => {
     // setOpenSuccess(true);
   };
 
+  const handleEdit = () => {
+    setEditFlag(!editFlag);
+  };
+
   return (
     <div>
-      <ResponsiveHeader text="รายละเอียดของผู้จ่ายบิล"></ResponsiveHeader>
+      <Typography
+        variant="h4"
+        component="h1"
+        p={4}
+        sx={{ display: "flex", justifyContent: "center" }}>
+        แก้ไขข้อมูล
+      </Typography>{" "}
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{ display: "flex", justifyContent: "center" }}>
-        <Grid
-          >
-          <Grid item xs={12} >
+        <Grid>
+          <Grid item xs={12}>
             <Card>
               <CardMedia />
               <CardContent>
@@ -153,24 +167,21 @@ const EditProfile = () => {
                         id="outlined-textarea"
                         label="ชื่อ-นามสกุล"
                         placeholder="ชื่อ-นามสกุล"
+                        name="name"
                         multiline
                       />
                       <TextField
+                        name="phone"
                         id="outlined-textarea"
                         label="เบอร์โทร"
                         placeholder="เบอร์โทร"
-                        multiline
-                      />
-                      <TextField
-                        id="outlined-textarea"
-                        label="อีเมลล์"
-                        placeholder="อีเมลล์"
                         multiline
                       />
                     </Grid>
                     <Grid>
                       <TextField
                         fullWidth
+                        name="addressDetail"
                         id="outlined-textarea"
                         label="ที่อยู่"
                         placeholder="ที่อยู่"
@@ -179,12 +190,14 @@ const EditProfile = () => {
                     </Grid>
                     <Grid>
                       <TextField
+                        name="citizenId"
                         id="outlined-textarea"
                         label="เลขประจำตัวประชาชน"
                         placeholder="เลขประจำตัวประชาชน"
                         multiline
                       />
                       <TextField
+                        name="taxId"
                         id="outlined-textarea"
                         label="เลขประจำตัวผู้เสียภาษี"
                         placeholder="เลขประจำตัวผู้เสียภาษี"
@@ -194,83 +207,113 @@ const EditProfile = () => {
                   </Grid>
                 </Grid>
                 <Divider />
-                <Box m={1}>
-                  <TextField
-                    id="outlined-textarea"
-                    label="รหัสผู้ว่างบิล"
-                    disabled
-                    multiline
-                    defaultValue={"Ew24T"}
-                  />
-                </Box>
-                <Grid item xs={12} md={8} >
-                  <TableContainer>
-                    <Table aria-labelledby="tableTitle" size="medium">
-                      <TableHead>
-                        <TableRow>
-                          {headName.map((headCell) => (
-                            <TableCell
-                              key={headCell.id}
-                              align="center"
-                              padding="normal">
-                              {headCell.label}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {stuff.map((staff, index) => {
-                          const labelId = `enhanced-table-checkbox-${index}`;
+                {params.role === "biller" ? (
+                  <Box>
+                    <Box m={1}>
+                      <TextField
+                        id="outlined-textarea"
+                        label="รหัสผู้ว่างบิล"
+                        disabled
+                        multiline
+                        defaultValue={"Ew24T"}
+                      />
+                    </Box>
+                    <Grid item xs={12} md={8}>
+                      <TableContainer>
+                        <Table aria-labelledby="tableTitle" size="medium">
+                          <TableHead>
+                            <TableRow>
+                              {headName.map((headCell) => (
+                                <TableCell
+                                  key={headCell.id}
+                                  align="center"
+                                  padding="normal">
+                                  {headCell.label}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {stuff.map((staff, index) => {
+                              const labelId = `enhanced-table-checkbox-${index}`;
 
-                          return (
-                            <TableRow
-                              component="th"
-                              role="checkbox"
-                              tabIndex={-1}
-                              key={staff.id}>
-                              {staff.edit === false ? (
-                                <TableCell align="center">
-                                  <TextField
-                                    id="outlined-textarea"
-                                    label="ชื่อผู้ออกใบแจ้งหนี้"
-                                    placeholder="ชื่อผู้ออกใบแจ้งหนี้"
-                                    onChange={(event) =>
-                                      handleChangeStaff(event, index, "name")
-                                    }
-                                  />
-                                  {/* <Button
+                              return (
+                                <TableRow
+                                  component="th"
+                                  role="checkbox"
+                                  tabIndex={-1}
+                                  key={staff.id}>
+                                  {staff.edit === false ? (
+                                    <TableCell align="center">
+                                      <TextField
+                                        id="outlined-textarea"
+                                        label="ชื่อผู้ออกใบแจ้งหนี้"
+                                        placeholder="ชื่อผู้ออกใบแจ้งหนี้"
+                                        onChange={(event) =>
+                                          handleChangeStaff(
+                                            event,
+                                            index,
+                                            "name"
+                                          )
+                                        }
+                                      />
+                                      {/* <Button
                                     onClick={() => confirmAddStaff(index)}>
                                     ยืนยัน
                                   </Button> */}
-                                </TableCell>
-                              ) : (
-                                <TableCell align="center">
-                                  {staff.name}
-                                </TableCell>
-                              )}
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                    <Button
-                      onClick={() => {
-                        addStaff();
-                      }}>
-                      เพิ่มพนักงานออกใบแจ้งหนี้
-                    </Button>
-                    <Button onClick={() => handleChange()}>check arry</Button>
-                  </TableContainer>
-                </Grid>
+                                    </TableCell>
+                                  ) : (
+                                    <TableCell align="center">
+                                      {staff.name}
+                                    </TableCell>
+                                  )}
+                                </TableRow>
+                              );
+                            })}
+                          </TableBody>
+                        </Table>
+                        <Button
+                          onClick={() => {
+                            addStaff();
+                          }}>
+                          เพิ่มพนักงานออกใบแจ้งหนี้
+                        </Button>
+                        <Button onClick={() => handleChange()}>
+                          check arry
+                        </Button>
+                      </TableContainer>
+                    </Grid>
+                  </Box>
+                ) : null}
               </CardContent>
-              {/* <CardActions>
-                <Button size="small" color="primary">
-                  Share
-                </Button>
-                <Button size="small" color="primary">
-                  Learn More
-                </Button>
-              </CardActions> */}
+
+              {editFlag ? (
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleEdit()}>
+                    แก้ไขข้อมูล
+                  </Button>
+                </CardActions>
+              ) : (
+                <CardActions
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}>
+                  <Button variant="outlined" color="error">
+                    ยกเลิก
+                  </Button>
+                  <Button variant="outlined" color="success">
+                    ยืนยันการแก้ไขข้อมูล
+                  </Button>
+                </CardActions>
+              )}
             </Card>
           </Grid>
           {/* <Grid item xs={2} sm={3} md={4} xl={8}>

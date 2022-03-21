@@ -58,9 +58,9 @@ export default function DetailUser() {
 
   return (
     <div>
-      <Box sx={{ p: 3 }}>
-        <Grid container>
-          <Card className={classes.root} variant="outlined">
+      <Box sx={{ p: 3 ,  }}>
+        <Grid container  sx={{ display: "flex", justifyContent: "center" }}>
+          <Card className={classes.root} variant="outlined"  sx={{ display: "flex", justifyContent: "center" }}>
             <Grid>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <CardContent sx={{ flex: "1 0 auto" }}>

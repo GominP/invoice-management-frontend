@@ -19,9 +19,17 @@ import Tab from "@mui/material/Tab";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const pages = [
+  "INVOICE GUARD",
   "ดูใบแจ้งหนี้ทั้งหมด",
-  "ผู้จ่ายใบแจ้งหนี้ทั้งหมด",
+  "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด",
   "ยอดรวมรายรับ",
+];
+const pages2 = [
+  "INVOICE GUARD",
+  "ดูใบแจ้งหนี้ทั้งหมด",
+  "ดูผู้สร้างใบแจ้งหนี้",
+  "เพิ่มผู้สร้างใบแจ้งหนี้",
+  "ยอดรวมรายจ่าย",
 ];
 
 const ResponsiveAppBar = () => {
@@ -82,13 +90,19 @@ const ResponsiveAppBar = () => {
   function changePage(page) {
     switch (page) {
       case "ดูใบแจ้งหนี้ทั้งหมด":
-        navigate("allbill");
+        navigate("/allbill");
         break;
-      case "ผู้จ่ายใบแจ้งหนี้ทั้งหมด":
-        navigate("payer");
+      case "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด" || "ดูผู้สร้างใบแจ้งหนี้":
+        navigate("/payer");
         break;
-      case "ยอดรวมรายรับ":
-        navigate("allget");
+      case "ยอดรวมรายรับ" || "ยอดรวมรายจ่าย":
+        navigate("/allget");
+        break;
+      case "INVOICE GUARD":
+        navigate("/landing");
+        break;
+      case "เพิ่มผู้สร้างใบแจ้งหนี้":
+        navigate("/addInvoice");
         break;
       default:
         navigate("/");
@@ -109,13 +123,13 @@ const ResponsiveAppBar = () => {
       }}>
       {/* <Container maxWidth="xl"> */}
       <Toolbar disableGutters sx={{ p: 3 }}>
-        <Typography onClick={() => navigate("/landing")}
+        {/* <Typography onClick={() => navigate("/landing")}
           variant="h6"
           noWrap
           component="div"
           sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-          BILLGUARD
-        </Typography>
+          INVOICE GUARD
+        </Typography> */}
 
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
@@ -156,7 +170,7 @@ const ResponsiveAppBar = () => {
           noWrap
           component="div"
           sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-          BILLGUARD
+          INVOICE GUARD
         </Typography>
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           <Tabs
@@ -226,19 +240,21 @@ const ResponsiveAppBar = () => {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
           <MenuItem
             onClick={() => {
-              navigate("/editprofile");
+              navigate("/editprofile/biller");
             }}>
             <Avatar /> Profile
           </MenuItem>
           <MenuItem>
             <Avatar /> My account
           </MenuItem>
-          <MenuItem onClick={() => {
+          <MenuItem
+            onClick={() => {
               navigate("/login");
             }}>
             <Avatar /> Login
           </MenuItem>
-          <MenuItem onClick={() => {
+          <MenuItem
+            onClick={() => {
               navigate("/register");
             }}>
             <Avatar /> Register

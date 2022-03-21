@@ -37,7 +37,7 @@ function ccyFormat(num) {
 
 export default function CheckBillInfo(props) {
   const theme = useTheme();
-  const { isPayerBill, rows, status,requestEdit } = props;
+  const { isPayerBill, rows, status, requestEdit } = props;
 
   const invoiceSubtotal = subtotal(rows);
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
@@ -49,8 +49,8 @@ export default function CheckBillInfo(props) {
   return (
     <>
       <Box sx={{ p: 3 }}>
-        <Grid container>
-          <Grid item xs={12} md={7}>
+        <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <MainCard>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
                 <ResponsiveHeader text="ตรวจสอบบิล" />
@@ -200,22 +200,26 @@ export default function CheckBillInfo(props) {
                   </Grid>
                 </Stack>
               </Box>
+              {isPayerBill ? (
+                <Grid>
+                  <Stack
+                    direction={{
+                      xs: "column",
+                      sm: "row",
+                      md: "column",
+                    }}
+                    spacing={1}>
+                    <ResponsiveDialog
+                      textButton="จ่ายบิล"
+                      requestEdit={false}></ResponsiveDialog>
+                    <ResponsiveDialog
+                      textButton="ส่งคำร้องขอแก้ไข"
+                      requestEdit={true}></ResponsiveDialog>
+                  </Stack>
+                </Grid>
+              ) : null}
             </MainCard>
           </Grid>
-          {isPayerBill ? (
-            <Grid>
-              <Stack
-                direction={{
-                  xs: "column",
-                  sm: "row",
-                  md: "column",
-                }}
-                spacing={1}>
-                <ResponsiveDialog textButton="จ่ายบิล" requestEdit={false}></ResponsiveDialog>
-                <ResponsiveDialog textButton="ส่งคำร้องขอแก้ไข" requestEdit={true}></ResponsiveDialog>
-              </Stack>
-            </Grid>
-          ) : null}
         </Grid>
       </Box>
     </>
@@ -226,6 +230,4 @@ CheckBillInfo.propTypes = {
   rows: PropTypes.array.isRequired,
   status: PropTypes.string.isRequired,
   requestEdit: PropTypes.bool.isRequired,
-
-
 };

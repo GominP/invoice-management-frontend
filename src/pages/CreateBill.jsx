@@ -105,7 +105,7 @@ export default function CreateBill() {
     <>
       <LocalizationProvider dateAdapter={DateAdapterMoment} locale="th">
         <Box sx={{ p: 3 }}>
-          <Grid container>
+          <Grid container sx={{ display: "flex", justifyContent: "center" }}>
             <Grid item xs={12} md={7}>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
                 <ResponsiveHeader text="ใบวางบิล" />
@@ -114,7 +114,7 @@ export default function CreateBill() {
                 </Button>
               </Stack>
               <MainCard>
-                <Box padding={5} margin={"auto"}>
+                <Box padding={3}>
                   <Grid spacing={3}>
                     <Grid item xs={12}>
                       <Grid container spacing={3}>
@@ -153,13 +153,13 @@ export default function CreateBill() {
                                   <Typography>สิ่นชัย มั่นคง</Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>อีเมลล์ :</Typography>
+                                  <Typography>อีเมลล์ : </Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>test@gmail.com</Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>เบอร์โทร :</Typography>
+                                  <Typography>เบอร์โทร : </Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>0958654531</Typography>
@@ -173,9 +173,9 @@ export default function CreateBill() {
                             จำนวนเงินทั้งสิ้น
                           </Typography>
                           <Typography>{currencyFormat(price)} บาท</Typography>
-                          <Box>
+                          <Box paddingTop={3}>
                             <Grid container spacing={2}>
-                              <Grid item xs={12} md={4}>
+                              <Grid item xs={12} md={4} >
                                 <Typography>วันที่</Typography>
                               </Grid>
                               <Grid item xs={12} md={8}>
@@ -279,11 +279,7 @@ export default function CreateBill() {
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
                                             id="outlined-name"
-                                            label="ชื่อลูกค้า"
-                                          />
-                                          <TextField
-                                            id="outlined-detail"
-                                            label="รายละเอียดสินค้า"
+                                            label="ชื่อสินค้า"
                                           />
                                         </Stack>
                                       </TableCell>
@@ -335,7 +331,9 @@ export default function CreateBill() {
                             </Table>
                           </TableContainer>
                         </Grid>
-                        <Button onClick={() => addProduct()}>เพิ่มรายการสินค้า</Button>
+                        <Button onClick={() => addProduct()}>
+                          เพิ่มรายการสินค้า
+                        </Button>
                         <Button onClick={() => handleChange()}>mf]vsd</Button>
                       </Grid>
                     </Grid>
