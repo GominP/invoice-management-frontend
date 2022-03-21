@@ -109,7 +109,7 @@ const ResponsiveAppBar = () => {
       }}>
       {/* <Container maxWidth="xl"> */}
       <Toolbar disableGutters sx={{ p: 3 }}>
-        <Typography
+        <Typography onClick={() => navigate("/landing")}
           variant="h6"
           noWrap
           component="div"
@@ -224,11 +224,24 @@ const ResponsiveAppBar = () => {
           }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-          <MenuItem onClick={() => { navigate("/editprofile")}}>
+          <MenuItem
+            onClick={() => {
+              navigate("/editprofile");
+            }}>
             <Avatar /> Profile
           </MenuItem>
           <MenuItem>
             <Avatar /> My account
+          </MenuItem>
+          <MenuItem onClick={() => {
+              navigate("/login");
+            }}>
+            <Avatar /> Login
+          </MenuItem>
+          <MenuItem onClick={() => {
+              navigate("/register");
+            }}>
+            <Avatar /> Register
           </MenuItem>
           <Divider />
           <MenuItem>

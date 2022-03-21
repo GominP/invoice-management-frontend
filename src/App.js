@@ -17,6 +17,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { thTH } from "@mui/material/locale";
 import BillInfo from "./pages/BillInfo";
 import DetailUser from "./pages/DetailUser";
+import LoginPage from "./pages/LoginPage"
+import LandingPage from "./pages/LandingPage";
 
 const theme = createTheme(
   {
@@ -40,6 +42,10 @@ function App() {
         <ResponsiveAppBar></ResponsiveAppBar>
         <Routes>
           <Route path="/" element={<AllInvoices />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/landing" element={<LandingPage />} />
+
+
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
