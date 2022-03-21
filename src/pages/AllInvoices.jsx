@@ -20,6 +20,8 @@ import { visuallyHidden } from "@mui/utils";
 import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
+import { useEffect, useState } from "react";
+
 import {
   TextField,
   Box,
@@ -310,7 +312,16 @@ export default function AllInvoices() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [filterName, setFilterName] = React.useState("");
+  const [filterName, setFilterName] = React.useState("");  
+  const [token] = useState(localStorage.getItem('token'))
+
+
+
+  useEffect(() => {
+    // console.log(token)
+  
+    
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -346,23 +357,9 @@ export default function AllInvoices() {
   }
 
   const handleClick = (event, billId) => {
-    navigate("/allbill/billinfo/" + billId);
-    // const selectedIndex = selected.indexOf(name);
-    // let newSelected = [];
+    console.log(localStorage.getItem('token'))
+    // navigate("/allbill/billinfo/" + billId);
 
-    // if (selectedIndex === -1) {
-    //   newSelected = newSelected.concat(selected, name);
-    // } else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1)
-    //   );
-    // }
-    // setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {

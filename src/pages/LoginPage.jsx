@@ -21,6 +21,8 @@ import {
 } from "@mui/material";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 // function Copyright(props) {
 //   return (
@@ -38,13 +40,22 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme();
 
 export default function SignIn() {
+  let navigate = useNavigate();
+
+  const axios = require("axios");
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    axios
+      .post("http://localhost:8080/login", {
+        username: "granger11",
+        password: "hermione00",
+      })
+      .then(function (response) {
+        localStorage.setItem("token", response.data["jwtToken"]);
+        console.log(response.data["jwtToken"]);
+        navigate("allbill");
+      });
   };
 
   return (
@@ -122,18 +133,18 @@ export default function SignIn() {
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card >
+          <Card>
             <CardHeader title={"ยังไม่ได้เป็นสมาชิก? สมัครสมาชิกกับเราเลย"} />
             <CardActionArea>
-              <CardContent  sx={{ display: "flex", justifyContent: "center" }}>
+              <CardContent sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography gutterBottom variant="h5" component="div">
                   สมัครสมาชิกเพื่อวางบิล
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <Divider/>
+            <Divider />
             <CardActionArea>
-              <CardContent  sx={{ display: "flex", justifyContent: "center" }}>
+              <CardContent sx={{ display: "flex", justifyContent: "center" }}>
                 <Typography gutterBottom variant="h5" component="div">
                   สมัครสมาชิกเพื่อจ่ายบิล
                 </Typography>

@@ -17,6 +17,8 @@ import img2 from "../asset/images/Cat03.jpg";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
+import { useEffect, useState } from "react";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,8 +34,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DetailUser() {
+  const axios = require('axios');
   const theme = useTheme();
   const classes = useStyles();
+  const data = {
+    id: 1   
+  }
+
+  useEffect(() => {
+    console.log(localStorage.getItem('token'))
+  
+    axios.post('http://localhost:8080/biller-detail-inquiry', data ,{
+        headers: {Authorization: localStorage.getItem('token')}
+      })
+    .then(function (response) {
+      console.log(response);
+    })
+    
+  }, []);
+
+
+  
 
   return (
     <div>
