@@ -17,7 +17,7 @@ import QRCode from "qrcode";
 import { useEffect } from "react";
 
 function ResponsiveDialog(props) {
-  const { textButton, requestEdit } = props;
+  const { textButton, requestEdit, deleteRelation } = props;
   const [open, setOpen] = React.useState(false);
   const [qrcode, setQrcode] = React.useState();
 
@@ -97,13 +97,7 @@ function ResponsiveDialog(props) {
           <DialogTitle id="responsive-dialog-title">{textButton}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              <Grid container>
-                <Grid item xs={4} md={3}>
-                  <Typography>เลขที่ใบแจ้งหนี้ :</Typography>
-                </Grid>
-                <Grid item xs={8} md={9}>
-                  <Typography>b61104561</Typography>
-                </Grid>
+              {deleteRelation === true ? (
                 <Grid item xs={12} md={12} spacing={4}>
                   <Typography>รายละเอียดหมายเหตุ :</Typography>
                   <TextField
@@ -114,7 +108,26 @@ function ResponsiveDialog(props) {
                     multiline
                   />
                 </Grid>
-              </Grid>
+              ) : (
+                <Grid container>
+                  <Grid item xs={4} md={3}>
+                    <Typography>เลขที่ใบแจ้งหนี้ :</Typography>
+                  </Grid>
+                  <Grid item xs={8} md={9}>
+                    <Typography>b61104561</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12} spacing={4}>
+                    <Typography>รายละเอียดหมายเหตุ :</Typography>
+                    <TextField
+                      fullWidth
+                      id="outlined-textarea"
+                      // label="รายละเอียดหมายเหตุ"
+                      placeholder="รายละเอียดหมายเหตุ"
+                      multiline
+                    />
+                  </Grid>
+                </Grid>
+              )}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -134,6 +147,7 @@ function ResponsiveDialog(props) {
 ResponsiveDialog.propTypes = {
   textButton: PropTypes.string.isRequired,
   requestEdit: PropTypes.bool.isRequired,
+  deleteRelation: PropTypes.bool.isRequired,
 };
 
 export default ResponsiveDialog;

@@ -9,6 +9,9 @@ import {
   Typography,
   Grid,
   CardHeader,
+  CardActionArea,
+  Button,
+  CardActions,
 } from "@mui/material";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -18,7 +21,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useEffect, useState } from "react";
-
+import ResponsiveDialog from "../component/ResponsiveDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,36 +37,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DetailUser() {
-  const axios = require('axios');
+  const axios = require("axios");
   const theme = useTheme();
   const classes = useStyles();
   const data = {
-    id: 1   
-  }
+    payerId: 1,
+  };
 
   useEffect(() => {
-    console.log(localStorage.getItem('token'))
-  
-    axios.post('http://localhost:8080/biller-detail-inquiry', data ,{
-        headers: {Authorization: localStorage.getItem('token')}
+    console.log(localStorage.getItem("token"));
+    let role = "";
+    let url = "";
+    if (role === "biller") {
+      url = "http://localhost:8080/biller-detail-inquiry";
+    } else {
+      url = "http://localhost:8080/payer-detail-inquiry";
+    }
+
+    axios
+      .post(url, data, {
+        headers: { Authorization: localStorage.getItem("token") },
       })
-    .then(function (response) {
-      console.log(response);
-    })
-    
+      .then(function (response) {
+        console.log(response);
+      });
   }, []);
-
-
-  
 
   return (
     <div>
-      <Box sx={{ p: 3 ,  }}>
-        <Grid container  sx={{ display: "flex", justifyContent: "center" }}>
-          <Card className={classes.root} variant="outlined"  sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ p: 3 }}>
+        <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+          <Card className={classes.root} variant="outlined">
             <Grid>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <CardContent sx={{ flex: "1 0 auto" }}>
+              <Box>
+                <CardContent>
                   {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
                   <ResponsiveHeader text="ข้อมูลผู้จ่ายบิล"></ResponsiveHeader>
                   <Box>
@@ -89,15 +96,21 @@ export default function DetailUser() {
                     </Grid>
                   </Box>
                 </CardContent>
+                <CardActions>
+                  <ResponsiveDialog
+                    textButton={"ยกเลิกใบแจ้งหนี้"}
+                    deleteRelation={true}></ResponsiveDialog>
+                  {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}
+                </CardActions>
               </Box>
             </Grid>
 
-            <CardMedia
+            {/* <CardMedia
               component="img"
               //   sx={{ width: 151 }}
               image={img2}
               alt="Live from space album cover"
-            />
+            /> */}
           </Card>
         </Grid>
       </Box>

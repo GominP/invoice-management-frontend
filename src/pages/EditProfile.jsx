@@ -27,6 +27,7 @@ import Dropzone from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   previewChip: {
@@ -44,8 +45,9 @@ const EditProfile = () => {
   const classes = useStyles();
   const theme = useTheme();
   let params = useParams();
-
-  const { getRootProps, getInputProps } = useDropzone();
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  // const { getRootProps, getInputProps } = useDropzone();
   const [editFlag, setEditFlag] = useState(true);
 
   const [stuff, setStuff] = useState([
@@ -89,8 +91,16 @@ const EditProfile = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let url = "";
+    let role = "";
 
     const data = new FormData(event.currentTarget);
+
+    if (role === "biller") {
+      url = "http://localhost:8080/biller-update";
+    } else {
+      url = "http://localhost:8080/payer-update";
+    }
 
     // if (passwordText !== confirmPasswordText) {
     //   setTextError("รหัสผ่านไม่ตรงกัน");
@@ -101,38 +111,43 @@ const EditProfile = () => {
     // }
 
     console.log({
-      email: data.get("email"),
+      name: data.get("name"),
+      // url: url
       // password: passwordText,
     });
 
     // axios
-    //   .post("http://localhost:8080/register", {
-    //     name: "mississii",
-    //     lastname: "jaidee",
-    //     phone: "0913671456",
-    //     citizenId: "1100452139456",
-    //     taxId: "1100452139456",
-    //     isCitizen: true,
-    //     addressDetail: "2210 soi2",
-    //     road: "Krungthep-Nonthaburi",
-    //     district: "Bangsue",
-    //     subDistrict: "Wong Sawang",
-    //     province: "Bangkok",
-    //     zipCode: "10800",
-    //     username: "nattanon456",
-    //     password: "1234password",
-    //     role: params.id,
+    //   .post(url, {
+    // name: "mississii",
+    // lastname: "jaidee",
+    // phone: "0913671456",
+    // citizenId: "1100452139456",
+    // addressDetail: "2210 soi2",
+    // road: "Krungthep-Nonthaburi",
+    // district: "Bangsue",
+    // subDistrict: "Wong Sawang",
+    // province: "Bangkok",
+    // zipCode: "10800"
     //   })
     //   .then(function (response) {
     //     // localStorage.setItem("token", response.data["jwtToken"]);
     //     // console.log(response.data["jwtToken"]);
     //     navigate("/login");
     //   });
-    // setOpenSuccess(true);
+    setOpenSuccess(true);
   };
 
   const handleEdit = () => {
     setEditFlag(!editFlag);
+  };
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSuccess(false);
+    setOpenError(false);
   };
 
   return (
@@ -143,7 +158,7 @@ const EditProfile = () => {
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
         แก้ไขข้อมูล
-      </Typography>{" "}
+      </Typography>
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -153,9 +168,6 @@ const EditProfile = () => {
             <Card>
               <CardMedia />
               <CardContent>
-                {/* <Typography gutterBottom variant="h5" component="h2">
-                  Testss
-                </Typography> */}
                 <Grid spacing={3}>
                   <Grid
                     item
@@ -306,37 +318,25 @@ const EditProfile = () => {
                     display: "flex",
                     justifyContent: "space-between",
                   }}>
-                  <Button variant="outlined" color="error">
+                  <Button
+                    onClick={() => handleEdit()}
+                    variant="outlined"
+                    color="error">
                     ยกเลิก
                   </Button>
-                  <Button variant="outlined" color="success">
+                  <Button type="submit" variant="outlined" color="success">
                     ยืนยันการแก้ไขข้อมูล
                   </Button>
                 </CardActions>
               )}
             </Card>
           </Grid>
-          {/* <Grid item xs={2} sm={3} md={4} xl={8}>
-            <Card>
-              <CardMedia />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Testss
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  Des
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button size="small" color="primary">
-                  อัพโหลดรูปภาพ
-                </Button>
-              </CardActions>
-            </Card>
-            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-              <Button>แก้ไข</Button>
-            </Grid>
-          </Grid> */}
+          <ResponsiveSnackbar
+            text="แก้ไขข้อมูลสำเร็จ"
+            severity="success"
+            openSuccess={openSuccess}
+            openError={openError}
+            handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
         </Grid>
       </Box>
     </div>
