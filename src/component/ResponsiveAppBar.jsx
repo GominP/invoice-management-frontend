@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
+import { Tooltip, Stack, Badge } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { red } from "@mui/material/colors";
 import Divider from "@mui/material/Divider";
@@ -17,6 +17,8 @@ import Logout from "@mui/icons-material/Logout";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useNavigate, useLocation } from "react-router-dom";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 
 const pages = [
   "INVOICE GUARD",
@@ -31,6 +33,11 @@ const pages2 = [
   "เพิ่มผู้สร้างใบแจ้งหนี้",
   "ยอดรวมรายจ่าย",
 ];
+const notification = [
+  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
+  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว",
+  "ยอดรวมรายรับ",
+];
 
 const ResponsiveAppBar = () => {
   let navigate = useNavigate();
@@ -40,9 +47,11 @@ const ResponsiveAppBar = () => {
     currentTab();
   }, []);
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElNoti, setAnchorElNoti] = useState(null);
+  const [notifyCount, setNotifyCount] = useState(2);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,6 +67,23 @@ const ResponsiveAppBar = () => {
   // const handleCloseUserMenu = () => {
   //   setAnchorElUser(null);
   // };
+
+  const handleOpenNotiMenu = (event) => {
+    setNotifyCount(0);
+    setAnchorElNoti(event.currentTarget);
+  };
+  const handleCloseNotiMenu = () => {
+    setAnchorElNoti(null);
+  };
+  function notificationsLabel(count) {
+    if (count === 0) {
+      return "no notifications";
+    }
+    if (count > 99) {
+      return "more than 99 notifications";
+    }
+    return `${count} notifications`;
+  }
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -163,6 +189,15 @@ const ResponsiveAppBar = () => {
                 <Typography textAlign="center">{page}</Typography>
               </MenuItem>
             ))}
+            <MenuItem
+              aria-label={notificationsLabel(notifyCount)}
+              onClick={handleOpenNotiMenu}>
+              <Badge badgeContent={notifyCount} color="error">
+                <Typography textAlign="center">
+                  การแจ้งเตือนของวันนี้
+                </Typography>
+              </Badge>
+            </MenuItem>
           </Menu>
         </Box>
         <Typography
@@ -188,6 +223,44 @@ const ResponsiveAppBar = () => {
                 {page}
               </Tab>
             ))}
+            <IconButton
+              onClick={handleOpenNotiMenu}
+              sx={{ p: 1 }}
+              aria-label={notificationsLabel(notifyCount)}>
+              <Badge badgeContent={notifyCount} color="error">
+                <NotificationsOutlinedIcon sx={{ fontSize: 30 }} />
+              </Badge>
+            </IconButton>
+            <Menu
+              sx={{ mt: "45px", width: 320 }}
+              id="menu-appbar"
+              anchorEl={anchorElNoti}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElNoti)}
+              onClose={handleCloseNotiMenu}>
+              {notification.map((noti) => (
+                <MenuItem key={noti} onClick={handleCloseNotiMenu}>
+                  <Stack direction="row" spacing={2}>
+                    <ReceiptOutlinedIcon />
+                    <Typography
+                      textAlign="left"
+                      noWrap
+                      sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+                      width={200}>
+                      {noti}
+                    </Typography>
+                  </Stack>
+                </MenuItem>
+              ))}
+            </Menu>
           </Tabs>
         </Box>
 
