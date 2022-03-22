@@ -23,8 +23,7 @@ import {
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
-import { blue } from '@mui/material/colors';
-
+import { blue } from "@mui/material/colors";
 
 // function Copyright(props) {
 //   return (
@@ -50,13 +49,13 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     axios
       .post("http://localhost:8080/login", {
-        username: "granger11",
-        password: "hermione00",
+        username: data.get("username"),
+        password: data.get("password"),
       })
       .then(function (response) {
         localStorage.setItem("token", response.data["jwtToken"]);
         console.log(response.data["jwtToken"]);
-        navigate("allbill");
+        navigate("/landing");
       });
   };
 
@@ -132,15 +131,15 @@ export default function SignIn() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item >
-              <Card sx={{
-                    border: '1px solid' ,
-                    borderColor: blue[300] + 75,
-                    // ':hover': {
-                    //     boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 8%)' 
-                    // },
-                    borderRadius: 3,
-                  
+            <Grid item>
+              <Card
+                sx={{
+                  border: "1px solid",
+                  borderColor: blue[300] + 75,
+                  // ':hover': {
+                  //     boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 8%)'
+                  // },
+                  borderRadius: 3,
                 }}>
                 <CardHeader
                   title={"ยังไม่ได้เป็นสมาชิก? สมัครสมาชิกกับเราเลย"}

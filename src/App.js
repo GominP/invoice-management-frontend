@@ -46,8 +46,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addBiller" element={<AddBiller />} />
-
-
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
