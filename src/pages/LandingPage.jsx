@@ -23,6 +23,7 @@ import TotalLanding from "../component/landingDashboard/TotalLanding";
 import TotalLandingIncomeCard from "../component/landingDashboard/TotalLandingIncomeCard";
 import CardTotal from "../component/landingDashboard/CardTotal";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const billerText = [
   "ยอดรวมรายรับของวันนี้",
@@ -37,6 +38,14 @@ const payerText = [
 
 export default function LandingPage() {
   const [isBiller, setIsBiller] = useState(false);
+
+  useEffect(() => {
+    let url = "https://webhook.site/30fea1bb-ccf1-4e98-a344-f6c4fdb32457";
+    axios.post(url).then(function (response) {
+      console.log(response);
+    });
+  }, []);
+
   return (
     <div>
       <Box padding={5} sx={{ display: "flex", justifyContent: "center" }}>

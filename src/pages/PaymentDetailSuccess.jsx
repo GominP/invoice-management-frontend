@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -23,51 +23,12 @@ import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    maxWidth: 800,
-    [theme.breakpoints.down("md")]: {
-      maxWidth: 600,
-    },
-  },
-  media: {
-    height: 300,
-  },
-}));
-
-export default function DetailUser() {
-  const axios = require("axios");
-  const theme = useTheme();
-  const classes = useStyles();
-  const data = {
-    payerId: 1,
-  };
-
-  useEffect(() => {
-    console.log(localStorage.getItem("token"));
-    let role = "";
-    let url = "";
-    if (role === "biller") {
-      url = "http://localhost:8080/biller-detail-inquiry";
-    } else {
-      url = "http://localhost:8080/payer-detail-inquiry";
-    }
-
-    axios
-      .post(url, data, {
-        headers: { Authorization: localStorage.getItem("token") },
-      })
-      .then(function (response) {
-        console.log(response);
-      });
-  }, []);
-
+export default function PaymentDetailSuccess() {
   return (
     <div>
       <Box sx={{ p: 3 }}>
         <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-          <Card className={classes.root} variant="outlined">
+          <Card variant="outlined">
             <Grid>
               <Box>
                 <CardContent>
@@ -106,11 +67,11 @@ export default function DetailUser() {
             </Grid>
 
             {/* <CardMedia
-              component="img"
-              //   sx={{ width: 151 }}
-              image={img2}
-              alt="Live from space album cover"
-            /> */}
+          component="img"
+          //   sx={{ width: 151 }}
+          image={img2}
+          alt="Live from space album cover"
+        /> */}
           </Card>
         </Grid>
       </Box>

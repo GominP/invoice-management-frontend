@@ -53,7 +53,7 @@ export default function CheckBillInfo(props) {
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <MainCard>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
-                <ResponsiveHeader text="ตรวจสอบบิล" />
+                <ResponsiveHeader text="ตรวจสอบใบแจ้งหนี้" />
                 <Button variant="outlined" color="error">
                   {status}
                 </Button>
@@ -210,7 +210,7 @@ export default function CheckBillInfo(props) {
                     }}
                     spacing={1}>
                     <ResponsiveDialog
-                      textButton="จ่ายบิล"
+                      textButton="จ่ายใบแจ้งหนี้"
                       requestEdit={false}></ResponsiveDialog>
                     <ResponsiveDialog
                       textButton="ส่งคำร้องขอแก้ไข"

@@ -108,9 +108,9 @@ export default function CreateBill() {
           <Grid container sx={{ display: "flex", justifyContent: "center" }}>
             <Grid item xs={12} md={7}>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
-                <ResponsiveHeader text="ใบวางบิล" />
+                <ResponsiveHeader text="หน้าสร้างใบแจ้งหนี้" />
                 <Button variant="outlined" color="success">
-                  สร้างบิล
+                  สร้างใบแจ้งหนี้
                 </Button>
               </Stack>
               <MainCard>

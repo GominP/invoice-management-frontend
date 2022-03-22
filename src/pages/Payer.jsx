@@ -125,7 +125,7 @@ const Payer = () => {
                     size="small"
                     color="primary"
                     onClick={() => navigate("bill")}>
-                    สร้างบิล
+                    สร้างใบแจ้งหนี้
                   </Button>
                 </CardActions>
               </Card>

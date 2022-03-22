@@ -224,7 +224,7 @@ const EditProfile = () => {
                     <Box m={1}>
                       <TextField
                         id="outlined-textarea"
-                        label="รหัสผู้ว่างบิล"
+                        label="รหัสผู้สร้างใบแจ้งหนี้"
                         disabled
                         multiline
                         defaultValue={"Ew24T"}

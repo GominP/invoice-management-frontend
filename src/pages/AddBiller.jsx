@@ -114,7 +114,7 @@ export default function AddBiller() {
                       เพิ่มผู้สร้างใบแจ้งหนี้จากรหัส
                     </Typography>
                     <Typography variant="h7">
-                      สอบถามรหัสจากผู้วางบิลที่คุณได้ทำการติดต่อแล้ว
+                      สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว
                     </Typography>
 
                     <Grid>
