@@ -139,6 +139,12 @@ const ResponsiveAppBar = () => {
     console.log(page);
   }
 
+  const handleLogout =()=> {
+    localStorage.removeItem('token')
+    navigate("/login");
+
+  }
+
   return (
     <AppBar
       position="static"
@@ -334,9 +340,9 @@ const ResponsiveAppBar = () => {
             <Avatar /> Register
           </MenuItem>
           <Divider />
-          <MenuItem>
+          <MenuItem sx={{ color: "red" }} onClick={() => handleLogout()}>
             <ListItemIcon>
-              <Logout fontSize="small" />
+              <Logout fontSize="small" color="error" />
             </ListItemIcon>
             Logout
           </MenuItem>

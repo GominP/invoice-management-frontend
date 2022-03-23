@@ -44,35 +44,35 @@ const useStyles = makeStyles((theme) => ({
 
 const data = [
   {
-    name: "name",
+    name: "Coca-cola",
     describe:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     value: 1,
     label: "วันที่",
   },
   {
-    name: "calories",
+    name: "Pepsi",
     describe:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     value: 2,
     label: "เลขที่ใบแจ้งหนี้",
   },
   {
-    name: "fat",
+    name: "บริษัท ทองเจริญ",
     describe:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     value: 3,
     label: "ชื่อลูกค้า",
   },
   {
-    name: "carbs",
+    name: "บริษัท ทองหุง",
     describe:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     value: 4,
     label: "วันครบกำหนด",
   },
   {
-    name: "protein",
+    name: "นาย โชคชัย",
     describe:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     value: 5,
@@ -83,13 +83,16 @@ const Payer = () => {
   let navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
+  const [role, setrole] = useState("payer");
+  const [textHeader, settextHeader] = useState("ผู้จ่ายใบแจ้งหนีัทั้งหมด")
 
   useEffect(() => {
+    
   }, []);
 
   return (
     <div>
-      <ResponsiveHeader text="ผู้จ่ายใบแจ้งหนีัทั้งหมด"></ResponsiveHeader>
+      <ResponsiveHeader text={textHeader}></ResponsiveHeader>
       <Box sx={{ px: 5 }}>
         <Grid
           container
@@ -99,14 +102,14 @@ const Payer = () => {
             <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
               <Card className={classes.card}>
                 <CardActionArea onClick={() => navigate("/detailUser/1")}>
-                  <CardMedia
+                  {/* <CardMedia
                     className={classes.media}
                     title="Contemplative Reptile"
                     component="img"
                     height="140"
                     image={img}
                     alt="green iguana"
-                  />
+                  /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {info.name}
@@ -126,12 +129,14 @@ const Payer = () => {
                     onClick={() => navigate("/detailUser/1")}>
                     รายละเอียด
                   </Button>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => navigate("bill")}>
-                    สร้างใบแจ้งหนี้
-                  </Button>
+                  {role === "payer" ? (
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => navigate("bill")}>
+                      สร้างใบแจ้งหนี้
+                    </Button>
+                  ) : null}
                 </CardActions>
               </Card>
             </Grid>
