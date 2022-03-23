@@ -27,7 +27,12 @@ import { useParams } from "react-router-dom";
 import { addItem, addItem2, getUsers } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { useForm } from "react-hook-form";
+
 const url = "http://localhost:8080/";
+
+const useStyles = makeStyles((theme) => ({}));
 
 export default function AddBiller() {
   const axios = require("axios");
@@ -37,6 +42,8 @@ export default function AddBiller() {
   let params = useParams();
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
+  const [checkNull, setCheckNull] = useState("กรุณาใส่รหัสผู้ออกใบแจ้งหนี้");
+  // const {values} = useForm(initial)
 
   useEffect(() => {
     console.log(userid);
@@ -47,23 +54,29 @@ export default function AddBiller() {
 
     const data = new FormData(event.currentTarget);
 
+    if (data.get("code") === "") {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
+
     // console.log({
     //   code: data.get("code"),
     //   id: id,
     // });
 
-    axios
-      .post(
-        url + "relationship-create",
-        { payerId: userid, code: data.get("code") },
-        {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        setOpenSuccess(true);
-      });
+    // axios
+    //   .post(
+    //     url + "relationship-create",
+    //     { payerId: userid, code: data.get("code") },
+    //     {
+    //       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     console.log(response);
+    //     setOpenSuccess(true);
+    //   });
   };
 
   const handleClose = (event, reason) => {
@@ -73,6 +86,10 @@ export default function AddBiller() {
 
     setOpenSuccess(false);
     setOpenError(false);
+  };
+
+  const validate = () => {
+    let temp = {};
   };
   return (
     <div>
