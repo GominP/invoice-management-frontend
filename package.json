@@ -27,6 +27,7 @@
     "date-fns": "^2.28.0",
     "dayjs": "^1.10.8",
     "faker": "^5.5.3",
+    "http-proxy-middleware": "^2.0.4",
     "install": "^0.13.0",
     "lodash.filter": "^4.6.0",
     "moment": "^2.29.1",

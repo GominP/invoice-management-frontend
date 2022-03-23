@@ -17,6 +17,7 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useNavigate } from "react-router-dom";
 import img from "../asset/images/contemplative-reptile.jpg";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -82,6 +83,10 @@ const Payer = () => {
   let navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
+
+  useEffect(() => {
+  }, []);
+
   return (
     <div>
       <ResponsiveHeader text="ผู้จ่ายใบแจ้งหนีัทั้งหมด"></ResponsiveHeader>
@@ -132,23 +137,6 @@ const Payer = () => {
             </Grid>
           ))}
         </Grid>
-
-        {/* <Box>
-        <Typography>CheckBillInfo</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            "& > :not(style)": {
-              m: 1,
-              width: 600,
-              height: 600,
-            },
-          }}>
-
-          <Paper elevation={2} />
-        </Box>
-      </Box> */}
       </Box>
     </div>
   );

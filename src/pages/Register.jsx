@@ -29,20 +29,23 @@ import { useParams } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Password } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 const Register = () => {
   let navigate = useNavigate();
   let params = useParams();
-  const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openError, setOpenError] = React.useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [textError, setTextError] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [textError, setTextError] = useState("");
 
-  const [showConfirmPassword, setShowConfrimPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfrimPassword] = useState(false);
 
-  const [passwordText, setPasswordText] = React.useState("");
-  const [confirmPasswordText, setConfirmPasswordText] = React.useState("");
+  const [passwordText, setPasswordText] = useState("");
+  const [confirmPasswordText, setConfirmPasswordText] = useState("");
+  const [isCheck1, setIscheck1] = useState(false);
+  const [isCheck2, setIscheck2] = useState(false);
 
   const axios = require("axios");
   const handleSubmit = (event) => {
@@ -109,6 +112,21 @@ const Register = () => {
 
     setOpenSuccess(false);
     setOpenError(false);
+  };
+
+  const check1 = async () => {
+    setIscheck1(true);
+    setIscheck2(false);
+    if (isCheck1 === true) {
+      setIscheck1(false);
+    }
+  };
+  const check2 = async () => {
+    setIscheck1(false);
+    setIscheck2(true);
+    if (isCheck2 === true) {
+      setIscheck2(false);
+    }
   };
 
   return (
@@ -250,7 +268,23 @@ const Register = () => {
                 <Divider />
 
                 <Box m={1}>
-                  <FormGroup>
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      onChange={check1}
+                      checked={isCheck1}
+                      control={<Checkbox defaultChecked />}
+                      label="นิติบุคคล"
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      onChange={check2}
+                      checked={isCheck2}
+                      control={<Checkbox />}
+                      label="บุคคลธรรมดา"
+                    />
+                  </Grid>
+                  {/* <FormGroup>
                     <FormControlLabel
                       control={<Checkbox defaultChecked />}
                       label="บุคคลธรรมดา"
@@ -259,7 +293,7 @@ const Register = () => {
                       control={<Checkbox />}
                       label="นิติบุคคล"
                     />
-                  </FormGroup>
+                  </FormGroup> */}
                 </Box>
                 {/* {openSuccess === true ? (
                   <Alert severity="success">สมัครสมาชิกสำเร็จ</Alert>

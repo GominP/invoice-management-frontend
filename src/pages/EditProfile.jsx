@@ -19,6 +19,14 @@ import {
   TableCell,
   TableRow,
   TableHead,
+  Stack,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { makeStyles } from "@mui/styles";
@@ -28,6 +36,10 @@ import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
+import ResponsiveDialog from "../component/ResponsiveDialog";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   previewChip: {
@@ -45,11 +57,21 @@ const EditProfile = () => {
   const classes = useStyles();
   const theme = useTheme();
   let params = useParams();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
+
+  const [oldPasswordText, setOldPasswordText] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [passwordText, setPasswordText] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPasswordText, setConfirmPasswordText] = useState("");
+  const [showConfirmPassword, setShowConfrimPassword] = useState(false);
+
   // const { getRootProps, getInputProps } = useDropzone();
   const [editFlag, setEditFlag] = useState(true);
-
   const [stuff, setStuff] = useState([
     {
       // index: 1,
@@ -59,6 +81,37 @@ const EditProfile = () => {
   ]);
 
   useEffect(() => {}, []);
+
+
+  const handleClickShowOldPassword = () => setShowOldPassword(!showOldPassword);
+  const handleMouseDownOldPassword = () => setShowOldPassword(!showOldPassword);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const handleClickShowCPassword = () =>
+    setShowConfrimPassword(!showConfirmPassword);
+  const handleMouseDownCPassword = () =>
+    setShowConfrimPassword(!showConfirmPassword);
+
+    const handleOldPasswordText = (event) => {
+      setOldPasswordText(event.target.value);
+    };
+  
+
+  const handlePasswordText = (event) => {
+    setPasswordText(event.target.value);
+  };
+
+  const handleConfirmPasswordText = (event) => {
+    setConfirmPasswordText(event.target.value);
+  };
+
+  const handleClickOpenPassword = () => {
+    setOpenPassword(true);
+  };
+
+  const handleClosePassword = () => {
+    setOpenPassword(false);
+  };
 
   const addStaff = () => {
     setStuff([
@@ -219,7 +272,7 @@ const EditProfile = () => {
                   </Grid>
                 </Grid>
                 <Divider />
-                {params.role === "biller" ? (
+                {params.role === "payer" ? (
                   <Box>
                     <Box m={1}>
                       <TextField
@@ -305,12 +358,21 @@ const EditProfile = () => {
                     display: "flex",
                     justifyContent: "flex-end",
                   }}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => handleEdit()}>
-                    แก้ไขข้อมูล
-                  </Button>
+                  <Stack direction={"row"} spacing={2}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleClickOpenPassword()}>
+                      เปลี่ยนรหัสผ่าน
+                    </Button>
+
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => handleEdit()}>
+                      แก้ไขข้อมูล
+                    </Button>
+                  </Stack>
                 </CardActions>
               ) : (
                 <CardActions
@@ -338,6 +400,106 @@ const EditProfile = () => {
             openError={openError}
             handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
         </Grid>
+
+        <Dialog
+          fullScreen={fullScreen}
+          open={openPassword}
+          onClose={handleClosePassword}
+          aria-labelledby="responsive-dialog-title">
+          <DialogTitle id="responsive-dialog-title">
+            {"เปลี่ยนรหัสผ่าน"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Grid pt={2} spacing={3}>
+                <Stack direction={"row"} spacing={2} pb={2}>
+           
+                  <TextField
+                    label="รหัสผ่านเก่า"
+                    variant="outlined"
+                    type={showOldPassword ? "text" : "password"} // <-- This is where the magic happens
+                    onChange={handleOldPasswordText}
+                    InputProps={{
+                      // <-- This is where the toggle button is added.
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowOldPassword}
+                            onMouseDown={handleMouseDownOldPassword}>
+                            {showOldPassword ? (
+                              <VisibilityIcon />
+                            ) : (
+                              <VisibilityOffIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Stack>
+
+                <Stack direction={"row"} spacing={2}>
+                  <TextField
+                    label="รหัสผ่านใหม่"
+                    variant="outlined"
+                    type={showPassword ? "text" : "password"} // <-- This is where the magic happens
+                    onChange={handlePasswordText}
+                    InputProps={{
+                      // <-- This is where the toggle button is added.
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}>
+                            {showPassword ? (
+                              <VisibilityIcon />
+                            ) : (
+                              <VisibilityOffIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+
+                  <TextField
+                    label="ยืนยันรหัสผ่าน"
+                    variant="outlined"
+                    type={showConfirmPassword ? "text" : "password"} // <-- This is where the magic happens
+                    onChange={handleConfirmPasswordText}
+                    InputProps={{
+                      // <-- This is where the toggle button is added.
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowCPassword}
+                            onMouseDown={handleMouseDownCPassword}>
+                            {showConfirmPassword ? (
+                              <VisibilityIcon />
+                            ) : (
+                              <VisibilityOffIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Stack>
+              </Grid>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleClosePassword}>
+              Disagree
+            </Button>
+            <Button onClick={handleClosePassword} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </div>
   );

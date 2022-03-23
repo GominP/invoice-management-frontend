@@ -41,23 +41,29 @@ export default function DetailUser() {
   const theme = useTheme();
   const classes = useStyles();
   const data = {
-    payerId: 1,
+    id: 5,
   };
 
   useEffect(() => {
     console.log(localStorage.getItem("token"));
     let role = "";
-    let url = "";
-    if (role === "biller") {
-      url = "http://localhost:8080/biller-detail-inquiry";
-    } else {
-      url = "http://localhost:8080/payer-detail-inquiry";
-    }
+    let url = "biller";
+    // if (role === "biller") {
+    //   url = "http://localhost:8080/biller-detail-inquiry";
+    // } else {
+    //   url = "http://localhost:8080/payer-detail-inquiry";
+    // }
 
     axios
-      .post(url, data, {
-        headers: { Authorization: localStorage.getItem("token") },
-      })
+      .post(
+        "http://localhost:8080/payer-detail-inquiry",
+        {
+          id: 1,
+        },
+        {
+          headers: { Authorization: localStorage.getItem("token") },
+        }
+      )
       .then(function (response) {
         console.log(response);
       });

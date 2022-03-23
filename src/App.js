@@ -20,6 +20,7 @@ import DetailUser from "./pages/DetailUser";
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import AddBiller from "./pages/AddBiller";
+import PaymentDetailSuccess from "./pages/PaymentDetailSuccess";
 
 const theme = createTheme(
   {
@@ -54,6 +55,7 @@ function App() {
           <Route path="/register/:id" element={<Register />} />
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill" element={<CreateBill />} />
+          <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
         </Routes>
       </ThemeProvider>
     </div>

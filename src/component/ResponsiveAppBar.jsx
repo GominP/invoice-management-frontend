@@ -223,14 +223,7 @@ const ResponsiveAppBar = () => {
                 {page}
               </Tab>
             ))}
-            <IconButton
-              onClick={handleOpenNotiMenu}
-              sx={{ p: 1 }}
-              aria-label={notificationsLabel(notifyCount)}>
-              <Badge badgeContent={notifyCount} color="error">
-                <NotificationsOutlinedIcon sx={{ fontSize: 30 }} />
-              </Badge>
-            </IconButton>
+
             <Menu
               sx={{ mt: "45px", width: 320 }}
               id="menu-appbar"
@@ -265,6 +258,14 @@ const ResponsiveAppBar = () => {
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
+          <IconButton
+            onClick={handleOpenNotiMenu}
+            sx={{ p: 1 }}
+            aria-label={notificationsLabel(notifyCount)}>
+            <Badge badgeContent={notifyCount} color="error">
+              <NotificationsOutlinedIcon sx={{ fontSize: 30 }} />
+            </Badge>
+          </IconButton>
           <Tooltip title="Account settings">
             <IconButton
               onClick={handleClick}

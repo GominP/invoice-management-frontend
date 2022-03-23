@@ -79,24 +79,6 @@ const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
 const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
 const time5 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
 
-const rows = [
-  {
-    billId: "test",
-    // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-    customerName: "สินชัย",
-    expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-    total: 17,
-  },
-  createData("1235", "โชคชัย คงมั่น", time, 4.3),
-  createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
-  createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
-  createData("q3467", "โชคชัย", time3, 6.0),
-  createData("2345260", "โชคชัย", time4, 4.0),
-  createData("1", "โชคชัย", time5, 3.9),
-  createData("Gingerbread", "โชคชัย", time5, 3.9),
-
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -206,12 +188,19 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const { filterName, onFilterName } = props;
-  const [personName, setPersonName] = React.useState([]);
-  const [anchorFilter, setAnchorFilter] = React.useState(null);
+export default function AllInvoices() {
+  let navigate = useNavigate();
+
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("calories");
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filterName, setFilterName] = useState("");
+  const [token] = useState(localStorage.getItem("token"));
+  const [rows, setRows] = useState([]);
+  const [anchorFilter, setAnchorFilter] = useState(null);
   const open = Boolean(anchorFilter);
 
   const ITEM_HEIGHT = 48;
@@ -232,95 +221,30 @@ const EnhancedTableToolbar = (props) => {
     "ใบแจ้งหนี้ที่ถูกยกเลิก",
   ];
 
-  // const handleChangeFilter = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setPersonName(
-  //     // On autofill we get a stringified value.
-  //     typeof value === "string" ? value.split(",") : value
-  //   );
-  // };
+  const rowb = [
+    {
+      billId: "test",
+      // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+      customerName: "สินชัย",
+      expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+      total: 17,
+    },
+    createData("1235", "โชคชัย คงมั่น", time, 4.3),
+    createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
+    createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
+    createData("q3467", "โชคชัย", time3, 6.0),
+    createData("2345260", "โชคชัย", time4, 4.0),
+    createData("1", "โชคชัย", time5, 3.9),
+    createData("Gingerbread", "โชคชัย", time5, 3.9),
+  ];
 
-  const handleClickFilter = (event) => {
-    setAnchorFilter(event.currentTarget);
-  };
-  const handleChangeFilter = (string) => {
-    console.log(string);
-    setAnchorFilter(null);
-  };
-
-  return (
-    <Toolbar>
-      <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle" >
-        ใบแจ้งหนี้ทั้งหมด
-      </Typography>
-      <Stack direction={{ xs: "row", sm: "row" }}>
-        <TextField
-          value={filterName}
-          onChange={onFilterName}
-          // label="ค้นหา"
-          placeholder="ค้นหาด้วยเลขใบแจ้งหนี้"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Button
-          id="basic-button"
-          aria-controls={open ? "basic-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          onClick={handleClickFilter}>
-          <FilterListIcon />
-        </Button>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorFilter}
-          open={open}
-          onClose={handleChangeFilter}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}>
-          {filters.map((filterItem) => (
-            <MenuItem onClick={() => handleChangeFilter(filterItem)}>
-              {filterItem}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Stack>
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
-};
-
-export default function AllInvoices() {
-  let navigate = useNavigate();
-
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [filterName, setFilterName] = React.useState("");  
-  const [token] = useState(localStorage.getItem('token'))
-
-
+  const rowa = [
+    createData("1235", "โชคชัย คงมั่น", time, 4.3),
+    createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
+  ];
 
   useEffect(() => {
-    // console.log(token)
-  
-    
+    setRows(rowa);
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -331,6 +255,15 @@ export default function AllInvoices() {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
+  };
+
+  const handleClickFilter = (event) => {
+    setAnchorFilter(event.currentTarget);
+  };
+  const handleChangeFilter = (string) => {
+    // console.log(string);
+    setRows(rowb)
+    setAnchorFilter(null);
   };
 
   const filteredInvoice = applySortFilter(
@@ -357,9 +290,8 @@ export default function AllInvoices() {
   }
 
   const handleClick = (event, billId) => {
-    console.log(localStorage.getItem('token'))
+    console.log(localStorage.getItem("token"));
     navigate("/allbill/billinfo/" + billId);
-
   };
 
   const handleChangePage = (event, newPage) => {
@@ -380,12 +312,52 @@ export default function AllInvoices() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "85%", margin: "auto" ,p:3 }}>
+    <Box sx={{ width: "85%", margin: "auto", p: 3 }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
+        <Toolbar>
+          <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
+            ใบแจ้งหนี้ทั้งหมด
+          </Typography>
+          <Stack direction={{ xs: "row", sm: "row" }}>
+            <TextField
+              value={filterName}
+              onChange={handleFilterByName}
+              // label="ค้นหา"
+              placeholder="ค้นหาด้วยเลขใบแจ้งหนี้"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClickFilter}>
+              <FilterListIcon />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorFilter}
+              open={open}
+              onClose={handleChangeFilter}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}>
+              {filters.map((filterItem) => (
+                <MenuItem onClick={() => handleChangeFilter(filterItem)}>
+                  {filterItem}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Stack>
+        </Toolbar>
         <TableContainer>
           <Table
             aria-labelledby="tableTitle"

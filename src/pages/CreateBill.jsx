@@ -27,12 +27,36 @@ import DatePicker from "@mui/lab/DatePicker";
 import moment from "moment";
 import { set } from "date-fns";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles((theme) => ({
+  th: {
+    backgroundColor: "#48A0AC",
+  },
+  form: {
+    width: 600,
+    [theme.breakpoints.down("sm")]: {
+      width: 250,
+    },
+  },
+  center: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  header_create: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 5,
+  },
+}));
 
 export default function CreateBill() {
+  const classes = useStyles();
+
   const [name, setName] = useState("");
   const [total, setTotal] = useState(400);
   const today = new Date().toLocaleString("th-TH").split(" ")[0];
-  const [value, setValue] = React.useState(moment().add(543, "year"));
+  const [value, setValue] = useState(moment().add(543, "year"));
   const [allProduct, setAllProduct] = useState([]);
   const [price, setPrice] = useState(0);
   const [unit, setUnit] = useState();
@@ -105,9 +129,11 @@ export default function CreateBill() {
     <>
       <LocalizationProvider dateAdapter={DateAdapterMoment} locale="th">
         <Box sx={{ p: 3 }}>
-          <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-            <Grid item xs={12} md={7}>
-              <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
+          <Grid container className={classes.center}>
+            <Grid item xs={12} md={7} pb={3}>
+              <Stack
+                className={classes.header_create}
+                direction={{ xs: "column", sm: "row" }}>
                 <ResponsiveHeader text="หน้าสร้างใบแจ้งหนี้" />
                 <Button variant="outlined" color="success">
                   สร้างใบแจ้งหนี้
@@ -118,7 +144,7 @@ export default function CreateBill() {
                   <Grid spacing={3}>
                     <Grid item xs={12}>
                       <Grid container spacing={3}>
-                        <Grid item xl={4} lg={4} md={4} sm={6} xs={12}>
+                        <Grid item xl={4} lg={4} md={6} sm={6} xs={4}>
                           <TextField
                             id="outlined-name"
                             label="ชื่อลูกค้า"
@@ -146,16 +172,16 @@ export default function CreateBill() {
                           <Grid>
                             <Box>
                               <Grid container>
-                                <Grid item xs={4} md={3}>
+                                <Grid item xs={4} md={12}>
                                   <Typography>ผู้ติดต่อ :</Typography>
                                 </Grid>
-                                <Grid item xs={8} md={9}>
+                                <Grid item xs={8} md={12}>
                                   <Typography>สิ่นชัย มั่นคง</Typography>
                                 </Grid>
-                                <Grid item xs={4} md={3}>
+                                <Grid item xs={4} md={12}>
                                   <Typography>อีเมลล์ : </Typography>
                                 </Grid>
-                                <Grid item xs={8} md={9}>
+                                <Grid item xs={8} md={12}>
                                   <Typography>test@gmail.com</Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
@@ -175,7 +201,7 @@ export default function CreateBill() {
                           <Typography>{currencyFormat(price)} บาท</Typography>
                           <Box paddingTop={3}>
                             <Grid container spacing={2}>
-                              <Grid item xs={12} md={4} >
+                              <Grid item xs={12} md={4}>
                                 <Typography>วันที่</Typography>
                               </Grid>
                               <Grid item xs={12} md={8}>

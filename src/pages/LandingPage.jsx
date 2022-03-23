@@ -40,10 +40,10 @@ export default function LandingPage() {
   const [isBiller, setIsBiller] = useState(false);
 
   useEffect(() => {
-    let url = "https://webhook.site/30fea1bb-ccf1-4e98-a344-f6c4fdb32457";
-    axios.post(url).then(function (response) {
-      console.log(response);
-    });
+    // let url = "https://webhook.site/30fea1bb-ccf1-4e98-a344-f6c4fdb32457";
+    // axios.post(url).then(function (response) {
+    //   console.log(response);
+    // });
   }, []);
 
   return (

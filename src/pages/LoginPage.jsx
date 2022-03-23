@@ -49,8 +49,8 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     axios
       .post("http://localhost:8080/login", {
-        username: data.get("username"),
-        password: data.get("password"),
+        username: "granger12",
+        password: "hermioneE00@",
       })
       .then(function (response) {
         localStorage.setItem("token", response.data["jwtToken"]);
@@ -64,7 +64,6 @@ export default function SignIn() {
       <Box
         sx={{
           marginTop: 8,
-          // display: "flex",
           alignItems: "center",
         }}>
         <Grid sx={{ display: "flex", justifyContent: "center" }}>

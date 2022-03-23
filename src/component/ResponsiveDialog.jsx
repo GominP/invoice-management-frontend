@@ -15,13 +15,16 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import QRCode from "qrcode";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ResponsiveDialog(props) {
+  let navigate = useNavigate();
+
   const axios = require("axios");
   const { textButton, requestEdit, deleteRelation } = props;
-  const [open, setOpen] = React.useState(false);
-  const [qrcode, setQrcode] = React.useState();
+  const [open, setOpen] = useState(false);
+  const [qrcode, setQrcode] = useState("");
 
   useEffect(() => {
     createQr();
@@ -39,9 +42,9 @@ function ResponsiveDialog(props) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const createQr = () => {
-    QRCode.toString("I am a pony!", { type: "terminal" }, function (err, url) {
-      setQrcode(url);
-    });
+    QRCode.toDataURL(
+      "00020101021230360115911256458502398020412340305123455204701153037645402205802TH5911TestPayment6007BANGKOK62340523202203231223372360000000703BMQ6304D1C8"
+    ).then(setQrcode);
   };
 
   const handleSubmit = (event) => {
@@ -85,6 +88,7 @@ function ResponsiveDialog(props) {
     //     navigate("/login");
     //   });
     // setOpenSuccess(true);
+    navigate("/paymentsuccess");
   };
 
   return (
@@ -122,7 +126,7 @@ function ResponsiveDialog(props) {
                   <Grid item xs={12} md={6} pb={2}>
                     <Typography>test@gmail.com</Typography>
                   </Grid>
-                  <img src={qrcode}></img>
+                  <img src={qrcode} />
                   <Grid item xs={12} md={12}>
                     <TextField
                       margin="normal"

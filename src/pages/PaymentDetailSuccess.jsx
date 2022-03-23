@@ -12,6 +12,8 @@ import {
   CardActionArea,
   Button,
   CardActions,
+  Divider,
+  Stack,
 } from "@mui/material";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -22,47 +24,71 @@ import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
+const useStyles = makeStyles((theme) => ({
+  center: {
+    display: "flex",
+    justifyContent: "center",
+  },
+}));
 
 export default function PaymentDetailSuccess() {
+  const classes = useStyles();
+  const [name, setname] = useState("testname");
+  const [amount, setamount] = useState(2000);
+
   return (
     <div>
       <Box sx={{ p: 3 }}>
-        <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+        <Grid container className={classes.center}>
           <Card variant="outlined">
             <Grid>
               <Box>
+                <CardHeader title="ข้อมูลการจ่ายเงิน"></CardHeader>
+                <Divider />
                 <CardContent>
                   {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
-                  <ResponsiveHeader text="ข้อมูลผู้จ่ายใบแจ้งหนี้"></ResponsiveHeader>
-                  <Box>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} md={4}>
-                        <Typography>ผู้ติดต่อ :</Typography>
+                  <Box className={classes.center}>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <Typography variant="h5" component="h4"> จ่ายเงินให้ {name}</Typography>
+                        <Typography variant="h5" component="h4"> {amount} บาท</Typography>
+                        <Divider />
                       </Grid>
-                      <Grid item xs={12} md={8}>
-                        <Typography>สิ่นชัย มั่นคง</Typography>
+                      
+                      <Grid item xs={12}>
+                        <Stack direction={"row"}>
+                          <Grid item xs={6}>
+                            ช่องทางการชำระเงิน
+                          </Grid>
+                          <Grid item xs={6}>
+                            SCB
+                          </Grid>
+                        </Stack>
                       </Grid>
-                      <Grid item xs={12} md={4}>
-                        <Typography>อีเมลล์ :</Typography>
+                      <Grid item xs={12}>
+                        <Stack direction={"row"}>
+                          <Grid item xs={6}>
+                            วันที่ทำรายการ
+                          </Grid>
+                          <Grid item xs={6}>
+                            22/10/2022
+                          </Grid>
+                        </Stack>
                       </Grid>
-                      <Grid item xs={12} md={8}>
-                        <Typography>test@gmail.com</Typography>
-                      </Grid>
-                      <Grid item xs={12} md={4}>
-                        <Typography>เบอร์โทร :</Typography>
-                      </Grid>
-                      <Grid item xs={12} md={8}>
-                        <Typography>0958654531</Typography>
+                      <Grid item xs={12}>
+                        <Stack direction={"row"}>
+                          <Grid item xs={6}>
+                            หมายเลขการสั่งซื้อ
+                          </Grid>
+                          <Grid item xs={6}>
+                            202221231425867623
+                          </Grid>
+                        </Stack>
                       </Grid>
                     </Grid>
                   </Box>
                 </CardContent>
-                <CardActions>
-                  <ResponsiveDialog
-                    textButton={"ยกเลิกใบแจ้งหนี้"}
-                    deleteRelation={true}></ResponsiveDialog>
-                  {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}
-                </CardActions>
+                <CardActions></CardActions>
               </Box>
             </Grid>
 
