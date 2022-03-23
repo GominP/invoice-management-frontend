@@ -24,6 +24,8 @@ import TotalLandingIncomeCard from "../component/landingDashboard/TotalLandingIn
 import CardTotal from "../component/landingDashboard/CardTotal";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { setRole, setId, getUsers } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const billerText = [
   "ยอดรวมรายรับของวันนี้",
@@ -35,15 +37,38 @@ const payerText = [
   "ยอดรวมรายจ่ายของเดือนนี้",
   "ยอดรวมรายจ่ายของปีนี้",
 ];
-
+const url = "http://localhost:8080/";
 export default function LandingPage() {
+  //redux
+  const users = useSelector(getUsers);
+  const id = useSelector((state) => state.users.userid);
+
+  const dispatch = useDispatch();
+  const [userRole, setUserRole] = useState("");
+  //---------------
   const [isBiller, setIsBiller] = useState(false);
+  const [dataInfo, setDataInfo] = useState({});
 
   useEffect(() => {
-    // let url = "https://webhook.site/30fea1bb-ccf1-4e98-a344-f6c4fdb32457";
-    // axios.post(url).then(function (response) {
-    //   console.log(response);
-    // });
+    axios
+      .post(
+        url + "landing",
+        {},
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        }
+      )
+      .then(function (response) {
+        if (response.data["biller"] === null) {
+          setDataInfo(response.data["payer"]);
+          dispatch(setRole("payer"));
+          dispatch(setId(response.data["payer"]["id"]));
+        } else {
+          setDataInfo(response.data["biller"]);
+          dispatch(setRole("biller"));
+          dispatch(setId(response.data["payer"]["id"]));
+        }
+      });
   }, []);
 
   return (
@@ -53,7 +78,7 @@ export default function LandingPage() {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item lg={6} md={6} sm={6} xs={12}>
-                <WelcomeCard />
+                <WelcomeCard name={dataInfo.name} />
               </Grid>
               <Grid item lg={6} md={6} sm={6} xs={12}>
                 <NotiCard />

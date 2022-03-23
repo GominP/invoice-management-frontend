@@ -18,6 +18,11 @@ import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useNavigate } from "react-router-dom";
 import img from "../asset/images/contemplative-reptile.jpg";
 import { useEffect, useState } from "react";
+import { getUsers } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+
+const url = "http://localhost:8080/";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -42,52 +47,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const data = [
-  {
-    name: "Coca-cola",
-    describe:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    value: 1,
-    label: "วันที่",
-  },
-  {
-    name: "Pepsi",
-    describe:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    value: 2,
-    label: "เลขที่ใบแจ้งหนี้",
-  },
-  {
-    name: "บริษัท ทองเจริญ",
-    describe:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    value: 3,
-    label: "ชื่อลูกค้า",
-  },
-  {
-    name: "บริษัท ทองหุง",
-    describe:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    value: 4,
-    label: "วันครบกำหนด",
-  },
-  {
-    name: "นาย โชคชัย",
-    describe:
-      "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
-    value: 5,
-    label: "ยอดรวมสุทธิ",
-  },
-];
+
 const Payer = () => {
   let navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
-  const [role, setrole] = useState("payer");
-  const [textHeader, settextHeader] = useState("ผู้จ่ายใบแจ้งหนีัทั้งหมด")
+  const role = useSelector(getUsers);
+  const id = useSelector((state) => state.users.userid);
+  const dispatch = useDispatch();
+  const [textHeader, setTextHeader] = useState("ผู้จ่ายใบแจ้งหนีัทั้งหมด");
+  const [rows, setRows] = useState([{}]);
 
   useEffect(() => {
-    
+    if (role === "payer") {
+      setTextHeader("ผู้ออกใบแจ้งหนีัทั้งหมด");
+    }
+    axios
+      .post(
+        url + "biller-inquiry",
+        { payerId: id },
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        }
+      )
+      .then(function (response) {
+        if (role === "payer") {
+          // response.data["billers"].map((index) => (
+          //   console.log(index)
+          // ))
+
+          setRows(response.data["billers"])
+        } else {
+          console.log("fasle");
+        }
+        // console.log(response.data);
+        // setOpenSuccess(true);
+      });
   }, []);
 
   return (
@@ -98,7 +93,7 @@ const Payer = () => {
           container
           spacing={{ xs: 2, md: 6 }}
           columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
-          {data.map((info, index) => (
+          {rows.map((info, index) => (
             <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
               <Card className={classes.card}>
                 <CardActionArea onClick={() => navigate("/detailUser/1")}>
@@ -112,13 +107,13 @@ const Payer = () => {
                   /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {info.name}
+                      {info.name} {info.lastname} 
                     </Typography>
                     <Typography
                       variant="body2"
                       color="textSecondary"
                       component="p">
-                      {info.describe}
+                      เบอร์โทรศัพท์ {info.phone}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -126,17 +121,17 @@ const Payer = () => {
                   <Button
                     size="small"
                     color="primary"
-                    onClick={() => navigate("/detailUser/1")}>
+                    onClick={() => navigate("/detailUser/"+ info.id)}>
                     รายละเอียด
                   </Button>
-                  {role === "payer" ? (
+                  {role === "payer" ? null : (
                     <Button
                       size="small"
                       color="primary"
                       onClick={() => navigate("bill")}>
                       สร้างใบแจ้งหนี้
                     </Button>
-                  ) : null}
+                  )}
                 </CardActions>
               </Card>
             </Grid>

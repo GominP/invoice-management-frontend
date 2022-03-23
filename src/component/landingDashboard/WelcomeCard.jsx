@@ -31,11 +31,11 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const WelcomeCard = ({ isLoading }) => {
+const WelcomeCard = ({ isLoading,name }) => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [name, setname] = useState("สินชัย มั่นคง")
+  // const [name, setname] = useState("สินชัย มั่นคง")
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -121,6 +121,7 @@ const WelcomeCard = ({ isLoading }) => {
 
 WelcomeCard.propTypes = {
   isLoading: PropTypes.bool,
+  name: PropTypes.string
 };
 
 export default WelcomeCard;

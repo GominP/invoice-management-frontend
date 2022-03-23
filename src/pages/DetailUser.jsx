@@ -22,6 +22,10 @@ import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { getUsers } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,36 +41,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DetailUser() {
-  const axios = require("axios");
   const theme = useTheme();
   const classes = useStyles();
+  let params = useParams();
+  const role = useSelector(getUsers);
+  const [textHeader, setTextHeader] = useState("ข้อมูลผู้จ่ายใบแจ้งหนี้");
+  const [dataInfo, setDataInfo] = useState({})
+
   const data = {
-    id: 5,
+    id: 1,
   };
 
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
-    let role = "";
-    let url = "biller";
-    // if (role === "biller") {
-    //   url = "http://localhost:8080/biller-detail-inquiry";
-    // } else {
-    //   url = "http://localhost:8080/payer-detail-inquiry";
-    // }
 
     axios
       .post(
-        "http://localhost:8080/payer-detail-inquiry",
+        "http://localhost:8080/biller-detail-inquiry",
         {
-          id: 1,
+          id: params.id,
         },
         {
-          headers: { Authorization: localStorage.getItem("token") },
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         }
       )
       .then(function (response) {
-        console.log(response);
+        console.log(response.data);
+        setDataInfo(response.data)
       });
+
+    if (role === "payer") {
+      setTextHeader("ข้อมูลผู้ออกใบแจ้งหนี้");
+    }
   }, []);
 
   return (
@@ -78,20 +83,20 @@ export default function DetailUser() {
               <Box>
                 <CardContent>
                   {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
-                  <ResponsiveHeader text="ข้อมูลผู้จ่ายใบแจ้งหนี้"></ResponsiveHeader>
+                  <ResponsiveHeader text={textHeader}></ResponsiveHeader>
                   <Box>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={4}>
-                        <Typography>ผู้ติดต่อ :</Typography>
+                        <Typography>ชื่อ-นามสกุล/ชื่อบริษัท</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
-                        <Typography>สิ่นชัย มั่นคง</Typography>
+                        <Typography>{dataInfo.name} {dataInfo.lastname}</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
-                        <Typography>อีเมลล์ :</Typography>
+                        <Typography>ที่อยู่ :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
-                        <Typography>test@gmail.com</Typography>
+                        <Typography>{dataInfo.addressDetail} {dataInfo.subDistrict}  {dataInfo.district} {dataInfo.road}  {dataInfo.province} {dataInfo.zipCode}</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
                         <Typography>เบอร์โทร :</Typography>
@@ -99,10 +104,16 @@ export default function DetailUser() {
                       <Grid item xs={12} md={8}>
                         <Typography>0958654531</Typography>
                       </Grid>
+                      <Grid item xs={12} md={4}>
+                        <Typography>เลขประจำตัวผู้เสียภาษี</Typography>
+                      </Grid>
+                      <Grid item xs={12} md={8}>
+                        <Typography>{dataInfo.taxId}</Typography>
+                      </Grid>
                     </Grid>
                   </Box>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{display: "flex", justifyContent:"flex-end"}}>
                   <ResponsiveDialog
                     textButton={"ยกเลิกใบแจ้งหนี้"}
                     deleteRelation={true}></ResponsiveDialog>

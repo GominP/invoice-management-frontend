@@ -19,19 +19,19 @@ import Tab from "@mui/material/Tab";
 import { useNavigate, useLocation } from "react-router-dom";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import { setRole, getUsers } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-const pages = [
+const biller = [
   "INVOICE GUARD",
   "ดูใบแจ้งหนี้ทั้งหมด",
   "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด",
-  "ยอดรวมรายรับ",
 ];
-const pages2 = [
+const payer = [
   "INVOICE GUARD",
   "ดูใบแจ้งหนี้ทั้งหมด",
   "ดูผู้สร้างใบแจ้งหนี้",
   "เพิ่มผู้สร้างใบแจ้งหนี้",
-  "ยอดรวมรายจ่าย",
 ];
 const notification = [
   "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
@@ -42,8 +42,17 @@ const notification = [
 const ResponsiveAppBar = () => {
   let navigate = useNavigate();
   let path = useLocation();
+  const users = useSelector(getUsers);
+  const dispatch = useDispatch();
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
+    if (users === "biller") {
+      setRows(biller);
+    } else {
+      setRows(payer);
+    }
+
     currentTab();
   }, []);
 
@@ -109,7 +118,6 @@ const ResponsiveAppBar = () => {
   };
 
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setTab(newValue);
   };
 
@@ -118,7 +126,10 @@ const ResponsiveAppBar = () => {
       case "ดูใบแจ้งหนี้ทั้งหมด":
         navigate("/allbill");
         break;
-      case "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด" || "ดูผู้สร้างใบแจ้งหนี้":
+      case "ดูผู้สร้างใบแจ้งหนี้":
+        navigate("/payer");
+        break;
+      case "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด":
         navigate("/payer");
         break;
       case "ยอดรวมรายรับ" || "ยอดรวมรายจ่าย":
@@ -128,7 +139,7 @@ const ResponsiveAppBar = () => {
         navigate("/landing");
         break;
       case "เพิ่มผู้สร้างใบแจ้งหนี้":
-        navigate("/addInvoice");
+        navigate("/addBiller");
         break;
       default:
         navigate("/");
@@ -139,11 +150,10 @@ const ResponsiveAppBar = () => {
     console.log(page);
   }
 
-  const handleLogout =()=> {
-    localStorage.removeItem('token')
-    navigate("/login");
-
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
 
   return (
     <AppBar
@@ -190,7 +200,7 @@ const ResponsiveAppBar = () => {
             sx={{
               display: { xs: "block", md: "none" },
             }}>
-            {pages.map((page) => (
+            {rows.map((page) => (
               <MenuItem key={page} onClick={() => changePage(page)}>
                 <Typography textAlign="center">{page}</Typography>
               </MenuItem>
@@ -220,7 +230,7 @@ const ResponsiveAppBar = () => {
             textColor="secondary"
             indicatorColor="secondary"
             aria-label="secondary tabs example">
-            {pages.map((page, index) => (
+            {rows.map((page, index) => (
               <Tab
                 value={index}
                 label={page}
@@ -329,7 +339,7 @@ const ResponsiveAppBar = () => {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              navigate("/login");
+              window.location.href = "/login";
             }}>
             <Avatar /> Login
           </MenuItem>

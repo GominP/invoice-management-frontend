@@ -21,6 +21,7 @@ import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import AddBiller from "./pages/AddBiller";
 import PaymentDetailSuccess from "./pages/PaymentDetailSuccess";
+import { useEffect } from "react";
 
 const theme = createTheme(
   {
@@ -35,15 +36,25 @@ const theme = createTheme(
   },
   thTH
 );
+const path = window.location.pathname;
 
 function App() {
+  useEffect(() => {
+    console.log(path);
+  }, []);
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ResponsiveAppBar></ResponsiveAppBar>
+        {path === "/login" ? (
+          <box></box>
+        ) : (
+          <ResponsiveAppBar></ResponsiveAppBar>
+        )}
+
         <Routes>
-          <Route path="/" element={<AllInvoices />} />
+          {/* <Route path="/" element={<LoginPage />} /> */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addBiller" element={<AddBiller />} />

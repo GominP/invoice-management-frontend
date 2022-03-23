@@ -24,57 +24,46 @@ import {
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { addItem, addItem2, getUsers } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+const url = "http://localhost:8080/";
 
 export default function AddBiller() {
   const axios = require("axios");
-
+  const userid = useSelector((state) => state.users.userid);
+  const dispatch = useDispatch();
   let navigate = useNavigate();
   let params = useParams();
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
+
+  useEffect(() => {
+    console.log(userid);
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
 
-    // if (passwordText !== confirmPasswordText) {
-    //   setTextError("รหัสผ่านไม่ตรงกัน");
-    //   setOpenError(true);
-    // } else if (data.get("username") === "") {
-    //   setTextError("ใส่ข้อมูลให้ครบถ้วน");
-    //   setOpenError(true);
-    // }
+    // console.log({
+    //   code: data.get("code"),
+    //   id: id,
+    // });
 
-    console.log({
-      email: data.get("email"),
-      password: "",
-    });
-
-    // axios
-    //   .post("http://localhost:8080/register", {
-    //     name: "mississii",
-    //     lastname: "jaidee",
-    //     phone: "0913671456",
-    //     citizenId: "1100452139456",
-    //     taxId: "1100452139456",
-    //     isCitizen: true,
-    //     addressDetail: "2210 soi2",
-    //     road: "Krungthep-Nonthaburi",
-    //     district: "Bangsue",
-    //     subDistrict: "Wong Sawang",
-    //     province: "Bangkok",
-    //     zipCode: "10800",
-    //     username: "nattanon456",
-    //     password: "1234password",
-    //     role: params.id,
-    //   })
-    //   .then(function (response) {
-    //     // localStorage.setItem("token", response.data["jwtToken"]);
-    //     // console.log(response.data["jwtToken"]);
-    //     navigate("/login");
-    //   });
-    setOpenSuccess(true);
+    axios
+      .post(
+        url + "relationship-create",
+        { payerId: userid, code: data.get("code") },
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        setOpenSuccess(true);
+      });
   };
 
   const handleClose = (event, reason) => {
@@ -92,7 +81,7 @@ export default function AddBiller() {
         component="h1"
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
-        เพิ่มผู้สร้างใบแจ้งหนี้
+        เพิ่มผู้สร้างใบแจ้งหนี้ {userid}
       </Typography>
       <Box
         component="form"
@@ -107,12 +96,12 @@ export default function AddBiller() {
                   <Grid
                     item
                     sx={{
-                      "& .MuiTextField-root": { m: 1,maxWidth: '45ch' },
+                      "& .MuiTextField-root": { m: 1, maxWidth: "45ch" },
                     }}>
-                    <Divider />
                     <Typography variant="h6" p={2}>
                       เพิ่มผู้สร้างใบแจ้งหนี้จากรหัส
                     </Typography>
+
                     <Typography variant="h7">
                       สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว
                     </Typography>
@@ -123,7 +112,7 @@ export default function AddBiller() {
                         id="outlined-textarea"
                         label="รหัส"
                         // placeholder="ที่อยู่"
-                        name="billcode"
+                        name="code"
                         multiline
                       />
                     </Grid>
@@ -143,7 +132,7 @@ export default function AddBiller() {
                     onClose={handleClose}
                     severity="success"
                     sx={{ width: "100%" }}>
-                    สมัครสมาชิกสำเร็จ
+                    เพิ่มสำเร็จ
                   </Alert>
                 </Snackbar>
                 <Snackbar

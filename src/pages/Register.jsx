@@ -20,6 +20,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  FormHelperText,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import ResponsiveHeader from "../component/ResponsiveHeader";
@@ -46,11 +47,11 @@ const Register = () => {
   const [confirmPasswordText, setConfirmPasswordText] = useState("");
   const [isCheck1, setIscheck1] = useState(false);
   const [isCheck2, setIscheck2] = useState(false);
+  const [isCitizen, setisCitizen] = useState(false);
 
   const axios = require("axios");
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const data = new FormData(event.currentTarget);
 
     if (passwordText !== confirmPasswordText) {
@@ -62,33 +63,46 @@ const Register = () => {
     }
 
     console.log({
-      email: data.get("email"),
+      username: data.get("username"),
       password: passwordText,
+      name: data.get("name"),
+      lastname: "null",
+      phone: data.get("phone"),
+      citizenId: data.get("citizenId"),
+      taxId: data.get("taxId"),
+      isCitizen: isCitizen,
+      addressDetail: data.get("addressDetail"),
+      road: data.get("road"),
+      district: data.get("district"),
+      subDistrict: data.get("subDistrict"),
+      province: data.get("province"),
+      zipCode: data.get("zipCode"),
+      role: params.id,
     });
 
-    // axios
-    //   .post("http://localhost:8080/register", {
-    //     name: "mississii",
-    //     lastname: "jaidee",
-    //     phone: "0913671456",
-    //     citizenId: "1100452139456",
-    //     taxId: "1100452139456",
-    //     isCitizen: true,
-    //     addressDetail: "2210 soi2",
-    //     road: "Krungthep-Nonthaburi",
-    //     district: "Bangsue",
-    //     subDistrict: "Wong Sawang",
-    //     province: "Bangkok",
-    //     zipCode: "10800",
-    //     username: "nattanon456",
-    //     password: "1234password",
-    //     role: params.id,
-    //   })
-    //   .then(function (response) {
-    //     // localStorage.setItem("token", response.data["jwtToken"]);
-    //     // console.log(response.data["jwtToken"]);
-    //     navigate("/login");
-    //   });
+    axios
+      .post("http://localhost:8080/register", {
+        username: data.get("username"),
+        password: passwordText,
+        name: data.get("name"),
+        lastname: "null",
+        phone: data.get("phone"),
+        citizenId: data.get("citizenId"),
+        taxId: data.get("taxId"),
+        isCitizen: isCitizen,
+        addressDetail: data.get("addressDetail"),
+        road: data.get("road"),
+        district: data.get("district"),
+        subDistrict: data.get("subDistrict"),
+        province: data.get("province"),
+        zipCode: data.get("zipCode"),
+        role: params.id,
+      })
+      .then(function (response) {
+        localStorage.setItem("token", response.data["jwtToken"]);
+        console.log(response.data["jwtToken"]);
+        navigate("/login");
+      });
     setOpenSuccess(true);
   };
 
@@ -120,6 +134,7 @@ const Register = () => {
     if (isCheck1 === true) {
       setIscheck1(false);
     }
+    setisCitizen(false);
   };
   const check2 = async () => {
     setIscheck1(false);
@@ -127,7 +142,13 @@ const Register = () => {
     if (isCheck2 === true) {
       setIscheck2(false);
     }
+    setisCitizen(true);
   };
+
+  // const validate =()=>{
+  //   let temp ={}
+  //   temp.username
+  // }
 
   return (
     <div>
@@ -160,14 +181,15 @@ const Register = () => {
                         label="ชื่อผู้ใช้"
                         placeholder="ชื่อผู้ใช้"
                         name="username"
-                        multiline
                       />
 
                       <TextField
                         label="รหัสผ่าน"
                         variant="outlined"
+                        aria-describedby="password-helper-text"
                         type={showPassword ? "text" : "password"} // <-- This is where the magic happens
                         onChange={handlePasswordText}
+                        helperText="รหัสผ่านต้องมีตัวเลข อักษรตัวเล็ก ตัวใหญ่และอักขระพิเศษ"
                         InputProps={{
                           // <-- This is where the toggle button is added.
                           endAdornment: (
@@ -186,6 +208,7 @@ const Register = () => {
                           ),
                         }}
                       />
+
                       <TextField
                         label="ยืนยันรหัสผ่าน"
                         variant="outlined"
@@ -220,31 +243,53 @@ const Register = () => {
                         label="ชื่อ-สกุล / ชื่อบริษัท"
                         placeholder="ชื่อ-นามสกุล"
                         name="name"
-                        multiline
                       />
                       <TextField
                         id="outlined-textarea"
                         label="เบอร์โทร"
                         placeholder="เบอร์โทร"
                         name="phone"
-                        multiline
+                      />
+                     
+                    </Grid>
+                    <Grid>
+                      <TextField
+                        id="outlined-textarea"
+                        label="บ้านเลขที่"
+                        placeholder="บ้านเลขที่"
+                        name="addressDetail"
                       />
                       <TextField
                         id="outlined-textarea"
-                        label="อีเมลล์"
-                        placeholder="อีเมลล์"
-                        name="email"
-                        multiline
+                        label="ถนน"
+                        placeholder="ถนน"
+                        name="road"
+                      />
+                      <TextField
+                        id="outlined-textarea"
+                        label="อำเภอ"
+                        placeholder="อำเภอ"
+                        name="district"
+                      />
+                      <TextField
+                        id="outlined-textarea"
+                        label="ตำบล"
+                        placeholder="ตำบล"
+                        name="subDistrict"
                       />
                     </Grid>
                     <Grid>
                       <TextField
-                        fullWidth
                         id="outlined-textarea"
-                        label="ที่อยู่"
-                        placeholder="ที่อยู่"
-                        name="addressDetail"
-                        multiline
+                        label="จังหวัด"
+                        placeholder="จังหวัด"
+                        name="province"
+                      />
+                      <TextField
+                        id="outlined-textarea"
+                        label="รหัสไปรษณีย์"
+                        placeholder="รหัสไปรษณีย์"
+                        name="zipCode"
                       />
                     </Grid>
                     <Grid>
@@ -253,14 +298,12 @@ const Register = () => {
                         label="เลขประจำตัวประชาชน"
                         placeholder="เลขประจำตัวประชาชน"
                         name="citizenId"
-                        multiline
                       />
                       <TextField
                         id="outlined-textarea"
                         label="เลขประจำตัวผู้เสียภาษี"
                         placeholder="เลขประจำตัวผู้เสียภาษี"
                         name="taxId"
-                        multiline
                       />
                     </Grid>
                   </Grid>
@@ -284,20 +327,7 @@ const Register = () => {
                       label="บุคคลธรรมดา"
                     />
                   </Grid>
-                  {/* <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox defaultChecked />}
-                      label="บุคคลธรรมดา"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label="นิติบุคคล"
-                    />
-                  </FormGroup> */}
                 </Box>
-                {/* {openSuccess === true ? (
-                  <Alert severity="success">สมัครสมาชิกสำเร็จ</Alert>
-                ) : null} */}
 
                 <Snackbar
                   open={openSuccess}

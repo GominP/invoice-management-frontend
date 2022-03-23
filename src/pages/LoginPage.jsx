@@ -49,13 +49,13 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     axios
       .post("http://localhost:8080/login", {
-        username: "granger12",
-        password: "hermioneE00@",
+        username: data.get("username"),
+        password: data.get("password"),
       })
       .then(function (response) {
         localStorage.setItem("token", response.data["jwtToken"]);
         console.log(response.data["jwtToken"]);
-        navigate("/landing");
+        window.location.href="/landing";
       });
   };
 
