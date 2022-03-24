@@ -231,61 +231,24 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="username"
-                          label="ชื่อผู้ใช้"
+                          label="username"
                           value={values.username}
                           onChange={handleInputChage}
                           error={errors.username}></Controls.Input>
-                        <TextField
+                        {/* <Controls.InputPassword
+                          name="confrim-password"
+                          label="confrim-password"
+                          value={values.password}
+                          onChange={handleInputChage}
+                          error={errors.password}
+                          showPassword={false}></Controls.InputPassword> */}
+                        <Controls.InputPassword
                           name="password"
-                          label="รหัสผ่าน"
-                          variant="outlined"
-                          aria-describedby="password-helper-text"
-                          type={showPassword ? "text" : "password"} // <-- This is where the magic happens
+                          label="password"
+                          value={values.password}
                           onChange={handleInputChage}
-                          helperText="รหัสผ่านต้องมีตัวเลข อักษรตัวเล็ก ตัวใหญ่และอักขระพิเศษ"
-                          InputProps={{
-                            // <-- This is where the toggle button is added.
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowPassword}
-                                  onMouseDown={handleMouseDownPassword}>
-                                  {showPassword ? (
-                                    <VisibilityIcon />
-                                  ) : (
-                                    <VisibilityOffIcon />
-                                  )}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-
-                        <TextField
-                          name="confirmPassword"
-                          label="ยืนยันรหัสผ่าน"
-                          variant="outlined"
-                          type={showConfirmPassword ? "text" : "password"} // <-- This is where the magic happens
-                          onChange={handleInputChage}
-                          InputProps={{
-                            // <-- This is where the toggle button is added.
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handleClickShowCPassword}
-                                  onMouseDown={handleMouseDownCPassword}>
-                                  {showConfirmPassword ? (
-                                    <VisibilityIcon />
-                                  ) : (
-                                    <VisibilityOffIcon />
-                                  )}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
+                          error={errors.password}
+                          showPassword={false}></Controls.InputPassword>
                       </Grid>
                       <Divider />
                       <Typography variant="h5" component="h1" p={1}>
@@ -294,10 +257,16 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="name"
-                          label="ชื่อ-สกุล / ชื่อบริษัท"
+                          label="Firstname"
                           value={values.name}
                           onChange={handleInputChage}
                           error={errors.name}></Controls.Input>
+                        <Controls.Input
+                          name="lastname"
+                          label="Lastname"
+                          value={values.lastname}
+                          onChange={handleInputChage}
+                          error={errors.lastname}></Controls.Input>
                         <Controls.Input
                           name="phone"
                           label="เบอร์โทร"

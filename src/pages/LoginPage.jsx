@@ -32,6 +32,7 @@ const theme = createTheme();
 
 export default function SignIn() {
   let navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,17 +41,6 @@ export default function SignIn() {
       password: data.get("password"),
     };
     await authService.login(dataLogin);
-
-    // axios
-    //   .post("http://localhost:8080/login", {
-    //     username: data.get("username"),
-    //     password: data.get("password"),
-    //   })
-    //   .then(function (response) {
-    //     localStorage.setItem("token", response.data["jwtToken"]);
-    //     console.log(response.data["jwtToken"]);
-    //     window.location.href = "/landing";
-    //   });
   };
 
   return (
