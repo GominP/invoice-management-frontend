@@ -34,7 +34,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm, Form } from "../utils/useForm";
 import { Controls } from "../component/controls/Controls";
-import * as registerService from "../services/registerService";
+import * as registerService from "../services/authService";
 const citizenItem = [
   {
     isCitizen: false,
@@ -79,19 +79,46 @@ const Register = () => {
   const [isCheck1, setIscheck1] = useState(false);
   const [isCheck2, setIscheck2] = useState(false);
   const [isCitizen, setisCitizen] = useState(false);
+
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("username" in fieldValues) {
       temp.username = values.username ? "" : "กรุณากรอก username";
     }
+    if ("password" in fieldValues) {
+      temp.password = values.password ? "" : "กรุณากรอกรหัสผ่าน";
+    }
+
     if ("name" in fieldValues) {
       temp.name = values.name ? "" : "กรุณากรอกชื่อ";
     }
     if ("phone" in fieldValues) {
       temp.phone = values.phone ? "" : "กรุณากรอกเบอร์โทรศัพท์";
     }
+    if ("addressDetail" in fieldValues) {
+      temp.addressDetail = values.addressDetail ? "" : "กรุณากรอกบ้านเลขที่";
+    }
+    if ("road" in fieldValues) {
+      temp.road = values.road ? "" : "กรุณากรอกถนน";
+    }
+    if ("district" in fieldValues) {
+      temp.district = values.district ? "" : "กรุณากรอกอำเภอ";
+    }
+    if ("subDistrict" in fieldValues) {
+      temp.subDistrict = values.subDistrict ? "" : "กรุณากรอกตำบล";
+    }
+    if ("province" in fieldValues) {
+      temp.province = values.province ? "" : "กรุณากรอกจังหวัด";
+    }
+    if ("zipCode" in fieldValues) {
+      temp.zipCode = values.zipCode ? "" : "กรุณากรอกเลขไปรษณีย์";
+    }
+
     if ("citizenId" in fieldValues) {
       temp.citizenId = values.citizenId ? "" : "กรุณากรอกเลขประจำตัว";
+    }
+    if ("taxId" in fieldValues) {
+      temp.taxId = values.taxId ? "" : "กรุณากรอกเลขประจำตัวผู้เสียภาษี";
     }
     setErrors({
       ...temp,
@@ -112,8 +139,7 @@ const Register = () => {
   } = useForm(initValues, true, validate, params.id);
 
   // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log("1111111");
+
   //   // const data = new FormData(event.currentTarget);
 
   //   // if (passwordText !== confirmPasswordText) {
@@ -123,30 +149,6 @@ const Register = () => {
   //   //   setTextError("ใส่ข้อมูลให้ครบถ้วน");
   //   //   setOpenError(true);
   //   // }
-
-  //   // axios
-  //   //   .post("http://localhost:8080/register", {
-  //   //     username: data.get("username"),
-  //   //     password: passwordText,
-  //   //     name: data.get("name"),
-  //   //     lastname: "null",
-  //   //     phone: data.get("phone"),
-  //   //     citizenId: data.get("citizenId"),
-  //   //     taxId: data.get("taxId"),
-  //   //     isCitizen: isCitizen,
-  //   //     addressDetail: data.get("addressDetail"),
-  //   //     road: data.get("road"),
-  //   //     district: data.get("district"),
-  //   //     subDistrict: data.get("subDistrict"),
-  //   //     province: data.get("province"),
-  //   //     zipCode: data.get("zipCode"),
-  //   //     role: params.id,
-  //   //   })
-  //   //   .then(function (response) {
-  //   //     localStorage.setItem("token", response.data["jwtToken"]);
-  //   //     console.log(response.data["jwtToken"]);
-  //   //     navigate("/login");
-  //   //   });
   //   // setOpenSuccess(true);
   // };
 
@@ -308,35 +310,41 @@ const Register = () => {
                           name="addressDetail"
                           label="บ้านเลขที่"
                           value={values.addressDetail}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.addressDetail}></Controls.Input>
                         <Controls.Input
                           name="road"
                           label="ถนน"
                           value={values.road}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.road}></Controls.Input>
                         <Controls.Input
                           name="district"
                           label="อำเภอ"
                           value={values.district}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.district}></Controls.Input>
 
                         <Controls.Input
                           name="subDistrict"
                           label="ตำบล"
                           value={values.subDistrict}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.subDistrict}></Controls.Input>
                       </Grid>
                       <Grid>
                         <Controls.Input
                           name="province"
                           label="จังหวัด"
                           value={values.province}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.province}></Controls.Input>
                         <Controls.Input
                           name="zipCode"
                           label="รหัสไปรษณีย์"
                           value={values.zipCode}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.zipCode}></Controls.Input>
                       </Grid>
                       <Grid>
                         <Controls.Input
@@ -349,7 +357,8 @@ const Register = () => {
                           name="taxId"
                           label="เลขประจำตัวผู้เสียภาษี"
                           value={values.taxId}
-                          onChange={handleInputChage}></Controls.Input>
+                          onChange={handleInputChage}
+                          error={errors.taxId}></Controls.Input>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -373,7 +382,7 @@ const Register = () => {
                       />
                     </Grid>
                   </Box>
-                  <Button onClick={() => check()}>check value</Button>
+                  {/* <Button onClick={() => check()}>check value</Button> */}
 
                   <Snackbar
                     open={openSuccess}

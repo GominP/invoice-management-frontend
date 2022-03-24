@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import * as billerService from "../services/billerServices";
 
 const url = "http://localhost:8080/";
 
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Payer = () => {
   let navigate = useNavigate();
   const classes = useStyles();
@@ -62,6 +62,7 @@ const Payer = () => {
     if (role === "payer") {
       setTextHeader("ผู้ออกใบแจ้งหนีัทั้งหมด");
     }
+    // billerService.biller_inquiry()
     axios
       .post(
         url + "biller-inquiry",
@@ -71,12 +72,13 @@ const Payer = () => {
         }
       )
       .then(function (response) {
+        console.log(response.data)
         if (role === "payer") {
           // response.data["billers"].map((index) => (
           //   console.log(index)
           // ))
 
-          setRows(response.data["billers"])
+          setRows(response.data["billers"]);
         } else {
           console.log("fasle");
         }
@@ -107,7 +109,7 @@ const Payer = () => {
                   /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {info.name} {info.lastname} 
+                      {info.name} {info.lastname}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -121,7 +123,7 @@ const Payer = () => {
                   <Button
                     size="small"
                     color="primary"
-                    onClick={() => navigate("/detailUser/"+ info.id)}>
+                    onClick={() => navigate("/detailUser/" + info.id)}>
                     รายละเอียด
                   </Button>
                   {role === "payer" ? null : (

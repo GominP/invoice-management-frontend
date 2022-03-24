@@ -48,6 +48,9 @@ export default function LandingPage() {
   //---------------
   const [isBiller, setIsBiller] = useState(false);
   const [dataInfo, setDataInfo] = useState({});
+  const [dayTotal, setDayTotal] = useState();
+  const [monthTotal, setMonthTotal] = useState();
+  const [yearTotal, setYearTotal] = useState();
 
   useEffect(() => {
     axios
@@ -62,7 +65,11 @@ export default function LandingPage() {
         if (response.data["biller"] === null) {
           setDataInfo(response.data["payer"]);
           dispatch(setRole("payer"));
+          localStorage.setItem("userId", response.data["payer"]["id"]);
           dispatch(setId(response.data["payer"]["id"]));
+          setDayTotal(response.data["payer"]["totalIncomeToday"]);
+          setDayTotal(response.data["payer"]["totalIncomeThisMonth"]);
+          setDayTotal(response.data["payer"]["totalIncomeThisYear"]);
         } else {
           setDataInfo(response.data["biller"]);
           dispatch(setRole("biller"));
@@ -95,7 +102,7 @@ export default function LandingPage() {
                   ))
                 : payerText.map((option) => (
                     <Grid item xs={12} md={4}>
-                      <CardTotal text={option}></CardTotal>
+                      <CardTotal text={option} amount={dayTotal}></CardTotal>
                     </Grid>
                   ))}
               {/* <Grid item xs={12} md={4}>

@@ -7,10 +7,15 @@ export function useForm(initValues, validateOnChange = false, validate, role) {
 
   useEffect(() => {
     console.log(role);
-    setValues({
+    if (role === undefined) {
+      // console.log("role = null");
+    } else {
+      // console.log("role != null");
+      setValues({
         ...values,
         ["role"]: role,
       });
+    }
   }, []);
 
   const handleInputChage = (e) => {

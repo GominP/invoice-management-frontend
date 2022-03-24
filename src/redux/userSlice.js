@@ -4,7 +4,7 @@ export const userSlice = createSlice({
   name: "users",
   initialState: {
     role: "",
-    userid: 0
+    userid: ""
   },
   reducers: {
     setRole: (state, action) => {

@@ -202,6 +202,7 @@ export default function AllInvoices() {
   const [rows, setRows] = useState([]);
   const [anchorFilter, setAnchorFilter] = useState(null);
   const open = Boolean(anchorFilter);
+  const [statusFilter, setStatusFilter] = useState("");
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -262,7 +263,8 @@ export default function AllInvoices() {
   };
   const handleChangeFilter = (string) => {
     // console.log(string);
-    setRows(rowb)
+    setStatusFilter(string);
+    setRows(rowb);
     setAnchorFilter(null);
   };
 
@@ -317,7 +319,15 @@ export default function AllInvoices() {
         <Toolbar>
           <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
             ใบแจ้งหนี้ทั้งหมด
+            {/* {statusFilter === "" ? null : (
+              <Grid sx={{ paddingLeft: 1 }}>
+                <Button variant="outlined" color="error">
+                  {statusFilter}
+                </Button>
+              </Grid>
+            )} */}
           </Typography>
+
           <Stack direction={{ xs: "row", sm: "row" }}>
             <TextField
               value={filterName}

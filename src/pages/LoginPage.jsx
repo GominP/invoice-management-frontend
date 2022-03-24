@@ -24,39 +24,32 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { blue } from "@mui/material/colors";
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
+import * as authService from "../services/authService";
+import axios from "axios";
 
 const theme = createTheme();
 
 export default function SignIn() {
   let navigate = useNavigate();
-
-  const axios = require("axios");
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    axios
-      .post("http://localhost:8080/login", {
-        username: data.get("username"),
-        password: data.get("password"),
-      })
-      .then(function (response) {
-        localStorage.setItem("token", response.data["jwtToken"]);
-        console.log(response.data["jwtToken"]);
-        window.location.href="/landing";
-      });
+    const dataLogin = {
+      username: data.get("username"),
+      password: data.get("password"),
+    };
+    await authService.login(dataLogin);
+
+    // axios
+    //   .post("http://localhost:8080/login", {
+    //     username: data.get("username"),
+    //     password: data.get("password"),
+    //   })
+    //   .then(function (response) {
+    //     localStorage.setItem("token", response.data["jwtToken"]);
+    //     console.log(response.data["jwtToken"]);
+    //     window.location.href = "/landing";
+    //   });
   };
 
   return (

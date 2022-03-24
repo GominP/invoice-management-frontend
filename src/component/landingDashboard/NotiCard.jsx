@@ -43,7 +43,7 @@ const NotiCard = ({ isLoading }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [name, setname] = useState("สินชัย มั่นคง");
-  const [unred, setunred] = useState(12)
+  const [unred, setunred] = useState(4)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

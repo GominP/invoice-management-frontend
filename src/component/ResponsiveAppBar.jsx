@@ -60,7 +60,7 @@ const ResponsiveAppBar = () => {
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElNoti, setAnchorElNoti] = useState(null);
-  const [notifyCount, setNotifyCount] = useState(2);
+  const [notifyCount, setNotifyCount] = useState(4);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -334,10 +334,10 @@ const ResponsiveAppBar = () => {
             }}>
             <Avatar /> Profile
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <Avatar /> My account
-          </MenuItem>
-          <MenuItem
+          </MenuItem> */}
+          {/* <MenuItem
             onClick={() => {
               window.location.href = "/login";
             }}>
@@ -348,7 +348,7 @@ const ResponsiveAppBar = () => {
               navigate("/register");
             }}>
             <Avatar /> Register
-          </MenuItem>
+          </MenuItem> */}
           <Divider />
           <MenuItem sx={{ color: "red" }} onClick={() => handleLogout()}>
             <ListItemIcon>
