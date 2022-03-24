@@ -51,6 +51,11 @@ export default function LandingPage() {
   const [dayTotal, setDayTotal] = useState();
   const [monthTotal, setMonthTotal] = useState();
   const [yearTotal, setYearTotal] = useState();
+  const allTotal = {
+    dayTotal,
+    monthTotal,
+    yearTotal,
+  };
 
   useEffect(() => {
     axios
@@ -100,24 +105,11 @@ export default function LandingPage() {
                       <CardTotal text={option}></CardTotal>
                     </Grid>
                   ))
-                : payerText.map((option) => (
+                : payerText.map((option,index) => (
                     <Grid item xs={12} md={4}>
-                      <CardTotal text={option} amount={dayTotal}></CardTotal>
+                      <CardTotal text={option} amount={allTotal[index]}></CardTotal>
                     </Grid>
                   ))}
-              {/* <Grid item xs={12} md={4}>
-                <CardTotal text="ยอดรายรับของวันนี้"></CardTotal>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <CardTotal text="ยอดรายรับของเดือนนี้"></CardTotal>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <CardTotal text="ยอดรายรับของปีนี้" amount={3}></CardTotal>
-              </Grid> */}
-
-              {/* <Grid item xs={12} md={4}>
-                Test
-              </Grid> */}
             </Grid>
           </Grid>
         </Grid>

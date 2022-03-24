@@ -9,6 +9,7 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import {
   Typography,
   Card,
@@ -31,7 +32,7 @@ const theme = createTheme();
 
 export default function SignIn() {
   let navigate = useNavigate();
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const dataLogin = {
@@ -54,23 +55,33 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
+      {/* <CssBaseline /> */}
       <Box
         sx={{
           marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
           alignItems: "center",
         }}>
-        <Grid sx={{ display: "flex", justifyContent: "center" }}>
+        <Grid>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <Grid item>
               <Card>
                 <CardMedia />
-                <CardContent>
-                  {/* <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar> */}
+                <CardContent
+                  sx={{
+                    // marginTop: 8,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}>
+                  <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <LockOutlinedIcon />
+                  </Avatar>
                   <Typography component="h1" variant="h5">
-                    ลงชื่อเข้าสู่ระบบ
+                    Sign in
                   </Typography>
+
                   <Box
                     component="form"
                     onSubmit={handleSubmit}
@@ -81,7 +92,7 @@ export default function SignIn() {
                       required
                       fullWidth
                       id="username"
-                      label="ชื่อบัญชีผู้ใช้"
+                      label="username"
                       name="username"
                       autoComplete="username"
                       autoFocus
@@ -91,7 +102,7 @@ export default function SignIn() {
                       required
                       fullWidth
                       name="password"
-                      label="รหัสผ่าน"
+                      label="password"
                       type="password"
                       id="password"
                       autoComplete="current-password"
@@ -105,7 +116,7 @@ export default function SignIn() {
                       fullWidth
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}>
-                      เข้าสู่ระบบ
+                      Login
                     </Button>
                     <Grid container>
                       <Grid item xs>
@@ -128,19 +139,24 @@ export default function SignIn() {
                 sx={{
                   border: "1px solid",
                   borderColor: blue[300] + 75,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                   // ':hover': {
                   //     boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 8%)'
                   // },
                   borderRadius: 3,
                 }}>
-                <CardHeader
-                  title={"ยังไม่ได้เป็นสมาชิก? สมัครสมาชิกกับเราเลย"}
-                />
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <StickyNote2Icon />
+                </Avatar>
+                <CardHeader title={"Not a member yet? Join us now"} />
+
                 <CardActionArea onClick={() => navigate("/register/biller")}>
                   <CardContent
                     sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography gutterBottom variant="h5" component="div">
-                      สมัครสมาชิกเพื่อสร้างใบแจ้งหนี้
+                      Register For Create Invoice
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -149,7 +165,7 @@ export default function SignIn() {
                   <CardContent
                     sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography gutterBottom variant="h5" component="div">
-                      สมัครสมาชิกเพื่อจ่ายใบแจ้งหนี้
+                      Register
                     </Typography>
                   </CardContent>
                 </CardActionArea>
