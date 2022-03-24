@@ -45,15 +45,14 @@ export default function DetailUser() {
   const classes = useStyles();
   let params = useParams();
   const role = useSelector(getUsers);
-  const [textHeader, setTextHeader] = useState("ข้อมูลผู้จ่ายใบแจ้งหนี้");
-  const [dataInfo, setDataInfo] = useState({})
+  const [textHeader, setTextHeader] = useState("Infomation Payer");
+  const [dataInfo, setDataInfo] = useState({});
 
   const data = {
     id: 1,
   };
 
   useEffect(() => {
-
     axios
       .post(
         "http://localhost:8080/biller-detail-inquiry",
@@ -66,11 +65,11 @@ export default function DetailUser() {
       )
       .then(function (response) {
         console.log(response.data);
-        setDataInfo(response.data)
+        setDataInfo(response.data);
       });
 
     if (role === "payer") {
-      setTextHeader("ข้อมูลผู้ออกใบแจ้งหนี้");
+      setTextHeader("Infomation Biller");
     }
   }, []);
 
@@ -87,16 +86,22 @@ export default function DetailUser() {
                   <Box>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={4}>
-                        <Typography>Name</Typography>
+                        <Typography>Name :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
-                        <Typography>{dataInfo.name} {dataInfo.lastname}</Typography>
+                        <Typography>
+                          {dataInfo.name} {dataInfo.lastname}
+                        </Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
                         <Typography>Address :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
-                        <Typography>{dataInfo.addressDetail} {dataInfo.subDistrict}  {dataInfo.district} {dataInfo.road}  {dataInfo.province} {dataInfo.zipCode}</Typography>
+                        <Typography>
+                          {dataInfo.addressDetail} {dataInfo.subDistrict}{" "}
+                          {dataInfo.district} {dataInfo.road}{" "}
+                          {dataInfo.province} {dataInfo.zipCode}
+                        </Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
                         <Typography>Phone number :</Typography>
@@ -105,7 +110,7 @@ export default function DetailUser() {
                         <Typography>0958654531</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
-                        <Typography>Tax id</Typography>
+                        <Typography>Tax id :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
                         <Typography>{dataInfo.taxId}</Typography>
@@ -113,7 +118,8 @@ export default function DetailUser() {
                     </Grid>
                   </Box>
                 </CardContent>
-                <CardActions sx={{display: "flex", justifyContent:"flex-end"}}>
+                <CardActions
+                  sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <ResponsiveDialog
                     textButton={"Cancel Invoice"}
                     deleteRelation={true}></ResponsiveDialog>
