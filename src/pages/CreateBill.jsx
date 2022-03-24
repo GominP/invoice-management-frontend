@@ -63,10 +63,10 @@ export default function CreateBill() {
 
   const headProduct = [
     { id: "index", label: "#" },
-    { id: "detail", label: "ชื่อสินค้า/รายละเอียด" },
-    { id: "quantity", label: "จำนวน" },
-    { id: "priceUnit", label: "ราคาต่อหน่วย" },
-    { id: "totalPrice", label: "ราคารวม" },
+    { id: "detail", label: "Product" },
+    { id: "quantity", label: "Qty." },
+    { id: "priceUnit", label: "Price/Unit" },
+    { id: "totalPrice", label: "total" },
   ];
 
   function handleChangeUnit(e, row_index, key) {
@@ -136,7 +136,7 @@ export default function CreateBill() {
                 direction={{ xs: "column", sm: "row" }}>
                 <ResponsiveHeader text="หน้าสร้างใบแจ้งหนี้" />
                 <Button variant="outlined" color="success">
-                  สร้างใบแจ้งหนี้
+                  Create Invoice
                 </Button>
               </Stack>
               <MainCard>
@@ -146,24 +146,24 @@ export default function CreateBill() {
                       <Grid container spacing={3}>
                         <Grid item xl={4} lg={4} md={6} sm={6} xs={4}>
                           <TextField
-                            id="outlined-name"
-                            label="ชื่อลูกค้า"
+                            id="outlined"
+                            label="Customer"
                             value={name}
                             onChange={handleChange}
                           />
                           <Grid pt={3}>
                             <TextField
-                              id="outlined-textarea"
-                              label="รายละเอียด"
-                              placeholder="รายละเอียดลูกค้า"
+                              id="outlined"
+                              label="Detail"
+                              placeholder="Detail"
                               multiline
                             />
                           </Grid>
                           <Grid pt={3}>
                             <TextField
                               id="outlined-textarea"
-                              label="ที่อยู่"
-                              placeholder="ที่อยู่ลูกค้า"
+                              label="Address"
+                              placeholder="Address"
                               multiline
                             />
                           </Grid>
@@ -173,19 +173,14 @@ export default function CreateBill() {
                             <Box>
                               <Grid container>
                                 <Grid item xs={4} md={12}>
-                                  <Typography>ผู้ติดต่อ :</Typography>
+                                  <Typography>Contact name :</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={12}>
                                   <Typography>สิ่นชัย มั่นคง</Typography>
                                 </Grid>
-                                <Grid item xs={4} md={12}>
-                                  <Typography>อีเมลล์ : </Typography>
-                                </Grid>
-                                <Grid item xs={8} md={12}>
-                                  <Typography>test@gmail.com</Typography>
-                                </Grid>
+
                                 <Grid item xs={4} md={3}>
-                                  <Typography>เบอร์โทร : </Typography>
+                                  <Typography>Phone number : </Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>0958654531</Typography>
@@ -196,13 +191,13 @@ export default function CreateBill() {
                         </Grid>
                         <Grid item xl={4} lg={4} md={4} sm={6} xs={12}>
                           <Typography sx={{ color: "purple" }} variant="h5">
-                            จำนวนเงินทั้งสิ้น
+                            TOTAL
                           </Typography>
-                          <Typography>{currencyFormat(price)} บาท</Typography>
+                          <Typography>{currencyFormat(price)}</Typography>
                           <Box paddingTop={3}>
                             <Grid container spacing={2}>
                               <Grid item xs={12} md={4}>
-                                <Typography>วันที่</Typography>
+                                <Typography>Date</Typography>
                               </Grid>
                               <Grid item xs={12} md={8}>
                                 <TextField
@@ -213,7 +208,7 @@ export default function CreateBill() {
                                 />
                               </Grid>
                               <Grid item xs={12} md={4}>
-                                <Typography>ครบกำหนด</Typography>
+                                <Typography>Expired date</Typography>
                               </Grid>
                               <Grid item xs={12} md={8}>
                                 <DatePicker
@@ -230,7 +225,7 @@ export default function CreateBill() {
                                 />
                               </Grid>
                               <Grid item xs={12} md={4}>
-                                <Typography>ผู้ออกใบแจ้งหนี้</Typography>
+                                <Typography>Biller</Typography>
                               </Grid>
                               <Grid item xs={12} md={8}>
                                 <TextField
@@ -253,7 +248,7 @@ export default function CreateBill() {
                             <Grid>
                               <TextField
                                 id="outlined-name"
-                                label="เลขที่อ้างอิง"
+                                label="Ref. number"
                                 value={name}
                                 onChange={handleChange}
                               />
@@ -261,7 +256,7 @@ export default function CreateBill() {
                             <Grid>
                               <TextField
                                 id="outlined-name"
-                                label="ราคาสินค้า"
+                                label="Promotion"
                                 value={name}
                                 onChange={handleChange}
                               />
@@ -305,14 +300,14 @@ export default function CreateBill() {
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
                                             id="outlined-name"
-                                            label="ชื่อสินค้า"
+                                            label="Product"
                                           />
                                         </Stack>
                                       </TableCell>
                                       <TableCell align="center">
                                         <TextField
                                           id="outlined-qty"
-                                          label="จำนวน"
+                                          label="Qty."
                                           type={"number"}
                                           inputProps={{
                                             inputMode: "numeric",
@@ -330,7 +325,7 @@ export default function CreateBill() {
                                       <TableCell align="center">
                                         <TextField
                                           id="outlined-price"
-                                          label="ราคา"
+                                          label="Price"
                                           type={"number"}
                                           maxLength={6}
                                           inputProps={{
@@ -358,9 +353,9 @@ export default function CreateBill() {
                           </TableContainer>
                         </Grid>
                         <Button onClick={() => addProduct()}>
-                          เพิ่มรายการสินค้า
+                          + Add Product
                         </Button>
-                        <Button onClick={() => handleChange()}>mf]vsd</Button>
+                        {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
                       </Grid>
                     </Grid>
                   </Grid>

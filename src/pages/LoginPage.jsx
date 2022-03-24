@@ -82,7 +82,7 @@ export default function SignIn() {
                       required
                       fullWidth
                       id="username"
-                      label="username"
+                      label="Username"
                       name="username"
                       autoComplete="username"
                       autoFocus
@@ -92,7 +92,7 @@ export default function SignIn() {
                       required
                       fullWidth
                       name="password"
-                      label="password"
+                      label="Password"
                       type="password"
                       id="password"
                       autoComplete="current-password"

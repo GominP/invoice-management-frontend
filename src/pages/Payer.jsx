@@ -55,12 +55,12 @@ const Payer = () => {
   const role = useSelector(getUsers);
   const id = useSelector((state) => state.users.userid);
   const dispatch = useDispatch();
-  const [textHeader, setTextHeader] = useState("ผู้จ่ายใบแจ้งหนีัทั้งหมด");
+  const [textHeader, setTextHeader] = useState("All Payer");
   const [rows, setRows] = useState([{}]);
 
   useEffect(() => {
     if (role === "payer") {
-      setTextHeader("ผู้ออกใบแจ้งหนีัทั้งหมด");
+      setTextHeader("All Biller");
     }
     // billerService.biller_inquiry()
     axios
@@ -115,7 +115,7 @@ const Payer = () => {
                       variant="body2"
                       color="textSecondary"
                       component="p">
-                      เบอร์โทรศัพท์ {info.phone}
+                      Phone number {info.phone}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
@@ -124,14 +124,14 @@ const Payer = () => {
                     size="small"
                     color="primary"
                     onClick={() => navigate("/detailUser/" + info.id)}>
-                    รายละเอียด
+                    Datail
                   </Button>
                   {role === "payer" ? null : (
                     <Button
                       size="small"
                       color="primary"
                       onClick={() => navigate("bill")}>
-                      สร้างใบแจ้งหนี้
+                      Create Invoice
                     </Button>
                   )}
                 </CardActions>

@@ -210,7 +210,7 @@ const EditProfile = () => {
         component="h1"
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
-        แก้ไขข้อมูล
+        Edit Profile
       </Typography>
       <Box
         component="form"
@@ -363,14 +363,14 @@ const EditProfile = () => {
                       variant="outlined"
                       color="primary"
                       onClick={() => handleClickOpenPassword()}>
-                      เปลี่ยนรหัสผ่าน
+                      Change Password
                     </Button>
 
                     <Button
                       variant="outlined"
                       color="primary"
                       onClick={() => handleEdit()}>
-                      แก้ไขข้อมูล
+                      Edit
                     </Button>
                   </Stack>
                 </CardActions>
@@ -384,10 +384,10 @@ const EditProfile = () => {
                     onClick={() => handleEdit()}
                     variant="outlined"
                     color="error">
-                    ยกเลิก
+                    Cancel
                   </Button>
                   <Button type="submit" variant="outlined" color="success">
-                    ยืนยันการแก้ไขข้อมูล
+                    Confirm
                   </Button>
                 </CardActions>
               )}

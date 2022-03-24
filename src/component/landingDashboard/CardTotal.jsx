@@ -66,7 +66,7 @@ const CardTotal = ({ text,amount }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4"> $ 0 บาท</Typography>}
+                primary={<Typography variant="h4"> $ </Typography>}
                 secondary={
                   <Typography
                     variant="subtitle2"

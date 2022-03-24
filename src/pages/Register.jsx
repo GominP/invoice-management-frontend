@@ -213,7 +213,7 @@ const Register = () => {
         component="h1"
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
-        สมัครสมาชิก
+        Sign Up
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Form onSubmit={handleSubmit}>
@@ -231,7 +231,7 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="username"
-                          label="username"
+                          label="Username"
                           value={values.username}
                           onChange={handleInputChage}
                           error={errors.username}></Controls.Input>
@@ -244,7 +244,7 @@ const Register = () => {
                           showPassword={false}></Controls.InputPassword> */}
                         <Controls.InputPassword
                           name="password"
-                          label="password"
+                          label="Password"
                           value={values.password}
                           onChange={handleInputChage}
                           error={errors.password}
@@ -252,7 +252,7 @@ const Register = () => {
                       </Grid>
                       <Divider />
                       <Typography variant="h5" component="h1" p={1}>
-                        ข้อมูลส่วนตัว
+                        Infomation
                       </Typography>
                       <Grid>
                         <Controls.Input
@@ -269,7 +269,7 @@ const Register = () => {
                           error={errors.lastname}></Controls.Input>
                         <Controls.Input
                           name="phone"
-                          label="เบอร์โทร"
+                          label="Phone Number"
                           value={values.phone}
                           onChange={handleInputChage}
                           error={errors.phone}></Controls.Input>
@@ -277,26 +277,26 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="addressDetail"
-                          label="บ้านเลขที่"
+                          label="Address Detail"
                           value={values.addressDetail}
                           onChange={handleInputChage}
                           error={errors.addressDetail}></Controls.Input>
                         <Controls.Input
                           name="road"
-                          label="ถนน"
+                          label="Road"
                           value={values.road}
                           onChange={handleInputChage}
                           error={errors.road}></Controls.Input>
                         <Controls.Input
                           name="district"
-                          label="อำเภอ"
+                          label="District"
                           value={values.district}
                           onChange={handleInputChage}
                           error={errors.district}></Controls.Input>
 
                         <Controls.Input
                           name="subDistrict"
-                          label="ตำบล"
+                          label="Subdistrict"
                           value={values.subDistrict}
                           onChange={handleInputChage}
                           error={errors.subDistrict}></Controls.Input>
@@ -304,13 +304,13 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="province"
-                          label="จังหวัด"
+                          label="Province"
                           value={values.province}
                           onChange={handleInputChage}
                           error={errors.province}></Controls.Input>
                         <Controls.Input
                           name="zipCode"
-                          label="รหัสไปรษณีย์"
+                          label="Zipcode"
                           value={values.zipCode}
                           onChange={handleInputChage}
                           error={errors.zipCode}></Controls.Input>
@@ -318,13 +318,13 @@ const Register = () => {
                       <Grid>
                         <Controls.Input
                           name="citizenId"
-                          label="เลขประจำตัวประชาชน"
+                          label="Citizen ID"
                           value={values.citizenId}
                           onChange={handleInputChage}
                           error={errors.citizenId}></Controls.Input>
                         <Controls.Input
                           name="taxId"
-                          label="เลขประจำตัวผู้เสียภาษี"
+                          label="Tax ID"
                           value={values.taxId}
                           onChange={handleInputChage}
                           error={errors.taxId}></Controls.Input>
@@ -361,7 +361,7 @@ const Register = () => {
                       onClose={handleClose}
                       severity="success"
                       sx={{ width: "100%" }}>
-                      สมัครสมาชิกสำเร็จ
+                      Register Success
                     </Alert>
                   </Snackbar>
                   <Snackbar
@@ -384,7 +384,7 @@ const Register = () => {
                     fullWidth
                     variant="contained"
                     sx={{ mb: 2 }}>
-                    สมัครสมาชิก
+                    Sign Up
                   </Button>
                 </CardActions>
               </Card>

@@ -34,7 +34,7 @@ const theme = createTheme(
       },
     },
   },
-  thTH
+  // thTH
 );
 const path = window.location.pathname;
 

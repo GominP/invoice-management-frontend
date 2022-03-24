@@ -85,7 +85,7 @@ const NotiCard = ({ isLoading }) => {
                       mt: 1.75,
                       mb: 0.75,
                     }}>
-                    การแจ้งเตือนของวันนี้ {unred} ข้อความ
+                   {unred} Notification 
                   </Typography>
                 </Grid>
                 <Grid item>

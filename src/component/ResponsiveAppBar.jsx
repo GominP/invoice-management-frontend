@@ -22,17 +22,8 @@ import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import { setRole, getUsers } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const biller = [
-  "INVOICE GUARD",
-  "ดูใบแจ้งหนี้ทั้งหมด",
-  "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด",
-];
-const payer = [
-  "INVOICE GUARD",
-  "ดูใบแจ้งหนี้ทั้งหมด",
-  "ดูผู้สร้างใบแจ้งหนี้",
-  "เพิ่มผู้สร้างใบแจ้งหนี้",
-];
+const biller = ["INVOICE GUARD", "All Invoice", "Payer"];
+const payer = ["INVOICE GUARD", "All Invoice", "Biller", "Add Biller"];
 const notification = [
   "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
   "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว",
@@ -123,13 +114,13 @@ const ResponsiveAppBar = () => {
 
   function changePage(page) {
     switch (page) {
-      case "ดูใบแจ้งหนี้ทั้งหมด":
+      case "All Invoice":
         navigate("/allbill");
         break;
-      case "ดูผู้สร้างใบแจ้งหนี้":
+      case "Biller":
         navigate("/payer");
         break;
-      case "ดูผู้จ่ายใบแจ้งหนี้ทั้งหมด":
+      case "Payer":
         navigate("/payer");
         break;
       case "ยอดรวมรายรับ" || "ยอดรวมรายจ่าย":
@@ -138,7 +129,7 @@ const ResponsiveAppBar = () => {
       case "INVOICE GUARD":
         navigate("/landing");
         break;
-      case "เพิ่มผู้สร้างใบแจ้งหนี้":
+      case "Add Biller":
         navigate("/addBiller");
         break;
       default:
@@ -209,9 +200,7 @@ const ResponsiveAppBar = () => {
               aria-label={notificationsLabel(notifyCount)}
               onClick={handleOpenNotiMenu}>
               <Badge badgeContent={notifyCount} color="error">
-                <Typography textAlign="center">
-                  การแจ้งเตือนของวันนี้
-                </Typography>
+                <Typography textAlign="center">Notification</Typography>
               </Badge>
             </MenuItem>
           </Menu>

@@ -106,7 +106,7 @@ export default function AddBiller() {
         component="h1"
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
-        เพิ่มผู้สร้างใบแจ้งหนี้
+        Add New Biller
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Form onSubmit={handleSubmit}>
@@ -122,7 +122,7 @@ export default function AddBiller() {
                         "& .MuiTextField-root": { m: 0, width: "100%" },
                       }}>
                       <Typography variant="h6" p={0}>
-                        เพิ่มผู้สร้างใบแจ้งหนี้จากรหัส
+                        Add biller from code
                       </Typography>
 
                       <Typography variant="h7">
@@ -132,7 +132,7 @@ export default function AddBiller() {
                       <Grid pt={2}>
                         <Controls.Input
                           name="code"
-                          label="รหัส"
+                          label="Biller code"
                           value={values.code}
                           onChange={handleInputChage}
                           error={errors.code}></Controls.Input>
@@ -175,7 +175,7 @@ export default function AddBiller() {
                     fullWidth
                     variant="contained"
                     sx={{ mb: 2 }}>
-                    เพิ่ม
+                    + New Biller
                   </Button>
                 </CardActions>
               </Card>

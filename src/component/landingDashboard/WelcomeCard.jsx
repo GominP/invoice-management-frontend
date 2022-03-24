@@ -4,8 +4,7 @@ import { useState } from "react";
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
-import { green, pink,indigo,blue } from '@mui/material/colors';
-
+import { green, pink, indigo, blue } from "@mui/material/colors";
 
 // project imports
 import MainCard from "../MainCard";
@@ -19,19 +18,18 @@ import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: blue[400],
   color: "#fff",
   overflow: "hidden",
   position: "relative",
-
 }));
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const WelcomeCard = ({ isLoading,name }) => {
+const WelcomeCard = ({ isLoading, name }) => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,14 +51,14 @@ const WelcomeCard = ({ isLoading,name }) => {
             <Grid item>
               <Grid container justifyContent="space-between">
                 <Grid item>
-                <Typography
-                sx={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: theme.palette.secondary[200],
-                }}>
-                ยินดีต้อนรับคุณ
-              </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "1rem",
+                      fontWeight: 500,
+                      color: theme.palette.secondary[200],
+                    }}>
+                    Welcome
+                  </Typography>
                   {/* <Avatar
                     variant="rounded"
                     sx={{
@@ -83,7 +81,7 @@ const WelcomeCard = ({ isLoading,name }) => {
                       mt: 1.75,
                       mb: 0.75,
                     }}>
-                    คุณ {name}
+                    {name} Test
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -121,7 +119,7 @@ const WelcomeCard = ({ isLoading,name }) => {
 
 WelcomeCard.propTypes = {
   isLoading: PropTypes.bool,
-  name: PropTypes.string
+  name: PropTypes.string,
 };
 
 export default WelcomeCard;

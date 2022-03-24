@@ -114,7 +114,7 @@ const headCells = [
     id: "billId",
     numeric: false,
     disablePadding: true,
-    label: "เลขที่ใบแจ้งหนี้",
+    label: "Invoice id",
   },
   // {
   //   id: "date",
@@ -126,19 +126,19 @@ const headCells = [
     id: "customerName",
     numeric: false,
     disablePadding: false,
-    label: "ชื่อลูกค้า",
+    label: "Customer",
   },
   {
     id: "expiredDate",
     numeric: false,
     disablePadding: false,
-    label: "วันครบกำหนด",
+    label: "Expired Date",
   },
   {
     id: "total",
     numeric: true,
     disablePadding: false,
-    label: "ยอดรวมสุทธิ",
+    label: "Total",
   },
 ];
 
@@ -215,8 +215,8 @@ export default function AllInvoices() {
     },
   };
   const filters = [
-    "จ่ายแล้ว",
-    "เลยกำหนดชำระ",
+    "Paid",
+    "Overdue",
     "คำร้องแก้ไขใบแจ้งหนี้",
     "ใบแจ้งหนี้ที่กำลังรอดำเนินการ",
     "ใบแจ้งหนี้ที่ถูกยกเลิก",
@@ -318,7 +318,7 @@ export default function AllInvoices() {
       <Paper sx={{ width: "100%", mb: 2 }}>
         <Toolbar>
           <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
-            ใบแจ้งหนี้ทั้งหมด
+            All Invoice
             {/* {statusFilter === "" ? null : (
               <Grid sx={{ paddingLeft: 1 }}>
                 <Button variant="outlined" color="error">
@@ -333,7 +333,7 @@ export default function AllInvoices() {
               value={filterName}
               onChange={handleFilterByName}
               // label="ค้นหา"
-              placeholder="ค้นหาด้วยเลขใบแจ้งหนี้"
+              placeholder="Search Invoice"
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="start">

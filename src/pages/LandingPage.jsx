@@ -28,14 +28,14 @@ import { setRole, setId, getUsers } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const billerText = [
-  "ยอดรวมรายรับของวันนี้",
-  "ยอดรวมรายรับของเดือนนี้",
-  "ยอดรวมรายรับของปีนี้",
-];
+  "Total Income Today",
+  "Total Income This Month",
+  "Total Income This Year",
+]; 
 const payerText = [
-  "ยอดรวมรายจ่ายของวันนี้",
-  "ยอดรวมรายจ่ายของเดือนนี้",
-  "ยอดรวมรายจ่ายของปีนี้",
+  "Total Expenses Today",
+  "Total Expenses This Month",
+  "Total Expenses This Year",
 ];
 const url = "http://localhost:8080/";
 export default function LandingPage() {

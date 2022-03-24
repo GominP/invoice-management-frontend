@@ -87,25 +87,25 @@ export default function DetailUser() {
                   <Box>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={4}>
-                        <Typography>ชื่อ-นามสกุล/ชื่อบริษัท</Typography>
+                        <Typography>Name</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
                         <Typography>{dataInfo.name} {dataInfo.lastname}</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
-                        <Typography>ที่อยู่ :</Typography>
+                        <Typography>Address :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
                         <Typography>{dataInfo.addressDetail} {dataInfo.subDistrict}  {dataInfo.district} {dataInfo.road}  {dataInfo.province} {dataInfo.zipCode}</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
-                        <Typography>เบอร์โทร :</Typography>
+                        <Typography>Phone number :</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
                         <Typography>0958654531</Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
-                        <Typography>เลขประจำตัวผู้เสียภาษี</Typography>
+                        <Typography>Tax id</Typography>
                       </Grid>
                       <Grid item xs={12} md={8}>
                         <Typography>{dataInfo.taxId}</Typography>
@@ -115,7 +115,7 @@ export default function DetailUser() {
                 </CardContent>
                 <CardActions sx={{display: "flex", justifyContent:"flex-end"}}>
                   <ResponsiveDialog
-                    textButton={"ยกเลิกใบแจ้งหนี้"}
+                    textButton={"Cancel Invoice"}
                     deleteRelation={true}></ResponsiveDialog>
                   {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}
                 </CardActions>
