@@ -22,7 +22,7 @@ function ResponsiveDialog(props) {
   let navigate = useNavigate();
 
   const axios = require("axios");
-  const { textButton, requestEdit, deleteRelation } = props;
+  const { textButton, requestEdit, deleteRelation, color } = props;
   const [open, setOpen] = useState(false);
   const [qrcode, setQrcode] = useState("");
 
@@ -93,7 +93,11 @@ function ResponsiveDialog(props) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} fullWidth>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        fullWidth
+        color={color}>
         {textButton}
       </Button>
       {requestEdit === false ? (
@@ -211,6 +215,7 @@ ResponsiveDialog.propTypes = {
   textButton: PropTypes.string.isRequired,
   requestEdit: PropTypes.bool.isRequired,
   deleteRelation: PropTypes.bool.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default ResponsiveDialog;

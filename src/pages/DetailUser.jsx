@@ -122,18 +122,12 @@ export default function DetailUser() {
                   sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <ResponsiveDialog
                     textButton={"Cancel Invoice"}
-                    deleteRelation={true}></ResponsiveDialog>
+                    deleteRelation={true}
+                    color={"error"}></ResponsiveDialog>
                   {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}
                 </CardActions>
               </Box>
             </Grid>
-
-            {/* <CardMedia
-              component="img"
-              //   sx={{ width: 151 }}
-              image={img2}
-              alt="Live from space album cover"
-            /> */}
           </Card>
         </Grid>
       </Box>

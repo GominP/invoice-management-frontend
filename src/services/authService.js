@@ -22,13 +22,16 @@ export async function login(data) {
   });
 }
 
-export async function landing(data) {
-  await axios
-    .post(KEYS.url + "landing", data, {
+export const landing = async () => {
+  const response = await axios.post(
+    KEYS.url + "landing",
+    {},
+    {
       headers: { Authorization: token },
-    })
-    .then(function (response) {});
-}
+    }
+  );
+  return response;
+};
 
 // ------------------------------------------
 // export function insertRegister(data) {

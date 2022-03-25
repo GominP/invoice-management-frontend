@@ -39,7 +39,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   },
 }));
 
-const CardTotal = ({ text,amount }) => {
+const CardTotal = ({ text, amount }) => {
   const theme = useTheme();
 
   return (
@@ -66,7 +66,7 @@ const CardTotal = ({ text,amount }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4"> $ </Typography>}
+                primary={<Typography variant="h4"> $ {amount} </Typography>}
                 secondary={
                   <Typography
                     variant="subtitle2"
@@ -87,7 +87,7 @@ const CardTotal = ({ text,amount }) => {
 };
 CardTotal.propTypes = {
   text: PropTypes.string,
-  amount: PropTypes.number
+  amount: PropTypes.string,
 };
 
 export default CardTotal;

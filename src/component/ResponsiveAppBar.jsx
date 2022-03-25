@@ -101,11 +101,15 @@ const ResponsiveAppBar = () => {
     if (path.pathname === "/") {
     } else if (path.pathname.includes("/allbill")) {
       tabSelect = 1;
-    } else if (path.pathname === "/payer") {
+    } else if (
+      path.pathname === "/payer" ||
+      path.pathname.includes("/detailUser")
+    ) {
       tabSelect = 2;
     } else if (path.pathname === "/addBiller") {
       tabSelect = 3;
     }
+
     setTab(tabSelect);
   };
 
