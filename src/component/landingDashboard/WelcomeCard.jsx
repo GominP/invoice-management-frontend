@@ -81,7 +81,7 @@ const WelcomeCard = ({ isLoading, name }) => {
                       mt: 1.75,
                       mb: 0.75,
                     }}>
-                    {name} Test
+                    {name}
                   </Typography>
                 </Grid>
                 <Grid item>

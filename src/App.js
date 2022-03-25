@@ -47,7 +47,7 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {path === "/login" ? (
+        {path === "/" || path.includes("/register") ? (
           <box></box>
         ) : (
           <ResponsiveAppBar></ResponsiveAppBar>
@@ -55,7 +55,7 @@ function App() {
 
         <Routes>
           {/* <Route path="/" element={<LoginPage />} /> */}
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addBiller" element={<AddBiller />} />
           <Route path="/payer" element={<Payer />} />

@@ -10,7 +10,7 @@ export function postRegiter(data) {
   axios.post(KEYS.url + "register", data).then(function (response) {
     localStorage.setItem("token", response.data["jwtToken"]);
     console.log(response.data["jwtToken"]);
-    window.location.href = "/login";
+    window.location.href = "/";
   });
 }
 
@@ -27,9 +27,7 @@ export async function landing(data) {
     .post(KEYS.url + "landing", data, {
       headers: { Authorization: token },
     })
-    .then(function (response) {
-      
-    });
+    .then(function (response) {});
 }
 
 // ------------------------------------------

@@ -13,13 +13,17 @@ export function biller_detail_inquiry(data) {
     });
 }
 
-export function biller_inquiry(data) {
-  console.log(data);
-  axios
+export const biller_inquiry = async (data) => {
+  const response = await axios
     .post(url + "biller-inquiry", data, {
       headers: { Authorization: token },
     })
-    .then(function (response) {
-      console.log(response.data["billers"]);
-    });
-}
+    return response.data["billers"]
+    // .then(function (response) {
+    //   console.log(response.data["billers"]);
+    //   return response.data["billers"];
+    // })
+    // .catch((err) => {
+    //   return null;
+    // });
+};

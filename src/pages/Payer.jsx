@@ -62,30 +62,39 @@ const Payer = () => {
     if (role === "payer") {
       setTextHeader("All Biller");
     }
-    // billerService.biller_inquiry()
-    axios
-      .post(
-        url + "biller-inquiry",
-        { payerId: id },
-        {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        }
-      )
-      .then(function (response) {
-        console.log(response.data)
-        if (role === "payer") {
-          // response.data["billers"].map((index) => (
-          //   console.log(index)
-          // ))
+    callApi();
+    console.log("role = " + role);
+    console.log("id = " + id);
 
-          setRows(response.data["billers"]);
-        } else {
-          console.log("fasle");
-        }
-        // console.log(response.data);
-        // setOpenSuccess(true);
-      });
+    // axios
+    //   .post(
+    //     url + "biller-inquiry",
+    //     { payerId: id },
+    //     {
+    //       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+    //     }
+    //   )
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //     if (role === "payer") {
+    //       // response.data["billers"].map((index) => (
+    //       //   console.log(index)
+    //       // ))
+
+    //       setRows(response.data["billers"]);
+    //     } else {
+    //       console.log("fasle");
+    //     }
+    //     // console.log(response.data);
+    //     // setOpenSuccess(true);
+    //   });
   }, []);
+
+  const callApi = () => {
+    billerService.biller_inquiry({ payerId: id }).then(function (response) {
+      setRows(response);
+    });
+  };
 
   return (
     <div>
@@ -99,14 +108,6 @@ const Payer = () => {
             <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
               <Card className={classes.card}>
                 <CardActionArea onClick={() => navigate("/detailUser/1")}>
-                  {/* <CardMedia
-                    className={classes.media}
-                    title="Contemplative Reptile"
-                    component="img"
-                    height="140"
-                    image={img}
-                    alt="green iguana"
-                  /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {info.name} {info.lastname}

@@ -97,15 +97,16 @@ const ResponsiveAppBar = () => {
   const [tab, setTab] = React.useState(0);
 
   const currentTab = () => {
-    let a = 0;
+    let tabSelect = 0;
     if (path.pathname === "/") {
     } else if (path.pathname.includes("/allbill")) {
+      tabSelect = 1;
     } else if (path.pathname === "/payer") {
-      a = 1;
-    } else if (path.pathname === "/allget") {
-      a = 2;
+      tabSelect = 2;
+    } else if (path.pathname === "/addBiller") {
+      tabSelect = 3;
     }
-    setTab(a);
+    setTab(tabSelect);
   };
 
   const handleChange = (event, newValue) => {
@@ -121,7 +122,8 @@ const ResponsiveAppBar = () => {
         navigate("/payer");
         break;
       case "Payer":
-        navigate("/payer");
+        // navigate("/payer");
+        window.location.href = "/payer";
         break;
       case "ยอดรวมรายรับ" || "ยอดรวมรายจ่าย":
         navigate("/allget");
@@ -143,7 +145,7 @@ const ResponsiveAppBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   return (
@@ -323,21 +325,7 @@ const ResponsiveAppBar = () => {
             }}>
             <Avatar /> Profile
           </MenuItem>
-          {/* <MenuItem>
-            <Avatar /> My account
-          </MenuItem> */}
-          {/* <MenuItem
-            onClick={() => {
-              window.location.href = "/login";
-            }}>
-            <Avatar /> Login
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              navigate("/register");
-            }}>
-            <Avatar /> Register
-          </MenuItem> */}
+
           <Divider />
           <MenuItem sx={{ color: "red" }} onClick={() => handleLogout()}>
             <ListItemIcon>
