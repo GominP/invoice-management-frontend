@@ -44,6 +44,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
+import SearchNotFound from "../component/SearchNotFound";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -308,6 +309,7 @@ export default function AllInvoices() {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const isInvoiceNotFound = filteredInvoice.length === 0;
+  
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -380,8 +382,6 @@ export default function AllInvoices() {
               rowCount={rows.length}
             />
             <TableBody>
-              {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
               {filteredInvoice
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
@@ -410,7 +410,21 @@ export default function AllInvoices() {
                     </TableRow>
                   );
                 })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
             </TableBody>
+            {isInvoiceNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
           </Table>
         </TableContainer>
         <TablePagination

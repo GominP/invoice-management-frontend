@@ -90,7 +90,7 @@ export default function LandingPage() {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item lg={6} md={6} sm={6} xs={12}>
-                <WelcomeCard name={dataInfo.name} />
+                <WelcomeCard name={dataInfo.name + " " + dataInfo.lastname } />
               </Grid>
               <Grid item lg={6} md={6} sm={6} xs={12}>
                 <NotiCard />

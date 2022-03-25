@@ -116,7 +116,7 @@ const Payer = () => {
                       variant="body2"
                       color="textSecondary"
                       component="p">
-                      Phone number {info.phone}
+                      Phone number : {info.phone}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
