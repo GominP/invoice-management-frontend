@@ -32,6 +32,8 @@ import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
 import * as authService from "../services/authService";
 import { useForm, Form } from "../utils/useForm";
+import { useFormPassword, FormPassword } from "../utils/useFormPassword";
+
 import { Controls } from "../component/controls/Controls";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +56,12 @@ const initValues = {
   zipCode: "",
 };
 
+const initValuesPassword = {
+  oldPassword: "",
+  newPassword: "",
+  confirmNewPassword: "",
+};
+
 const EditProfile = () => {
   let navigate = useNavigate();
 
@@ -67,6 +75,18 @@ const EditProfile = () => {
   const [severity, setServerity] = useState("success");
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
+  const [tempInfo, setTempInfo] = useState({
+    name: "",
+    lastname: "",
+    phone: "",
+    citizenId: "",
+    addressDetail: "",
+    road: "",
+    district: "",
+    subDistrict: "",
+    province: "",
+    zipCode: "",
+  });
 
   const [editFlag, setEditFlag] = useState(true);
 
@@ -82,6 +102,7 @@ const EditProfile = () => {
       } else {
         textRole = "biller";
       }
+
       initValues.name = response.data[textRole]["name"];
       initValues.lastname = response.data[textRole]["lastname"];
       initValues.phone = response.data[textRole]["phone"];
@@ -92,6 +113,8 @@ const EditProfile = () => {
       initValues.subDistrict = response.data[textRole]["subDistrict"];
       initValues.province = response.data[textRole]["province"];
       initValues.zipCode = response.data[textRole]["zipCode"];
+
+      setTempInfo(initValues);
     });
   };
 
@@ -100,10 +123,6 @@ const EditProfile = () => {
     if ("username" in fieldValues) {
       temp.username = values.username ? "" : "กรุณากรอก username";
     }
-    if ("password" in fieldValues) {
-      temp.password = values.password ? "" : "กรุณากรอกรหัสผ่าน";
-    }
-
     if ("name" in fieldValues) {
       temp.name = values.name ? "" : "กรุณากรอกชื่อ";
     }
@@ -151,6 +170,44 @@ const EditProfile = () => {
     changeCitizen,
   } = useForm(initValues, true, validate);
 
+  const validatePassword = (fieldValues = valuesPassword) => {
+    let temp = { ...errorPassword };
+    if ("oldPassword" in fieldValues) {
+      temp.oldPassword = valuesPassword.oldPassword
+        ? ""
+        : "Please fill out this field";
+    }
+    if ("newPassword" in fieldValues) {
+      temp.newPassword = valuesPassword.newPassword
+        ? ""
+        : "Please fill out this field";
+    }
+    if ("confirmNewPassword" in fieldValues) {
+      temp.confirmNewPassword = valuesPassword.confirmNewPassword
+        ? ""
+        : "Please fill out this field";
+    }
+    if (valuesPassword.confirmNewPassword !== valuesPassword.newPassword) {
+      temp.confirmNewPassword = "Password not correct";
+    }
+
+    setErrorsPassword({
+      ...temp,
+    });
+
+    if (fieldValues === valuesPassword) {
+      return Object.values(temp).every((x) => x === "");
+    }
+  };
+
+  const {
+    valuesPassword,
+    setValuesPassword,
+    handleInputChagePassword,
+    setErrorsPassword,
+    errorPassword,
+  } = useFormPassword(initValuesPassword, true, validatePassword);
+
   const handleClickOpenPassword = () => {
     setOpenPassword(true);
   };
@@ -179,12 +236,41 @@ const EditProfile = () => {
     }
   };
 
-  const handleEdit = () => {
-    setEditFlag(!editFlag);
+  const handleSubmitPassword = async (event) => {
+    event.preventDefault();
+    if (validatePassword()) {
+      authService.password_update(valuesPassword);
+      setTextSnackbar("Edit Success");
+      setServerity("success");
+      setOpenSuccess(true);
+      handleClosePassword();
+      navigate("/editprofile/" + role);
+    } else {
+      setTextSnackbar("Something worg");
+      setServerity("error");
+      setOpenSuccess(true);
+    }
   };
 
-  const check2 = () => {
-    console.log(values);
+  const handleEdit = () => {
+    setEditFlag(!editFlag);
+    if (editFlag === false) {
+      navigate("/editProfile/" + role);
+      initValues.name = tempInfo.name;
+      initValues.lastname = tempInfo.lastname;
+      initValues.phone = tempInfo.phone;
+      initValues.citizenId = tempInfo.citizenId;
+      initValues.addressDetail = tempInfo.addressDetail;
+      initValues.road = tempInfo.road;
+      initValues.district = tempInfo.district;
+      initValues.subDistrict = tempInfo.subDistrict;
+      initValues.province = tempInfo.province;
+      initValues.zipCode = tempInfo.zipCode;
+    }
+  };
+
+  const check = () => {
+    console.log(initValues);
   };
 
   const handleCloseSnackBar = (event, reason) => {
@@ -312,14 +398,7 @@ const EditProfile = () => {
                       display: "flex",
                       justifyContent: "flex-end",
                     }}>
-                    <Stack direction={"row"} spacing={2}>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => check2()}>
-                        check2
-                      </Button>
-                    </Stack>
+                    <Stack direction={"row"} spacing={2}></Stack>
                     <Stack direction={"row"} spacing={2}>
                       <Button
                         variant="outlined"
@@ -356,6 +435,9 @@ const EditProfile = () => {
               </Form>
             </Card>
           </Grid>
+          {/* <Button autoFocus color="error" onClick={check}>
+            check
+          </Button> */}
           <ResponsiveSnackbar
             text={textSnackbar}
             severity={severity}
@@ -368,26 +450,55 @@ const EditProfile = () => {
           open={openPassword}
           onClose={handleClosePassword}
           aria-labelledby="responsive-dialog-title">
-          <DialogTitle id="responsive-dialog-title">
-            {"เปลี่ยนรหัสผ่าน"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <Grid pt={2} spacing={3}>
-                <Stack direction={"row"} spacing={2} pb={2}></Stack>
+          <FormPassword onSubmit={handleSubmitPassword}>
+            <DialogTitle id="responsive-dialog-title">
+              {"Change Password"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                <Grid pt={2} spacing={3}>
+                  <Stack direction={"row"} spacing={2} pb={2}>
+                    <Controls.InputPassword
+                      name="oldPassword"
+                      label="Old Password"
+                      value={valuesPassword.oldPassword}
+                      onChange={handleInputChagePassword}
+                      error={errorPassword.oldPassword}
+                      showPassword={false}></Controls.InputPassword>
+                  </Stack>
 
-                <Stack direction={"row"} spacing={2}></Stack>
-              </Grid>
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleClosePassword}>
-              Disagree
-            </Button>
-            <Button onClick={handleClosePassword} autoFocus>
-              Agree
-            </Button>
-          </DialogActions>
+                  <Stack direction={"row"} spacing={2}>
+                    <Controls.InputPassword
+                      label="New Password"
+                      name="newPassword"
+                      value={valuesPassword.newPassword}
+                      onChange={handleInputChagePassword}
+                      showPassword={false}
+                      error={
+                        errorPassword.newPassword
+                      }></Controls.InputPassword>
+                    <Controls.InputPassword
+                      label="Confirm New Password"
+                      name="confirmNewPassword"
+                      value={valuesPassword.confirmNewPassword}
+                      onChange={handleInputChagePassword}
+                      showPassword={false}
+                      error={
+                        errorPassword.confirmNewPassword
+                      }></Controls.InputPassword>
+                  </Stack>
+                </Grid>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus color="error" onClick={handleClosePassword}>
+                Cancel
+              </Button>
+              <Button type="submit" color="primary" autoFocus>
+                Change Password
+              </Button>
+            </DialogActions>
+          </FormPassword>
         </Dialog>
       </Box>
     </div>

@@ -32,3 +32,10 @@ export const landing = async () => {
   );
   return response;
 };
+
+export const password_update = async (data) => {
+  const response = await axios.post(url + "password-update", data, {
+    headers: { Authorization: token },
+  });
+  return response;
+};
