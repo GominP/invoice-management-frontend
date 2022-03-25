@@ -19,7 +19,12 @@ import Tab from "@mui/material/Tab";
 import { useNavigate, useLocation } from "react-router-dom";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import { setRole, getUsers } from "../redux/userSlice";
+import {
+  setRole,
+  setNotiCount,
+  getRole,
+  getNotiCount,
+} from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const biller = ["INVOICE GUARD", "All Invoice", "Payer"];
@@ -33,12 +38,14 @@ const notification = [
 const ResponsiveAppBar = () => {
   let navigate = useNavigate();
   let path = useLocation();
-  const users = useSelector(getUsers);
+  const role = useSelector(getRole);
+  const noti = useSelector(getNotiCount);
+
   const dispatch = useDispatch();
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    if (users === "biller") {
+    if (role === "biller") {
       setRows(biller);
     } else {
       setRows(payer);
@@ -69,7 +76,7 @@ const ResponsiveAppBar = () => {
   // };
 
   const handleOpenNotiMenu = (event) => {
-    setNotifyCount(0);
+    dispatch(setNotiCount(0));
     setAnchorElNoti(event.currentTarget);
   };
   const handleCloseNotiMenu = () => {
@@ -203,9 +210,9 @@ const ResponsiveAppBar = () => {
               </MenuItem>
             ))}
             <MenuItem
-              aria-label={notificationsLabel(notifyCount)}
+              // aria-label={notificationsLabel(notifyCount)}
               onClick={handleOpenNotiMenu}>
-              <Badge badgeContent={notifyCount} color="error">
+              <Badge badgeContent={noti} color="error">
                 <Typography textAlign="center">Notification</Typography>
               </Badge>
             </MenuItem>
@@ -272,8 +279,8 @@ const ResponsiveAppBar = () => {
           <IconButton
             onClick={handleOpenNotiMenu}
             sx={{ p: 1 }}
-            aria-label={notificationsLabel(notifyCount)}>
-            <Badge badgeContent={notifyCount} color="error">
+            aria-label={notificationsLabel(noti)}>
+            <Badge badgeContent={noti} color="error">
               <NotificationsOutlinedIcon sx={{ fontSize: 30 }} />
             </Badge>
           </IconButton>

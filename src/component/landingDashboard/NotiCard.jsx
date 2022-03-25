@@ -38,12 +38,12 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const NotiCard = ({ isLoading }) => {
+const NotiCard = ({ isLoading, notification }) => {
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [name, setname] = useState("สินชัย มั่นคง");
-  const [unred, setunred] = useState(4)
+  // const [unred, setunred] = useState(4)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,8 +55,8 @@ const NotiCard = ({ isLoading }) => {
 
   return (
     <>
-      <CardWrapper border={false} content={false} >
-        <Box sx={{ p: 2.5 }} >
+      <CardWrapper border={false} content={false}>
+        <Box sx={{ p: 2.5 }}>
           <Grid container direction="column">
             <Grid item>
               <Grid container justifyContent="space-between">
@@ -67,8 +67,8 @@ const NotiCard = ({ isLoading }) => {
                       bgcolor: indigo[500],
                       mt: 1,
                     }}>
-                    <Badge badgeContent={4} color="primary">
-                      <NotificationsNoneOutlinedIcon color="action"  />
+                    <Badge badgeContent={notification} color="primary">
+                      <NotificationsNoneOutlinedIcon color="action" />
                     </Badge>
                   </Avatar>
                 </Grid>
@@ -85,7 +85,9 @@ const NotiCard = ({ isLoading }) => {
                       mt: 1.75,
                       mb: 0.75,
                     }}>
-                   {unred} Notification 
+                    {notification === 0
+                      ? "No notifications today"
+                      : { notification } + "Notification"}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -123,6 +125,7 @@ const NotiCard = ({ isLoading }) => {
 
 NotiCard.propTypes = {
   isLoading: PropTypes.bool,
+  notification: PropTypes.number,
 };
 
 export default NotiCard;

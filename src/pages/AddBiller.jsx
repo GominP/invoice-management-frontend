@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { addItem, addItem2, getUsers } from "../redux/userSlice";
+import { addItem, addItem2, getRole, getUserID } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
@@ -44,7 +44,7 @@ const initValues = {
 
 export default function AddBiller() {
   const axios = require("axios");
-  const userid_dispatch = useSelector((state) => state.users.userid);
+  const userid_dispatch = useSelector(getUserID);
   const dispatch = useDispatch();
   let navigate = useNavigate();
   let params = useParams();

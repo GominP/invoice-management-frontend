@@ -4,7 +4,8 @@ export const userSlice = createSlice({
   name: "users",
   initialState: {
     role: "",
-    userid: ""
+    userid: "",
+    notiCount: 0,
   },
   reducers: {
     setRole: (state, action) => {
@@ -13,10 +14,15 @@ export const userSlice = createSlice({
     setId: (state, action) => {
       state.userid = action.payload;
     },
+    setNotiCount: (state, action) => {
+      state.notiCount = action.payload;
+    },
   },
 });
 export default userSlice.reducer;
 
-export const { setRole,setId } = userSlice.actions;
+export const { setRole, setId, setNotiCount } = userSlice.actions;
 
-export const getUsers = (state) => state.users.role;
+export const getRole = (state) => state.users.role;
+export const getUserID = (state) => state.users.userid;
+export const getNotiCount = (state) => state.users.notiCount;

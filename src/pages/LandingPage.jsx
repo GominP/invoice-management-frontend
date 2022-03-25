@@ -24,7 +24,14 @@ import TotalLandingIncomeCard from "../component/landingDashboard/TotalLandingIn
 import CardTotal from "../component/landingDashboard/CardTotal";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { setRole, setId, getUsers } from "../redux/userSlice";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+} from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as authService from "../services/authService";
 
@@ -41,12 +48,14 @@ const payerText = [
 const url = "http://localhost:8080/";
 export default function LandingPage() {
   //redux
-  const users = useSelector(getUsers);
-  const id = useSelector((state) => state.users.userid);
+  const users = useSelector(getRole);
+  const id = useSelector(getUserID);
 
   const dispatch = useDispatch();
   const [userRole, setUserRole] = useState("");
-  const [countNoti, setCountNoti] = useState();
+  // const [countNoti, setCountNoti] = useState();
+  const noti = useSelector(getNotiCount);
+
   //---------------
   const [isBiller, setIsBiller] = useState(false);
   const [dataInfo, setDataInfo] = useState({});
@@ -72,11 +81,15 @@ export default function LandingPage() {
 
       setDataInfo(response.data[textRole]);
       dispatch(setRole(textRole));
-      // localStorage.setItem("userId", response.data[textRole]["id"]);
       dispatch(setId(response.data[textRole]["id"]));
+      dispatch(setNotiCount(response.data["unreadCount"]));
+
       setDayTotal(response.data[textTotal + "Today"]);
       setMonthTotal(response.data[textTotal + "ThisMonth"]);
       setYearTotal(response.data[textTotal + "ThisYear"]);
+
+      console.log(users);
+      console.log(id);
     });
   };
 
@@ -94,7 +107,7 @@ export default function LandingPage() {
                 <WelcomeCard name={dataInfo.name + " " + dataInfo.lastname} />
               </Grid>
               <Grid item lg={6} md={6} sm={6} xs={12}>
-                <NotiCard />
+                <NotiCard notification={noti} />
               </Grid>
             </Grid>
           </Grid>

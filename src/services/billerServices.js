@@ -14,16 +14,15 @@ export function biller_detail_inquiry(data) {
 }
 
 export const biller_inquiry = async (data) => {
-  const response = await axios
-    .post(url + "biller-inquiry", data, {
-      headers: { Authorization: token },
-    })
-    return response.data["billers"]
-    // .then(function (response) {
-    //   console.log(response.data["billers"]);
-    //   return response.data["billers"];
-    // })
-    // .catch((err) => {
-    //   return null;
-    // });
+  const response = await axios.post(url + "biller-inquiry", data, {
+    headers: { Authorization: token },
+  });
+  return response.data["billers"];
+};
+
+export const biller_update = async (data) => {
+  const response = await axios.post(url + "biller-update", data, {
+    headers: { Authorization: token },
+  });
+  return response.data;
 };

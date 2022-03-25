@@ -82,7 +82,6 @@ const EditProfile = () => {
 
   useEffect(() => {}, []);
 
-
   const handleClickShowOldPassword = () => setShowOldPassword(!showOldPassword);
   const handleMouseDownOldPassword = () => setShowOldPassword(!showOldPassword);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -92,10 +91,9 @@ const EditProfile = () => {
   const handleMouseDownCPassword = () =>
     setShowConfrimPassword(!showConfirmPassword);
 
-    const handleOldPasswordText = (event) => {
-      setOldPasswordText(event.target.value);
-    };
-  
+  const handleOldPasswordText = (event) => {
+    setOldPasswordText(event.target.value);
+  };
 
   const handlePasswordText = (event) => {
     setPasswordText(event.target.value);
@@ -169,24 +167,6 @@ const EditProfile = () => {
       // password: passwordText,
     });
 
-    // axios
-    //   .post(url, {
-    // name: "mississii",
-    // lastname: "jaidee",
-    // phone: "0913671456",
-    // citizenId: "1100452139456",
-    // addressDetail: "2210 soi2",
-    // road: "Krungthep-Nonthaburi",
-    // district: "Bangsue",
-    // subDistrict: "Wong Sawang",
-    // province: "Bangkok",
-    // zipCode: "10800"
-    //   })
-    //   .then(function (response) {
-    //     // localStorage.setItem("token", response.data["jwtToken"]);
-    //     // console.log(response.data["jwtToken"]);
-    //     navigate("/login");
-    //   });
     setOpenSuccess(true);
   };
 
@@ -413,7 +393,6 @@ const EditProfile = () => {
             <DialogContentText>
               <Grid pt={2} spacing={3}>
                 <Stack direction={"row"} spacing={2} pb={2}>
-           
                   <TextField
                     label="รหัสผ่านเก่า"
                     variant="outlined"

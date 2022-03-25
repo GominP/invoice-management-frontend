@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { getUsers } from "../redux/userSlice";
+import { getRole } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +44,7 @@ export default function DetailUser() {
   const theme = useTheme();
   const classes = useStyles();
   let params = useParams();
-  const role = useSelector(getUsers);
+  const role = useSelector(getRole);
   const [textHeader, setTextHeader] = useState("Infomation Payer");
   const [dataInfo, setDataInfo] = useState({});
 

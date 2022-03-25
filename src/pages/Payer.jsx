@@ -18,7 +18,7 @@ import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useNavigate } from "react-router-dom";
 import img from "../asset/images/contemplative-reptile.jpg";
 import { useEffect, useState } from "react";
-import { getUsers } from "../redux/userSlice";
+import { getRole, getUserID } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import * as billerService from "../services/billerServices";
@@ -52,8 +52,8 @@ const Payer = () => {
   let navigate = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
-  const role = useSelector(getUsers);
-  const id = useSelector((state) => state.users.userid);
+  const role = useSelector(getRole);
+  const id = useSelector(getUserID);
   const dispatch = useDispatch();
   const [textHeader, setTextHeader] = useState("All Payer");
   const [rows, setRows] = useState([{}]);
@@ -63,31 +63,6 @@ const Payer = () => {
       setTextHeader("All Biller");
     }
     callApi();
-    console.log("role = " + role);
-    console.log("id = " + id);
-
-    // axios
-    //   .post(
-    //     url + "biller-inquiry",
-    //     { payerId: id },
-    //     {
-    //       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-    //     }
-    //   )
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //     if (role === "payer") {
-    //       // response.data["billers"].map((index) => (
-    //       //   console.log(index)
-    //       // ))
-
-    //       setRows(response.data["billers"]);
-    //     } else {
-    //       console.log("fasle");
-    //     }
-    //     // console.log(response.data);
-    //     // setOpenSuccess(true);
-    //   });
   }, []);
 
   const callApi = () => {
