@@ -44,6 +44,7 @@ const CardTotal = ({ text, amount }) => {
 
   return (
     <div>
+
       <CardWrapper border={false} content={false}>
         <Box sx={{ p: 1 }}>
           <List sx={{ py: 0 }}>
@@ -66,7 +67,7 @@ const CardTotal = ({ text, amount }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4"> $ {amount} </Typography>}
+                primary={<Typography variant="h4"> $ {amount}  </Typography>}
                 secondary={
                   <Typography
                     variant="subtitle2"
@@ -87,7 +88,7 @@ const CardTotal = ({ text, amount }) => {
 };
 CardTotal.propTypes = {
   text: PropTypes.string,
-  amount: PropTypes.string,
+  amount: PropTypes.number,
 };
 
 export default CardTotal;

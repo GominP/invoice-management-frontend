@@ -27,11 +27,22 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { blue } from "@mui/material/colors";
 import * as authService from "../services/authService";
 import axios from "axios";
+import { url, token } from "../store/constant";
+import { useDispatch } from "react-redux";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+} from "../redux/userSlice";
 
 const theme = createTheme();
 
 export default function SignIn() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,7 +51,27 @@ export default function SignIn() {
       username: data.get("username"),
       password: data.get("password"),
     };
-    await authService.login(dataLogin);
+    await axios
+      .post(url + "login", dataLogin)
+      .then(function (response) {
+        localStorage.setItem("token", response.data["jwtToken"]);
+        console.log(response.data["jwtToken"]);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        // let textRole = "";
+        // authService.landing().then(function (response) {
+        //   response.data["biller"] === null
+        //     ? (textRole = "payer")
+        //     : (textRole = "biller");
+
+        //   dispatch(setRole(textRole));
+        //   dispatch(setId(response.data[textRole]["id"]));
+        // });
+        window.location.href = "/landing";
+      });
   };
 
   return (

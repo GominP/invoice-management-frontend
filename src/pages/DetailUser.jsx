@@ -24,8 +24,17 @@ import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { getRole } from "../redux/userSlice";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+} from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import * as billerService from "../services/billerServices";
+import * as payerService from "../services/payerService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,30 +57,26 @@ export default function DetailUser() {
   const [textHeader, setTextHeader] = useState("Infomation Payer");
   const [dataInfo, setDataInfo] = useState({});
 
-  const data = {
-    id: 1,
-  };
-
   useEffect(() => {
-    axios
-      .post(
-        "http://localhost:8080/biller-detail-inquiry",
-        {
-          id: params.id,
-        },
-        {
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        }
-      )
-      .then(function (response) {
-        console.log(response.data);
-        setDataInfo(response.data);
-      });
+    callApi();
 
     if (role === "payer") {
       setTextHeader("Infomation Biller");
     }
   }, []);
+
+  const callApi = async () => {
+    let data = { id: params.id };
+    if (role === "biller") {
+      await payerService.payer_detail_inquiry(data).then(function (response) {
+        setDataInfo(response);
+      });
+    } else if (role === "payer") {
+      billerService.biller_detail_inquiry(data).then(function (response) {
+        setDataInfo(response);
+      });
+    }
+  };
 
   return (
     <div>

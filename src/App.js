@@ -40,7 +40,7 @@ const path = window.location.pathname;
 
 function App() {
   useEffect(() => {
-    console.log(path);
+    
   }, []);
 
   return (

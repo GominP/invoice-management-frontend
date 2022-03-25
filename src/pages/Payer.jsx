@@ -22,6 +22,8 @@ import { getRole, getUserID } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import * as billerService from "../services/billerServices";
+import * as payerService from "../services/payerService";
+import NotFoundUser from "../component/NotFoundUser";
 
 const url = "http://localhost:8080/";
 
@@ -66,55 +68,67 @@ const Payer = () => {
   }, []);
 
   const callApi = () => {
-    billerService.biller_inquiry({ payerId: id }).then(function (response) {
-      setRows(response);
-    });
+    console.log("Payer Page" + role);
+    if (role === "payer") {
+      billerService.biller_inquiry({ payerId: id }).then(function (response) {
+        setRows(response);
+      });
+    } else if (role === "biller") {
+      payerService.payer_inquiry({ billerId: id }).then(function (response) {
+        setRows(response);
+      });
+    }
   };
 
   return (
     <div>
-      <ResponsiveHeader text={textHeader}></ResponsiveHeader>
       <Box sx={{ px: 5 }}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 6 }}
-          columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
-          {rows.map((info, index) => (
-            <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
-              <Card className={classes.card}>
-                <CardActionArea onClick={() => navigate("/detailUser/1")}>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {info.name} {info.lastname}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      component="p">
-                      Phone number : {info.phone}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => navigate("/detailUser/" + info.id)}>
-                    Datail
-                  </Button>
-                  {role === "payer" ? null : (
+        {rows.length === 0 ? (
+          <NotFoundUser></NotFoundUser>
+        ) : (
+          <Grid
+            container
+            spacing={{ xs: 2, md: 6 }}
+            columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
+            {rows.map((info, index) => (
+              <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
+                <ResponsiveHeader text={textHeader}></ResponsiveHeader>
+
+                <Card className={classes.card}>
+                  <CardActionArea onClick={() => navigate("/detailUser/1")}>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {info.name} {info.lastname}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p">
+                        Phone number : {info.phone}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
                     <Button
                       size="small"
                       color="primary"
-                      onClick={() => navigate("bill")}>
-                      Create Invoice
+                      onClick={() => navigate("/detailUser/" + info.id)}>
+                      Datail
                     </Button>
-                  )}
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    {role === "payer" ? null : (
+                      <Button
+                        size="small"
+                        color="primary"
+                        onClick={() => navigate("bill")}>
+                        Create Invoice
+                      </Button>
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </div>
   );

@@ -28,7 +28,7 @@ import { addItem, addItem2, getRole, getUserID } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
-import * as billerService from "../services/billerServices";
+import * as relationService from "../services/relationService";
 import Controls from "../component/controls/Controls";
 import { useForm, Form } from "../utils/useForm";
 // import {userId} from "../store/constant";
@@ -83,7 +83,7 @@ export default function AddBiller() {
 
     if (validate()) {
       console.log(values);
-      await billerService.biller_detail_inquiry(dataAPi);
+      await relationService.relationship_create(dataAPi);
       await setOpenSuccess(true);
     } else {
       setOpenError(true);

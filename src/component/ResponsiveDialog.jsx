@@ -64,30 +64,7 @@ function ResponsiveDialog(props) {
       email: data.get("slip"),
     });
 
-    // axios
-    //   .post("http://localhost:8080/register", {
-    //     name: "mississii",
-    //     lastname: "jaidee",
-    //     phone: "0913671456",
-    //     citizenId: "1100452139456",
-    //     taxId: "1100452139456",
-    //     isCitizen: true,
-    //     addressDetail: "2210 soi2",
-    //     road: "Krungthep-Nonthaburi",
-    //     district: "Bangsue",
-    //     subDistrict: "Wong Sawang",
-    //     province: "Bangkok",
-    //     zipCode: "10800",
-    //     username: "nattanon456",
-    //     password: "1234password",
-    //     role: params.id,
-    //   })
-    //   .then(function (response) {
-    //     // localStorage.setItem("token", response.data["jwtToken"]);
-    //     // console.log(response.data["jwtToken"]);
-    //     navigate("/login");
-    //   });
-    // setOpenSuccess(true);
+  
     navigate("/paymentsuccess");
   };
 

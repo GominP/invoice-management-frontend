@@ -6,7 +6,6 @@ export function useForm(initValues, validateOnChange = false, validate, role) {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    console.log(role);
     if (role === undefined) {
       // console.log("role = null");
     } else {

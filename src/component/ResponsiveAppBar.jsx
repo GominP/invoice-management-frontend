@@ -27,8 +27,14 @@ import {
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const biller = ["INVOICE GUARD", "All Invoice", "Payer"];
-const payer = ["INVOICE GUARD", "All Invoice", "Biller", "Add Biller"];
+const biller = ["INVOICE GUARD", "All Invoice", "Payer", "Payment"];
+const payer = [
+  "INVOICE GUARD",
+  "All Invoice",
+  "Biller",
+  "Add Biller",
+  "Payment",
+];
 const notification = [
   "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
   "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว",
@@ -45,14 +51,17 @@ const ResponsiveAppBar = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
+    CheckRole()
+    currentTab();
+  }, []);
+
+  const CheckRole = () => {
     if (role === "biller") {
       setRows(biller);
     } else {
       setRows(payer);
     }
-
-    currentTab();
-  }, []);
+  };
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -127,26 +136,31 @@ const ResponsiveAppBar = () => {
   function changePage(page) {
     switch (page) {
       case "All Invoice":
-        navigate("/allbill");
+        navigate("/allbill")
+        // window.location.href = "/allbill";
+
         break;
       case "Biller":
-        navigate("/payer");
+        navigate("/payer")
+        // window.location.href = "/payer";
         break;
       case "Payer":
-        // navigate("/payer");
-        window.location.href = "/payer";
+        navigate("/payer");
+        // window.location.href = "/payer";
         break;
-      case "ยอดรวมรายรับ" || "ยอดรวมรายจ่าย":
-        navigate("/allget");
-        break;
+
       case "INVOICE GUARD":
-        navigate("/landing");
+        navigate("/landing")
+        // window.location.href = "/landing";
+
         break;
       case "Add Biller":
-        navigate("/addBiller");
+        navigate("/addBiller")
+        // window.location.href = "/addBiller";
+
         break;
       default:
-        navigate("/");
+        window.location.href = "/";
     }
     setAnchorElNav(null);
 
@@ -167,16 +181,7 @@ const ResponsiveAppBar = () => {
         color: "black",
         boxShadow: "0px 0px 0px 0px",
       }}>
-      {/* <Container maxWidth="xl"> */}
       <Toolbar disableGutters sx={{ p: 3 }}>
-        {/* <Typography onClick={() => navigate("/landing")}
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-          INVOICE GUARD
-        </Typography> */}
-
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
@@ -332,7 +337,7 @@ const ResponsiveAppBar = () => {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
           <MenuItem
             onClick={() => {
-              navigate("/editprofile/biller");
+              navigate("/editprofile/"+role);
             }}>
             <Avatar /> Profile
           </MenuItem>

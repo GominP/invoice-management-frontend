@@ -2,9 +2,10 @@ import { TextField } from "@material-ui/core";
 import React from "react";
 
 export default function Input(props) {
-  const { name, value, label, onChange, error = null } = props;
+  const { name, value, label, onChange, error = null, disabled } = props;
   return (
     <TextField
+      disabled={disabled}
       variant="outlined"
       label={label}
       //   placeholder="ชื่อผู้ใช้"

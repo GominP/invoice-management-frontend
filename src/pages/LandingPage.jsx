@@ -45,10 +45,10 @@ const payerText = [
   "Total Expenses This Month",
   "Total Expenses This Year",
 ];
-const url = "http://localhost:8080/";
+
 export default function LandingPage() {
   //redux
-  const users = useSelector(getRole);
+  const role = useSelector(getRole);
   const id = useSelector(getUserID);
 
   const dispatch = useDispatch();
@@ -59,9 +59,9 @@ export default function LandingPage() {
   //---------------
   const [isBiller, setIsBiller] = useState(false);
   const [dataInfo, setDataInfo] = useState({});
-  const [dayTotal, setDayTotal] = useState();
-  const [monthTotal, setMonthTotal] = useState();
-  const [yearTotal, setYearTotal] = useState();
+  const [dayTotal, setDayTotal] = useState(0);
+  const [monthTotal, setMonthTotal] = useState(0);
+  const [yearTotal, setYearTotal] = useState(0);
   const allTotal = [dayTotal, monthTotal, yearTotal];
 
   useEffect(() => {
@@ -72,12 +72,14 @@ export default function LandingPage() {
     let textRole = "";
     let textTotal = "";
     await authService.landing().then(function (response) {
-      response.data["biller"] === null
-        ? (textRole = "payer")
-        : (textRole = "biller");
-      response.data["biller"] === null
-        ? (textTotal = "totalExpenses")
-        : (textTotal = "totalIncome");
+      if (response.data["biller"] === null) {
+        textRole = "payer";
+        textTotal = "totalExpenses";
+      } else {
+        textRole = "biller";
+        textTotal = "totalIncome";
+        setIsBiller(true);
+      }
 
       setDataInfo(response.data[textRole]);
       dispatch(setRole(textRole));
@@ -87,9 +89,6 @@ export default function LandingPage() {
       setDayTotal(response.data[textTotal + "Today"]);
       setMonthTotal(response.data[textTotal + "ThisMonth"]);
       setYearTotal(response.data[textTotal + "ThisYear"]);
-
-      console.log(users);
-      console.log(id);
     });
   };
 
@@ -114,9 +113,11 @@ export default function LandingPage() {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               {isBiller === true
-                ? billerText.map((option) => (
+                ? billerText.map((option, index) => (
                     <Grid item xs={12} md={4}>
-                      <CardTotal text={option}></CardTotal>
+                      <CardTotal
+                        text={option}
+                        amount={allTotal[index]}></CardTotal>
                     </Grid>
                   ))
                 : payerText.map((option, index) => (

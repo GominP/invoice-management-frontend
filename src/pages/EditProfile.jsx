@@ -1,10 +1,8 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import {
-  Paper,
+  Box,
   Card,
-  CardActionArea,
   CardMedia,
   CardContent,
   CardActions,
@@ -13,33 +11,28 @@ import {
   TextField,
   Grid,
   Divider,
-  TableContainer,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TableHead,
   Stack,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  InputAdornment,
-  IconButton,
 } from "@mui/material";
-import ResponsiveHeader from "../component/ResponsiveHeader";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
-import Dropzone from "react-dropzone";
-import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
 import ResponsiveDialog from "../component/ResponsiveDialog";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
+import { getRole, getUserID } from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import * as billerService from "../services/billerServices";
+import * as payerService from "../services/payerService";
+import * as authService from "../services/authService";
+import { useForm, Form } from "../utils/useForm";
+import { Controls } from "../component/controls/Controls";
 
 const useStyles = makeStyles((theme) => ({
   previewChip: {
@@ -48,60 +41,115 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const headName = [
-  // { id: "index", label: "ลำดับ" },
-  { id: "name", label: "ชื่อผู้ออกใบแจ้งหนี้" },
-];
+const initValues = {
+  name: "",
+  lastname: "",
+  phone: "",
+  citizenId: "",
+  addressDetail: "",
+  road: "",
+  district: "",
+  subDistrict: "",
+  province: "",
+  zipCode: "",
+};
 
 const EditProfile = () => {
+  let navigate = useNavigate();
+
   const classes = useStyles();
   const theme = useTheme();
   let params = useParams();
+  const role = useSelector(getRole);
+  const id = useSelector(getUserID);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [textSnackbar, setTextSnackbar] = useState("Edit Success");
+  const [severity, setServerity] = useState("success");
   const [openSuccess, setOpenSuccess] = useState(false);
-  const [openError, setOpenError] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
 
-  const [oldPasswordText, setOldPasswordText] = useState("");
-  const [showOldPassword, setShowOldPassword] = useState(false);
-  const [passwordText, setPasswordText] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [confirmPasswordText, setConfirmPasswordText] = useState("");
-  const [showConfirmPassword, setShowConfrimPassword] = useState(false);
-
-  // const { getRootProps, getInputProps } = useDropzone();
   const [editFlag, setEditFlag] = useState(true);
-  const [stuff, setStuff] = useState([
-    {
-      // index: 1,
-      name: "สินชัย",
-      edit: true,
-    },
-  ]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    callApi();
+  }, []);
 
-  const handleClickShowOldPassword = () => setShowOldPassword(!showOldPassword);
-  const handleMouseDownOldPassword = () => setShowOldPassword(!showOldPassword);
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
-  const handleMouseDownPassword = () => setShowPassword(!showPassword);
-  const handleClickShowCPassword = () =>
-    setShowConfrimPassword(!showConfirmPassword);
-  const handleMouseDownCPassword = () =>
-    setShowConfrimPassword(!showConfirmPassword);
-
-  const handleOldPasswordText = (event) => {
-    setOldPasswordText(event.target.value);
+  const callApi = async () => {
+    let textRole = "";
+    await authService.landing().then(function (response) {
+      if (response.data["biller"] === null) {
+        textRole = "payer";
+      } else {
+        textRole = "biller";
+      }
+      initValues.name = response.data[textRole]["name"];
+      initValues.lastname = response.data[textRole]["lastname"];
+      initValues.phone = response.data[textRole]["phone"];
+      initValues.citizenId = response.data[textRole]["citizenId"];
+      initValues.addressDetail = response.data[textRole]["addressDetail"];
+      initValues.road = response.data[textRole]["road"];
+      initValues.district = response.data[textRole]["district"];
+      initValues.subDistrict = response.data[textRole]["subDistrict"];
+      initValues.province = response.data[textRole]["province"];
+      initValues.zipCode = response.data[textRole]["zipCode"];
+    });
   };
 
-  const handlePasswordText = (event) => {
-    setPasswordText(event.target.value);
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors };
+    if ("username" in fieldValues) {
+      temp.username = values.username ? "" : "กรุณากรอก username";
+    }
+    if ("password" in fieldValues) {
+      temp.password = values.password ? "" : "กรุณากรอกรหัสผ่าน";
+    }
+
+    if ("name" in fieldValues) {
+      temp.name = values.name ? "" : "กรุณากรอกชื่อ";
+    }
+    if ("phone" in fieldValues) {
+      temp.phone = values.phone ? "" : "กรุณากรอกเบอร์โทรศัพท์";
+    }
+    if ("addressDetail" in fieldValues) {
+      temp.addressDetail = values.addressDetail ? "" : "กรุณากรอกบ้านเลขที่";
+    }
+    if ("road" in fieldValues) {
+      temp.road = values.road ? "" : "กรุณากรอกถนน";
+    }
+    if ("district" in fieldValues) {
+      temp.district = values.district ? "" : "กรุณากรอกอำเภอ";
+    }
+    if ("subDistrict" in fieldValues) {
+      temp.subDistrict = values.subDistrict ? "" : "กรุณากรอกตำบล";
+    }
+    if ("province" in fieldValues) {
+      temp.province = values.province ? "" : "กรุณากรอกจังหวัด";
+    }
+    if ("zipCode" in fieldValues) {
+      temp.zipCode = values.zipCode ? "" : "กรุณากรอกเลขไปรษณีย์";
+    }
+
+    if ("citizenId" in fieldValues) {
+      temp.citizenId = values.citizenId ? "" : "กรุณากรอกเลขประจำตัว";
+    }
+
+    setErrors({
+      ...temp,
+    });
+
+    if (fieldValues === values) {
+      return Object.values(temp).every((x) => x === "");
+    }
   };
 
-  const handleConfirmPasswordText = (event) => {
-    setConfirmPasswordText(event.target.value);
-  };
+  const {
+    values,
+    setValues,
+    handleInputChage,
+    setErrors,
+    errors,
+    changeCitizen,
+  } = useForm(initValues, true, validate);
 
   const handleClickOpenPassword = () => {
     setOpenPassword(true);
@@ -111,67 +159,32 @@ const EditProfile = () => {
     setOpenPassword(false);
   };
 
-  const addStaff = () => {
-    setStuff([
-      ...stuff,
-      {
-        name: "",
-        edit: false,
-      },
-    ]);
-  };
-
-  const handleChange = () => {
-    console.log(stuff);
-  };
-
-  function handleChangeStaff(e, index, key) {
-    let arr = [...stuff];
-    // console.log(arr);
-
-    // console.log(e.target.value);
-    arr[index][key] = e.target.value;
-    setStuff(arr);
-  }
-
-  function confirmAddStaff(index) {
-    console.log("confirmAddStaff");
-    // let arr = [...stuff];
-    // arr[index]["edit"] = true;
-  }
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    let url = "";
-    let role = "";
-
-    const data = new FormData(event.currentTarget);
-
-    if (role === "biller") {
-      url = "http://localhost:8080/biller-update";
+    if (validate()) {
+      if (role === "biller") {
+        await billerService.biller_update(values);
+      } else {
+        await payerService.payer_update(values);
+      }
+      setTextSnackbar("Edit Success");
+      setServerity("success");
+      setOpenSuccess(true);
+      setEditFlag(!editFlag);
+      navigate("/editprofile/" + role);
     } else {
-      url = "http://localhost:8080/payer-update";
+      setTextSnackbar("Something worg");
+      setServerity("error");
+      setOpenSuccess(true);
     }
-
-    // if (passwordText !== confirmPasswordText) {
-    //   setTextError("รหัสผ่านไม่ตรงกัน");
-    //   setOpenError(true);
-    // } else if (data.get("username") === "") {
-    //   setTextError("ใส่ข้อมูลให้ครบถ้วน");
-    //   setOpenError(true);
-    // }
-
-    console.log({
-      name: data.get("name"),
-      // url: url
-      // password: passwordText,
-    });
-
-    setOpenSuccess(true);
   };
 
   const handleEdit = () => {
     setEditFlag(!editFlag);
+  };
+
+  const check2 = () => {
+    console.log(values);
   };
 
   const handleCloseSnackBar = (event, reason) => {
@@ -180,7 +193,6 @@ const EditProfile = () => {
     }
 
     setOpenSuccess(false);
-    setOpenError(false);
   };
 
   return (
@@ -192,192 +204,162 @@ const EditProfile = () => {
         sx={{ display: "flex", justifyContent: "center" }}>
         Edit Profile
       </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Grid>
           <Grid item xs={12}>
             <Card>
-              <CardMedia />
-              <CardContent>
-                <Grid spacing={3}>
-                  <Grid
-                    item
-                    sx={{
-                      "& .MuiTextField-root": { m: 1 },
-                    }}>
-                    <Grid>
-                      <TextField
-                        id="outlined-textarea"
-                        label="ชื่อ-นามสกุล"
-                        placeholder="ชื่อ-นามสกุล"
-                        name="name"
-                        multiline
-                      />
-                      <TextField
-                        name="phone"
-                        id="outlined-textarea"
-                        label="เบอร์โทร"
-                        placeholder="เบอร์โทร"
-                        multiline
-                      />
-                    </Grid>
-                    <Grid>
-                      <TextField
-                        fullWidth
-                        name="addressDetail"
-                        id="outlined-textarea"
-                        label="ที่อยู่"
-                        placeholder="ที่อยู่"
-                        multiline
-                      />
-                    </Grid>
-                    <Grid>
-                      <TextField
-                        name="citizenId"
-                        id="outlined-textarea"
-                        label="เลขประจำตัวประชาชน"
-                        placeholder="เลขประจำตัวประชาชน"
-                        multiline
-                      />
-                      <TextField
-                        name="taxId"
-                        id="outlined-textarea"
-                        label="เลขประจำตัวผู้เสียภาษี"
-                        placeholder="เลขประจำตัวผู้เสียภาษี"
-                        multiline
-                      />
+              <Form onSubmit={handleSubmit}>
+                <CardMedia />
+                <CardContent>
+                  <Grid spacing={3}>
+                    <Grid
+                      item
+                      sx={{
+                        "& .MuiTextField-root": { m: 1 },
+                      }}>
+                      <Grid>
+                        <Typography variant="h5" component="h1" p={1}>
+                          Infomation
+                        </Typography>
+                        <Grid>
+                          <Controls.Input
+                            name="name"
+                            label="Firstname"
+                            value={values.name}
+                            onChange={handleInputChage}
+                            error={errors.name}
+                            disabled={editFlag}></Controls.Input>
+                          <Controls.Input
+                            name="lastname"
+                            label="Lastname"
+                            value={values.lastname}
+                            onChange={handleInputChage}
+                            error={errors.lastname}
+                            disabled={editFlag}></Controls.Input>
+                          <Controls.Input
+                            name="phone"
+                            label="Phone Number"
+                            value={values.phone}
+                            onChange={handleInputChage}
+                            error={errors.phone}
+                            disabled={editFlag}></Controls.Input>
+                        </Grid>
+                        <Grid>
+                          <Controls.Input
+                            name="addressDetail"
+                            label="Address Detail"
+                            value={values.addressDetail}
+                            onChange={handleInputChage}
+                            error={errors.addressDetail}
+                            disabled={editFlag}></Controls.Input>
+                          <Controls.Input
+                            name="road"
+                            label="Road"
+                            value={values.road}
+                            onChange={handleInputChage}
+                            error={errors.road}
+                            disabled={editFlag}></Controls.Input>
+                          <Controls.Input
+                            name="district"
+                            label="District"
+                            value={values.district}
+                            onChange={handleInputChage}
+                            error={errors.district}
+                            disabled={editFlag}></Controls.Input>
+
+                          <Controls.Input
+                            name="subDistrict"
+                            label="Subdistrict"
+                            value={values.subDistrict}
+                            onChange={handleInputChage}
+                            error={errors.subDistrict}
+                            disabled={editFlag}></Controls.Input>
+                        </Grid>
+                        <Grid>
+                          <Controls.Input
+                            name="province"
+                            label="Province"
+                            value={values.province}
+                            onChange={handleInputChage}
+                            error={errors.province}
+                            disabled={editFlag}></Controls.Input>
+                          <Controls.Input
+                            name="zipCode"
+                            label="Zipcode"
+                            value={values.zipCode}
+                            onChange={handleInputChage}
+                            error={errors.zipCode}
+                            disabled={editFlag}></Controls.Input>
+                        </Grid>
+                        <Grid>
+                          <Controls.Input
+                            name="citizenId"
+                            label="Citizen ID"
+                            value={values.citizenId}
+                            onChange={handleInputChage}
+                            error={errors.citizenId}
+                            disabled={editFlag}></Controls.Input>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-                <Divider />
-                {params.role === "payer" ? (
-                  <Box>
-                    <Box m={1}>
-                      <TextField
-                        id="outlined-textarea"
-                        label="รหัสผู้สร้างใบแจ้งหนี้"
-                        disabled
-                        multiline
-                        defaultValue={"Ew24T"}
-                      />
-                    </Box>
-                    <Grid item xs={12} md={8}>
-                      <TableContainer>
-                        <Table aria-labelledby="tableTitle" size="medium">
-                          <TableHead>
-                            <TableRow>
-                              {headName.map((headCell) => (
-                                <TableCell
-                                  key={headCell.id}
-                                  align="center"
-                                  padding="normal">
-                                  {headCell.label}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {stuff.map((staff, index) => {
-                              const labelId = `enhanced-table-checkbox-${index}`;
+                  <Divider />
+                </CardContent>
 
-                              return (
-                                <TableRow
-                                  component="th"
-                                  role="checkbox"
-                                  tabIndex={-1}
-                                  key={staff.id}>
-                                  {staff.edit === false ? (
-                                    <TableCell align="center">
-                                      <TextField
-                                        id="outlined-textarea"
-                                        label="ชื่อผู้ออกใบแจ้งหนี้"
-                                        placeholder="ชื่อผู้ออกใบแจ้งหนี้"
-                                        onChange={(event) =>
-                                          handleChangeStaff(
-                                            event,
-                                            index,
-                                            "name"
-                                          )
-                                        }
-                                      />
-                                      {/* <Button
-                                    onClick={() => confirmAddStaff(index)}>
-                                    ยืนยัน
-                                  </Button> */}
-                                    </TableCell>
-                                  ) : (
-                                    <TableCell align="center">
-                                      {staff.name}
-                                    </TableCell>
-                                  )}
-                                </TableRow>
-                              );
-                            })}
-                          </TableBody>
-                        </Table>
-                        <Button
-                          onClick={() => {
-                            addStaff();
-                          }}>
-                          เพิ่มพนักงานออกใบแจ้งหนี้
-                        </Button>
-                        <Button onClick={() => handleChange()}>
-                          check arry
-                        </Button>
-                      </TableContainer>
-                    </Grid>
-                  </Box>
-                ) : null}
-              </CardContent>
+                {editFlag ? (
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                    }}>
+                    <Stack direction={"row"} spacing={2}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => check2()}>
+                        check2
+                      </Button>
+                    </Stack>
+                    <Stack direction={"row"} spacing={2}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleClickOpenPassword()}>
+                        Change Password
+                      </Button>
 
-              {editFlag ? (
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}>
-                  <Stack direction={"row"} spacing={2}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => handleEdit()}>
+                        Edit
+                      </Button>
+                    </Stack>
+                  </CardActions>
+                ) : (
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}>
                     <Button
+                      onClick={() => handleEdit()}
                       variant="outlined"
-                      color="primary"
-                      onClick={() => handleClickOpenPassword()}>
-                      Change Password
+                      color="error">
+                      Cancel
                     </Button>
-
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleEdit()}>
-                      Edit
+                    <Button type="submit" variant="outlined" color="success">
+                      Confirm
                     </Button>
-                  </Stack>
-                </CardActions>
-              ) : (
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}>
-                  <Button
-                    onClick={() => handleEdit()}
-                    variant="outlined"
-                    color="error">
-                    Cancel
-                  </Button>
-                  <Button type="submit" variant="outlined" color="success">
-                    Confirm
-                  </Button>
-                </CardActions>
-              )}
+                  </CardActions>
+                )}
+              </Form>
             </Card>
           </Grid>
           <ResponsiveSnackbar
-            text="แก้ไขข้อมูลสำเร็จ"
-            severity="success"
+            text={textSnackbar}
+            severity={severity}
             openSuccess={openSuccess}
-            openError={openError}
             handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
         </Grid>
 
@@ -392,81 +374,9 @@ const EditProfile = () => {
           <DialogContent>
             <DialogContentText>
               <Grid pt={2} spacing={3}>
-                <Stack direction={"row"} spacing={2} pb={2}>
-                  <TextField
-                    label="รหัสผ่านเก่า"
-                    variant="outlined"
-                    type={showOldPassword ? "text" : "password"} // <-- This is where the magic happens
-                    onChange={handleOldPasswordText}
-                    InputProps={{
-                      // <-- This is where the toggle button is added.
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowOldPassword}
-                            onMouseDown={handleMouseDownOldPassword}>
-                            {showOldPassword ? (
-                              <VisibilityIcon />
-                            ) : (
-                              <VisibilityOffIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Stack>
+                <Stack direction={"row"} spacing={2} pb={2}></Stack>
 
-                <Stack direction={"row"} spacing={2}>
-                  <TextField
-                    label="รหัสผ่านใหม่"
-                    variant="outlined"
-                    type={showPassword ? "text" : "password"} // <-- This is where the magic happens
-                    onChange={handlePasswordText}
-                    InputProps={{
-                      // <-- This is where the toggle button is added.
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}>
-                            {showPassword ? (
-                              <VisibilityIcon />
-                            ) : (
-                              <VisibilityOffIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-
-                  <TextField
-                    label="ยืนยันรหัสผ่าน"
-                    variant="outlined"
-                    type={showConfirmPassword ? "text" : "password"} // <-- This is where the magic happens
-                    onChange={handleConfirmPasswordText}
-                    InputProps={{
-                      // <-- This is where the toggle button is added.
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowCPassword}
-                            onMouseDown={handleMouseDownCPassword}>
-                            {showConfirmPassword ? (
-                              <VisibilityIcon />
-                            ) : (
-                              <VisibilityOffIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Stack>
+                <Stack direction={"row"} spacing={2}></Stack>
               </Grid>
             </DialogContentText>
           </DialogContent>
