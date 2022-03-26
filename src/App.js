@@ -33,15 +33,13 @@ const theme = createTheme(
         default: "#e4f0e2",
       },
     },
-  },
+  }
   // thTH
 );
 const path = window.location.pathname;
 
 function App() {
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="App">
@@ -65,7 +63,7 @@ function App() {
           <Route path="/detailUser/:id" element={<DetailUser />} />
           <Route path="/register/:id" element={<Register />} />
           <Route path="/editprofile/:role" element={<EditProfile />} />
-          <Route path="/payer/bill" element={<CreateBill />} />
+          <Route path="/payer/bill/:id" element={<CreateBill />} />
           <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
         </Routes>
       </ThemeProvider>
