@@ -119,7 +119,7 @@ const Payer = () => {
                       <Button
                         size="small"
                         color="primary"
-                        onClick={() => navigate("/payer/bill/"+ info.id)}>
+                        onClick={() => navigate("/payer/bill/" + info.id)}>
                         Create Invoice
                       </Button>
                     )}

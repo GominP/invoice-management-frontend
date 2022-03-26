@@ -64,7 +64,6 @@ function ResponsiveDialog(props) {
       email: data.get("slip"),
     });
 
-  
     navigate("/paymentsuccess");
   };
 

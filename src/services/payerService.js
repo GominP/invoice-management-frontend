@@ -1,6 +1,5 @@
 import axios from "axios";
-import { token } from "../store/constant";
-import { url } from "../store/constant";
+import { token,url } from "../store/constant";
 
 
 export const payer_detail_inquiry = async (data) => {
