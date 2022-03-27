@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // material-ui
 import { styled, useTheme } from "@mui/material/styles";
@@ -87,7 +87,7 @@ const NotiCard = ({ isLoading, notification }) => {
                     }}>
                     {notification === 0
                       ? "No notifications today"
-                      : { notification } + "Notification"}
+                      : notification + " Notification Today"}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -125,7 +125,7 @@ const NotiCard = ({ isLoading, notification }) => {
 
 NotiCard.propTypes = {
   isLoading: PropTypes.bool,
-  notification: PropTypes.number,
+  notification: PropTypes.string,
 };
 
 export default NotiCard;

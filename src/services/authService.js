@@ -30,6 +30,8 @@ export const landing = async () => {
       headers: { Authorization: token },
     }
   );
+  console.log(response)
+
   return response;
 };
 

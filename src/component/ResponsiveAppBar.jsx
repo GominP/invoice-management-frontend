@@ -51,7 +51,7 @@ const ResponsiveAppBar = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    CheckRole()
+    CheckRole();
     currentTab();
   }, []);
 
@@ -136,12 +136,12 @@ const ResponsiveAppBar = () => {
   function changePage(page) {
     switch (page) {
       case "All Invoice":
-        navigate("/allbill")
+        navigate("/allbill");
         // window.location.href = "/allbill";
 
         break;
       case "Biller":
-        navigate("/payer")
+        navigate("/payer");
         // window.location.href = "/payer";
         break;
       case "Payer":
@@ -150,12 +150,12 @@ const ResponsiveAppBar = () => {
         break;
 
       case "INVOICE GUARD":
-        navigate("/landing")
+        navigate("/landing");
         // window.location.href = "/landing";
 
         break;
       case "Add Biller":
-        navigate("/addBiller")
+        navigate("/addBiller");
         // window.location.href = "/addBiller";
 
         break;
@@ -165,7 +165,6 @@ const ResponsiveAppBar = () => {
     setAnchorElNav(null);
 
     // setMenu(event.target.innerText);
-    console.log(page);
   }
 
   const handleLogout = () => {
@@ -337,7 +336,7 @@ const ResponsiveAppBar = () => {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
           <MenuItem
             onClick={() => {
-              navigate("/editprofile/"+role);
+              navigate("/editprofile/" + role);
             }}>
             <Avatar /> Profile
           </MenuItem>

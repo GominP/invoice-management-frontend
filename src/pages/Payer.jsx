@@ -68,7 +68,6 @@ const Payer = () => {
   }, []);
 
   const callApi = () => {
-    console.log("Payer Page" + role);
     if (role === "payer") {
       billerService.biller_inquiry({ payerId: id }).then(function (response) {
         setRows(response);

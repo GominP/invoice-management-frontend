@@ -21,6 +21,9 @@ import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
 import { useEffect, useState } from "react";
+import * as invoiceService from "../services/invoiceService";
+import * as payerService from "../services/payerService";
+import * as billerService from "../services/billerServices";
 
 import {
   TextField,
@@ -45,6 +48,15 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from "@mui/material/styles";
 import SearchNotFound from "../component/SearchNotFound";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+} from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -56,21 +68,16 @@ const useStyles = makeStyles((theme) => ({
       width: 250,
     },
   },
-  // search: {
-  //   maxWidth: 800,
-  //   [theme.breakpoints.down("md")]: {
-  //     maxWidth: 450,
-  //   },
-  // },
 }));
 
-function createData(billId, customerName, expiredDate, total) {
+function createData(billId, customerName, expiredDate, total, status) {
   return {
     billId,
     // date,
     customerName,
     expiredDate,
     total,
+    status,
   };
 }
 
@@ -117,12 +124,7 @@ const headCells = [
     disablePadding: true,
     label: "Invoice id",
   },
-  // {
-  //   id: "date",
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: "วันที่",
-  // },
+
   {
     id: "customerName",
     numeric: false,
@@ -140,6 +142,12 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Total",
+  },
+  {
+    id: "status",
+    numeric: true,
+    disablePadding: false,
+    label: "Status",
   },
 ];
 
@@ -161,20 +169,6 @@ function EnhancedTableHead(props) {
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}>
             {headCell.label}
-
-            {/* <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}>
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel> */}
           </TableCell>
         ))}
       </TableRow>
@@ -191,6 +185,8 @@ EnhancedTableHead.propTypes = {
 
 export default function AllInvoices() {
   let navigate = useNavigate();
+  const role = useSelector(getRole);
+  const userId = useSelector(getUserID);
 
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
@@ -204,6 +200,7 @@ export default function AllInvoices() {
   const [anchorFilter, setAnchorFilter] = useState(null);
   const open = Boolean(anchorFilter);
   const [statusFilter, setStatusFilter] = useState("");
+  const [nameTemp, setNameTemp] = useState();
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -231,7 +228,7 @@ export default function AllInvoices() {
       expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
       total: 17,
     },
-    createData("1235", "โชคชัย คงมั่น", time, 4.3),
+    createData("1235", "โชคชัย คงมั่น", time, 4.3, "overdue"),
     createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
     createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
     createData("q3467", "โชคชัย", time3, 6.0),
@@ -247,7 +244,37 @@ export default function AllInvoices() {
 
   useEffect(() => {
     setRows(rowa);
+    callApi();
   }, []);
+
+  const callApi = () => {
+    let tempRow = [];
+    let tempDataRow = {};
+
+    let data = {};
+    role === "biller"
+      ? (data = { billerId: userId })
+      : (data = { payerId: userId });
+
+    invoiceService.invoice_inquiry(data).then(function (response) {
+      console.log(response["invoices"]);
+      setRows(response["invoices"]);
+    });
+  };
+
+  const findNamebyId = (temp) => {
+    let data = { id: temp };
+
+    let name = "sad";
+
+    if (role === "biller") {
+      payerService.payer_detail_inquiry(data).then(function (response) {});
+    } else if (role === "payer") {
+      billerService.biller_detail_inquiry(data).then(function (response) {});
+    }
+
+    return name;
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -276,7 +303,6 @@ export default function AllInvoices() {
   );
 
   function applySortFilter(array, comparator, query) {
-    console.log("applySortFilter");
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
@@ -309,7 +335,6 @@ export default function AllInvoices() {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const isInvoiceNotFound = filteredInvoice.length === 0;
-  
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -402,11 +427,25 @@ export default function AllInvoices() {
                         id={labelId}
                         scope="row"
                         padding="normal">
-                        {row.billId}
+                        {row.id}
                       </TableCell>
-                      <TableCell align="left">{row.customerName}</TableCell>
-                      <TableCell align="left">{row.expiredDate}</TableCell>
-                      <TableCell align="right">{row.total}</TableCell>
+                      {role === "payer" ? (
+                        <TableCell align="left">
+                          aaaaaaaaaaaaaaaaaaaa
+                          {/* {findNamebyId(row.payerId)} */}
+                        </TableCell>
+                      ) : (
+                        <TableCell align="left">
+                          bbbbbbbbbbbbbbb
+                          {/* {findNamebyId(row.billerId)} */}
+                        </TableCell>
+                      )}
+
+                      <TableCell align="left">{row.dueDate}</TableCell>
+                      <TableCell align="right">
+                        {row.totalAmountAddedTax}
+                      </TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -417,14 +456,14 @@ export default function AllInvoices() {
               )}
             </TableBody>
             {isInvoiceNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                    <SearchNotFound searchQuery={filterName} />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
         <TablePagination

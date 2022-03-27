@@ -9,6 +9,13 @@ export const invoice_create = async (data) => {
     return response.data;
   };
 
+  export const invoice_inquiry = async (data) => {
+    const response = await axios.post(url + "invoice-inquiry", data, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  };
+
 // export const payer_inquiry = async (data) => {
 //   const response = await axios.post(url + "payer-inquiry", data, {
 //     headers: { Authorization: token },
