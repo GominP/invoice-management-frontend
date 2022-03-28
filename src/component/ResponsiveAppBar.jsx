@@ -67,7 +67,7 @@ const ResponsiveAppBar = () => {
   // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElNoti, setAnchorElNoti] = useState(null);
-  const [notifyCount, setNotifyCount] = useState(4);
+  const [notifyCount, setNotifyCount] = useState(0);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -124,6 +124,8 @@ const ResponsiveAppBar = () => {
       tabSelect = 2;
     } else if (path.pathname === "/addBiller") {
       tabSelect = 3;
+    } else if (path.pathname === "/payment") {
+      tabSelect = 4;
     }
 
     setTab(tabSelect);
@@ -152,12 +154,14 @@ const ResponsiveAppBar = () => {
       case "INVOICE GUARD":
         navigate("/landing");
         // window.location.href = "/landing";
-
         break;
       case "Add Biller":
         navigate("/addBiller");
         // window.location.href = "/addBiller";
-
+        break;
+      case "Payment":
+        navigate("/payment");
+        // window.location.href = "/addBiller";
         break;
       default:
         window.location.href = "/";

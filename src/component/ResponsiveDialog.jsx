@@ -17,18 +17,38 @@ import { useTheme } from "@mui/material/styles";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import * as paymentService from "../services/paymentService";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+  setInfoSlip,
+  get_info_slip_verification,
+} from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function ResponsiveDialog(props) {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const axios = require("axios");
-  const { textButton, requestEdit, deleteRelation, color } = props;
+  const {
+    textButton,
+    requestEdit,
+    deleteRelation,
+    color,
+    qrcode,
+    invoiceInfo,
+    billerInfo,
+  } = props;
   const [open, setOpen] = useState(false);
-  const [qrcode, setQrcode] = useState("");
+  const [qrcodeInfo, setQrcodeInfo] = useState({});
 
   useEffect(() => {
     createQr();
-  }, []);
+  }, [qrcode, invoiceInfo, billerInfo]);
 
   const theme = useTheme();
 
@@ -41,10 +61,9 @@ function ResponsiveDialog(props) {
   };
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const createQr = () => {
-    QRCode.toDataURL(
-      "00020101021230360115911256458502398020412340305123455204701153037645402205802TH5911TestPayment6007BANGKOK62340523202203231223372360000000703BMQ6304D1C8"
-    ).then(setQrcode);
+  const createQr = async () => {
+    // console.log(qrcode);
+    QRCode.toDataURL(qrcode.data.qrRawData).then(setQrcodeInfo);
   };
 
   const handleSubmit = (event) => {
@@ -52,20 +71,55 @@ function ResponsiveDialog(props) {
 
     const data = new FormData(event.currentTarget);
 
-    // if (passwordText !== confirmPasswordText) {
-    //   setTextError("รหัสผ่านไม่ตรงกัน");
-    //   setOpenError(true);
-    // } else if (data.get("username") === "") {
-    //   setTextError("ใส่ข้อมูลให้ครบถ้วน");
-    //   setOpenError(true);
-    // }
-
     console.log({
       email: data.get("slip"),
+      qrcode: qrcode,
     });
+    let token = {
+      transRef: data.get("slip"),
+      uuid: qrcode.uuid,
+      token: qrcode.token,
+      invoiceId: qrcode.invoiceId,
+    };
 
-    navigate("/paymentsuccess");
+    paymentService.payment_slip_verification(token).then(function (response) {
+      if (response["status"]["code"] === "1000") {
+        let temp = {
+          amount: response["data"]["amount"],
+          paidLocalAmount: response["data"]["paidLocalAmount"],
+          receiver: {
+            name: response["data"]["receiver"]["name"],
+            proxy: {
+              type: response["data"]["receiver"]["proxy"]["type"],
+              value: response["data"]["receiver"]["proxy"]["value"],
+            },
+          },
+          sender: {
+            name: response["data"]["sender"]["name"],
+            proxy: {
+              type: response["data"]["sender"]["proxy"]["type"],
+              value: response["data"]["sender"]["proxy"]["value"],
+            },
+          },
+          transDate: response["data"]["transDate"],
+          transRef: response["data"]["transRef"],
+          transTime: response["data"]["transTime"],
+        };
+        dispatch(setInfoSlip(temp));
+        navigate("/paymentsuccess");
+
+        console.log(temp);
+      } else {
+        console.log("cannot send false");
+      }
+
+      console.log(response);
+    });
   };
+
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <div>
@@ -88,32 +142,35 @@ function ResponsiveDialog(props) {
               <DialogContentText>
                 <Grid container>
                   <Grid item xs={12} md={6}>
-                    <Typography>ชื่อบริษัท/ผู้วางใบแจ้งหนี้ :</Typography>
+                    <Typography>Biller :</Typography>
                   </Grid>
                   <Grid item xs={12} md={6} pb={2}>
-                    <Typography>นาย ณัฐพร วิไลเลิศประดิษฐ์</Typography>
+                    <Typography>
+                      {billerInfo.name} {billerInfo.lastname}
+                    </Typography>
                   </Grid>
 
                   <Grid item xs={12} md={6}>
-                    <Typography>ยอดรวมสุทธิ :</Typography>
+                    <Typography>Total :</Typography>
                   </Grid>
                   <Grid item xs={12} md={6} pb={2}>
-                    <Typography>0958654531</Typography>
+                    <Typography>{invoiceInfo.totalAmountAddedTax}</Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography>พนักงานออกใบแจ้งหนี้ :</Typography>
+                    {/* <Typography>พนักงานออกใบแจ้งหนี้ :</Typography> */}
                   </Grid>
                   <Grid item xs={12} md={6} pb={2}>
-                    <Typography>test@gmail.com</Typography>
+                    <Typography></Typography>
                   </Grid>
-                  <img src={qrcode} />
+                  <img src={qrcodeInfo} />
+
                   <Grid item xs={12} md={12}>
                     <TextField
                       margin="normal"
                       required
                       fullWidth
                       name="slip"
-                      label="กรอกเลขสลิป"
+                      label="slip code"
                       id="slip"
                       autoComplete="slip"
                     />
@@ -123,10 +180,10 @@ function ResponsiveDialog(props) {
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={handleClose}>
-                ยกเลิก
+                cancel
               </Button>
               <Button type="submit" autoFocus>
-                ยืนยันการจ่ายเงิน
+                Paid
               </Button>
             </DialogActions>
           </Box>
@@ -192,6 +249,9 @@ ResponsiveDialog.propTypes = {
   requestEdit: PropTypes.bool.isRequired,
   deleteRelation: PropTypes.bool.isRequired,
   color: PropTypes.string.isRequired,
+  qrcode: PropTypes.string,
+  invoiceInfo: PropTypes.array.isRequired,
+  billerInfo: PropTypes.array.isRequired,
 };
 
 export default ResponsiveDialog;

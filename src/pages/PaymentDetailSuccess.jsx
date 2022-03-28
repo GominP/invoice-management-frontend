@@ -14,6 +14,7 @@ import {
   CardActions,
   Divider,
   Stack,
+  Avatar,
 } from "@mui/material";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -24,17 +25,37 @@ import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useEffect, useState } from "react";
 import ResponsiveDialog from "../component/ResponsiveDialog";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import {
+  setRole,
+  setId,
+  setNotiCount,
+  getRole,
+  getUserID,
+  getNotiCount,
+  setInfoSlip,
+  get_info_slip_verification,
+} from "../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   center: {
     display: "flex",
     justifyContent: "center",
   },
+  header: { textAlign: "center", color: "green" },
+  subHeader: { textAlign: "center", color: "grey" },
 }));
 
 export default function PaymentDetailSuccess() {
   const classes = useStyles();
+  const billInfo = useSelector(get_info_slip_verification);
+
   const [name, setname] = useState("testname");
   const [amount, setamount] = useState(2000);
+
+  useEffect(() => {
+    console.log(billInfo);
+  }, [billInfo]);
 
   return (
     <div>
@@ -43,45 +64,64 @@ export default function PaymentDetailSuccess() {
           <Card variant="outlined">
             <Grid>
               <Box>
-                <CardHeader title="ข้อมูลการจ่ายเงิน"></CardHeader>
+                <Box className={classes.center}>
+                  <CheckCircleOutlinedIcon
+                    sx={{ fontSize: 50, color: "green" }}
+                  />
+                </Box>
+
+                <CardHeader
+                  title="Successful Payment"
+                  className={classes.header}></CardHeader>
+                <Box className={classes.subHeader}>
+                  <Typography>{billInfo.transTime}</Typography>
+                  <Typography>Ref ID: {billInfo.transRef}</Typography>
+                </Box>
                 <Divider />
                 <CardContent>
                   {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
                   <Box className={classes.center}>
                     <Grid container>
                       <Grid item xs={12}>
-                        <Typography variant="h5" component="h4"> จ่ายเงินให้ {name}</Typography>
-                        <Typography variant="h5" component="h4"> {amount} บาท</Typography>
+                        <Stack direction={"row"}>
+                          <Grid item xs={6}>
+                            FROM
+                          </Grid>
+                          <Grid item xs={6}>
+                            <Typography>{billInfo.sender.name}</Typography>
+                          </Grid>
+                        </Stack>
                         <Divider />
                       </Grid>
-                      
+
                       <Grid item xs={12}>
                         <Stack direction={"row"}>
                           <Grid item xs={6}>
-                            ช่องทางการชำระเงิน
+                            TO
                           </Grid>
                           <Grid item xs={6}>
-                            SCB
+                            <Typography> {billInfo.receiver.name}</Typography>
                           </Grid>
                         </Stack>
                       </Grid>
                       <Grid item xs={12}>
                         <Stack direction={"row"}>
+                          <Grid item xs={6}></Grid>
                           <Grid item xs={6}>
-                            วันที่ทำรายการ
-                          </Grid>
-                          <Grid item xs={6}>
-                            22/10/2022
+                            {billInfo.receiver.proxy.type} :{" "}
+                            {billInfo.receiver.proxy.value}
                           </Grid>
                         </Stack>
+                        <Divider />
                       </Grid>
+
                       <Grid item xs={12}>
                         <Stack direction={"row"}>
                           <Grid item xs={6}>
-                            หมายเลขการสั่งซื้อ
+                            AMOUNT
                           </Grid>
                           <Grid item xs={6}>
-                            202221231425867623
+                            <Typography> {billInfo.amount}</Typography>
                           </Grid>
                         </Stack>
                       </Grid>

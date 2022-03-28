@@ -17,8 +17,11 @@ export const biller_update = async (data) => {
 };
 
 export const biller_detail_inquiry = async (data) => {
+  // console.log(data)
   const response = await axios.post(url + "biller-detail-inquiry", data, {
     headers: { Authorization: token },
   });
+
+  console.log(response);
   return response.data;
 };

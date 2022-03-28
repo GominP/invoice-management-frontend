@@ -21,7 +21,7 @@ import { makeStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
 import { useEffect, useState } from "react";
-import * as invoiceService from "../services/invoiceService";
+import * as paymentService from "../services/paymentService";
 import * as payerService from "../services/payerService";
 import * as billerService from "../services/billerServices";
 
@@ -118,12 +118,12 @@ function getComparator(order, orderBy) {
 // }
 
 const headCells = [
-  {
-    id: "billId",
-    numeric: false,
-    disablePadding: true,
-    label: "Invoice id",
-  },
+  // {
+  //   id: "billId",
+  //   numeric: false,
+  //   disablePadding: true,
+  //   label: "Invoice id",
+  // },
 
   {
     id: "customerName",
@@ -132,22 +132,16 @@ const headCells = [
     label: "Customer",
   },
   {
-    id: "expiredDate",
+    id: "amount",
     numeric: false,
-    disablePadding: false,
-    label: "Expired Date",
-  },
-  {
-    id: "total",
-    numeric: true,
     disablePadding: false,
     label: "Total",
   },
   {
-    id: "status",
+    id: "paidAt",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "Paid Date",
   },
 ];
 
@@ -183,7 +177,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-export default function AllInvoices() {
+export default function AllPayment() {
   let navigate = useNavigate();
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
@@ -201,6 +195,7 @@ export default function AllInvoices() {
   const open = Boolean(anchorFilter);
   const [statusFilter, setStatusFilter] = useState("");
   const [nameTemp, setNameTemp] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -212,34 +207,11 @@ export default function AllInvoices() {
       },
     },
   };
-  const filters = [
-    "Paid",
-    "Overdue",
-    "คำร้องแก้ไขใบแจ้งหนี้",
-    "ใบแจ้งหนี้ที่กำลังรอดำเนินการ",
-    "ใบแจ้งหนี้ที่ถูกยกเลิก",
-  ];
-
-  const rowb = [
-    {
-      billId: "test",
-      // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-      customerName: "สินชัย",
-      expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-      total: 17,
-    },
-    createData("1235", "โชคชัย คงมั่น", time, 4.3, "overdue"),
-    createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
-    createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
-    createData("q3467", "โชคชัย", time3, 6.0),
-    createData("2345260", "โชคชัย", time4, 4.0),
-    createData("1", "โชคชัย", time5, 3.9),
-    createData("Gingerbread", "โชคชัย", time5, 3.9),
-  ];
 
   useEffect(() => {
+    // setRows(rowa);
     callApi();
-  }, []);
+  }, [nameTemp, isLoading]);
 
   const callApi = async () => {
     let tempRow = [];
@@ -250,20 +222,10 @@ export default function AllInvoices() {
       ? (data = { billerId: userId })
       : (data = { payerId: userId });
 
-    await invoiceService.invoice_inquiry(data).then(function (response) {
-      // console.log(response["invoices"]);
-      setRows(response["invoices"]);
+    await paymentService.payment_inquiry(data).then(async function (response) {
+      console.log(response["payments"]);
+      setRows(response["payments"]);
     });
-
-    // await billerService.biller_detail_inquiry(data).then(function (response) {
-    //   console.log(response);
-    //   // return response["name"];
-    // });
-
-    // await payerService.payer_detail_inquiry(data).then(function (response) {
-    //   console.log(response);
-    //   // return response["name"];
-    // });
   };
 
   const findNamebyId = (temp) => {
@@ -282,11 +244,6 @@ export default function AllInvoices() {
     // }
   };
 
-  function formatDate(date) {
-    return new Date(date).toLocaleDateString("fr")
-    
-  }
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -303,7 +260,6 @@ export default function AllInvoices() {
   const handleChangeFilter = (string) => {
     // console.log(string);
     setStatusFilter(string);
-    setRows(rowb);
     setAnchorFilter(null);
   };
 
@@ -341,6 +297,9 @@ export default function AllInvoices() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const fotmatDate = (date) => {
+    return new Date(date).toLocaleDateString("fr");
+  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -351,140 +310,122 @@ export default function AllInvoices() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "85%", margin: "auto", p: 3 }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
-        <Toolbar>
-          <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
-            All Invoice
-            {/* {statusFilter === "" ? null : (
-              <Grid sx={{ paddingLeft: 1 }}>
-                <Button variant="outlined" color="error">
-                  {statusFilter}
+    <>
+      {isLoading ? (
+        <Box sx={{ width: "85%", margin: "auto", p: 3 }}>
+          <Paper sx={{ width: "100%", mb: 2 }}>
+            <Toolbar>
+              <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
+                All Invoice
+              </Typography>
+
+              <Stack direction={{ xs: "row", sm: "row" }}>
+                <TextField
+                  value={filterName}
+                  onChange={handleFilterByName}
+                  // label="ค้นหา"
+                  placeholder="Search Invoice"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="start">
+                        <IconButton>
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClickFilter}>
+                  <FilterListIcon />
                 </Button>
-              </Grid>
-            )} */}
-          </Typography>
+              </Stack>
+            </Toolbar>
+            <TableContainer>
+              <Table
+                aria-labelledby="tableTitle"
+                size="medium"
+                sx={{ minWidth: 750 }}>
+                <EnhancedTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  rowCount={rows.length}
+                />
+                <TableBody>
+                  {filteredInvoice
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.name);
+                      const labelId = `enhanced-table-checkbox-${index}`;
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row.id)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id}
+                          // selected={isItemSelected}
+                        >
+                          {/* <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="normal">
+                      {row.}
+                    </TableCell> */}
+                          {role === "payer" ? (
+                            <TableCell align="left">{nameTemp}</TableCell>
+                          ) : (
+                            <TableCell align="left">{nameTemp}</TableCell>
+                          )}
 
-          <Stack direction={{ xs: "row", sm: "row" }}>
-            <TextField
-              value={filterName}
-              onChange={handleFilterByName}
-              // label="ค้นหา"
-              placeholder="Search Invoice"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton>
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClickFilter}>
-              <FilterListIcon />
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorFilter}
-              open={open}
-              onClose={handleChangeFilter}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}>
-              {filters.map((filterItem) => (
-                <MenuItem onClick={() => handleChangeFilter(filterItem)}>
-                  {filterItem}
-                </MenuItem>
-              ))}
-            </Menu>
-          </Stack>
-        </Toolbar>
-        <TableContainer>
-          <Table
-            aria-labelledby="tableTitle"
-            size="medium"
-            sx={{ minWidth: 750 }}>
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {filteredInvoice
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.id)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      // selected={isItemSelected}
-                    >
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="normal">
-                        {row.id}
-                      </TableCell>
-                      {role === "payer" ? (
-                        <TableCell align="left">
-                          {findNamebyId(row.billerId)}
-                        </TableCell>
-                      ) : (
-                        <TableCell align="left">
-                          bbbbbbbbbbbbbbb
-                          {/* {findNamebyId(row.billerId)} */}
-                        </TableCell>
-                      )}
-
-                      <TableCell align="left">{formatDate(row.dueDate)}</TableCell>
-                      <TableCell align="right">
-                        {row.totalAmountAddedTax}
-                      </TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                          <TableCell align="left">{row.amount}</TableCell>
+                          {/* <TableCell align="right">
+                      {row.totalAmountAddedTax}
+                    </TableCell> */}
+                          <TableCell align="right">
+                            {fotmatDate(row.paidAt)}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-            {isInvoiceNotFound && (
-              <TableBody>
-                <TableRow>
-                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                    <SearchNotFound searchQuery={filterName} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            )}
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+                  )}
+                </TableBody>
+                {isInvoiceNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </Box>
+      ) : (
+        <SearchNotFound></SearchNotFound>
+      )}
+    </>
   );
 }

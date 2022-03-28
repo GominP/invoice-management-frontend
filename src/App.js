@@ -7,7 +7,6 @@ import Payer from "./pages/Payer";
 import ResponsiveAppBar from "./component/ResponsiveAppBar";
 import AllInvoices from "./pages/AllInvoices";
 import TotalIncome from "./pages/TotalIncome";
-import CheckBillInfo from "./pages/CheckBillInfo";
 import EarningCard from "./component/dashboardTotal/EarningCard";
 import EditProfile from "./pages/EditProfile";
 import Register from "./pages/Register";
@@ -22,6 +21,7 @@ import LandingPage from "./pages/LandingPage";
 import AddBiller from "./pages/AddBiller";
 import PaymentDetailSuccess from "./pages/PaymentDetailSuccess";
 import { useEffect } from "react";
+import AllPayment from "./pages/AllPayment";
 
 const theme = createTheme(
   {
@@ -65,6 +65,8 @@ function App() {
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill/:id" element={<CreateBill />} />
           <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
+          <Route path="/payment" element={<AllPayment />} />
+
         </Routes>
       </ThemeProvider>
     </div>
