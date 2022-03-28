@@ -316,7 +316,7 @@ export default function AllPayment() {
           <Paper sx={{ width: "100%", mb: 2 }}>
             <Toolbar>
               <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
-                All Invoice
+                All Payment
               </Typography>
 
               <Stack direction={{ xs: "row", sm: "row" }}>

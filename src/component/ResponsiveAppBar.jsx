@@ -24,8 +24,10 @@ import {
   setNotiCount,
   getRole,
   getNotiCount,
+  getUserID,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import * as notificationService from "../services/notificationService";
 
 const biller = ["INVOICE GUARD", "All Invoice", "Payer", "Payment"];
 const payer = [
@@ -36,9 +38,9 @@ const payer = [
   "Payment",
 ];
 const notification = [
-  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว",
-  "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว",
-  "ยอดรวมรายรับ",
+  { label: "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว" },
+  { label: "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว" },
+  { label: "ยอดรวมรายรับ" },
 ];
 
 const ResponsiveAppBar = () => {
@@ -46,14 +48,21 @@ const ResponsiveAppBar = () => {
   let path = useLocation();
   const role = useSelector(getRole);
   const noti = useSelector(getNotiCount);
+  const userId = useSelector(getUserID);
+  const [allNoti, setAllNoti] = useState([{}]);
 
   const dispatch = useDispatch();
   const [rows, setRows] = useState([]);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElNoti, setAnchorElNoti] = useState(null);
+  const [notifyCount, setNotifyCount] = useState(0);
 
   useEffect(() => {
     CheckRole();
     currentTab();
-  }, []);
+  }, [allNoti]);
 
   const CheckRole = () => {
     if (role === "biller") {
@@ -62,12 +71,6 @@ const ResponsiveAppBar = () => {
       setRows(payer);
     }
   };
-
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElNoti, setAnchorElNoti] = useState(null);
-  const [notifyCount, setNotifyCount] = useState(0);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -84,12 +87,22 @@ const ResponsiveAppBar = () => {
   //   setAnchorElUser(null);
   // };
 
-  const handleOpenNotiMenu = (event) => {
+  const handleOpenNotiMenu = async (event) => {
     dispatch(setNotiCount(0));
+    console.log("open noti");
+    let data = {};
+    role === "biller"
+      ? (data = { billerId: userId })
+      : (data = { payerId: userId });
+    const notiRes = await notificationService.notification_inquiry(data);
+    setAllNoti(notiRes["notifications"])
+    console.log(allNoti)
+    ;
+
     setAnchorElNoti(event.currentTarget);
   };
   const handleCloseNotiMenu = () => {
-    setAnchorElNoti(null);
+    // setAnchorElNoti(null);
   };
   function notificationsLabel(count) {
     if (count === 0) {
@@ -265,7 +278,7 @@ const ResponsiveAppBar = () => {
               }}
               open={Boolean(anchorElNoti)}
               onClose={handleCloseNotiMenu}>
-              {notification.map((noti) => (
+              {notification.map((noti, index) => (
                 <MenuItem key={noti} onClick={handleCloseNotiMenu}>
                   <Stack direction="row" spacing={2}>
                     <ReceiptOutlinedIcon />
@@ -274,7 +287,7 @@ const ResponsiveAppBar = () => {
                       noWrap
                       sx={{ display: "inline-block", whiteSpace: "pre-line" }}
                       width={200}>
-                      {noti}
+                      {noti.label}
                     </Typography>
                   </Stack>
                 </MenuItem>
