@@ -37,11 +37,6 @@ const payer = [
   "Add Biller",
   "Payment",
 ];
-const notification = [
-  { label: "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015964 แล้ว" },
-  { label: "ผู้วางบิล โกมินทร์ ปะวันเตา ได้สร้างบิลใหม่ Bl603015963 แล้ว" },
-  { label: "ยอดรวมรายรับ" },
-];
 
 const ResponsiveAppBar = () => {
   let navigate = useNavigate();
@@ -54,40 +49,38 @@ const ResponsiveAppBar = () => {
   const dispatch = useDispatch();
   const [rows, setRows] = useState([]);
   const [anchorElNav, setAnchorElNav] = useState(null);
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElNoti, setAnchorElNoti] = useState(null);
   const [notifyCount, setNotifyCount] = useState(0);
 
   useEffect(() => {
-    CheckRole();
-    currentTab();
-  }, [allNoti]);
-
-  const CheckRole = () => {
-    if (role === "biller") {
-      setRows(biller);
-    } else {
-      setRows(payer);
+    async function fetchNavbar() {
+      if (role === "biller") {
+        setRows(biller);
+      } else {
+        setRows(payer);
+      }
     }
-  };
+
+    // CheckRole();
+    currentTab();
+    fetchNavbar();
+  }, [allNoti, rows, role]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
-
   const handleOpenNotiMenu = async (event) => {
+    setAnchorElNoti(event.currentTarget);
+    callNoti();
+  };
+
+  async function callNoti() {
     dispatch(setNotiCount(0));
     console.log("open noti");
     let data = {};
@@ -95,14 +88,17 @@ const ResponsiveAppBar = () => {
       ? (data = { billerId: userId })
       : (data = { payerId: userId });
     const notiRes = await notificationService.notification_inquiry(data);
-    setAllNoti(notiRes["notifications"])
-    console.log(allNoti)
-    ;
+    setAllNoti(notiRes["notifications"]);
+    // console.log(allNoti);
+  }
 
-    setAnchorElNoti(event.currentTarget);
+  const notiNevigate = (id) => {
+    // navigate("/allbill/billinfo/"+id);
+    window.location.href = "/allbill/billinfo/" + id;
+    setAnchorElNoti(false);
   };
   const handleCloseNotiMenu = () => {
-    // setAnchorElNoti(null);
+    setAnchorElNoti(null);
   };
   function notificationsLabel(count) {
     if (count === 0) {
@@ -278,8 +274,10 @@ const ResponsiveAppBar = () => {
               }}
               open={Boolean(anchorElNoti)}
               onClose={handleCloseNotiMenu}>
-              {notification.map((noti, index) => (
-                <MenuItem key={noti} onClick={handleCloseNotiMenu}>
+              {allNoti.map((noti, index) => (
+                <MenuItem
+                  key={noti}
+                  onClick={() => notiNevigate(noti.invoiceId)}>
                   <Stack direction="row" spacing={2}>
                     <ReceiptOutlinedIcon />
                     <Typography
@@ -287,7 +285,7 @@ const ResponsiveAppBar = () => {
                       noWrap
                       sx={{ display: "inline-block", whiteSpace: "pre-line" }}
                       width={200}>
-                      {noti.label}
+                      {noti.message}
                     </Typography>
                   </Stack>
                 </MenuItem>
