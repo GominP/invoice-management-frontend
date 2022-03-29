@@ -119,7 +119,7 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: "billId",
+    id: "id",
     numeric: false,
     disablePadding: true,
     label: "Invoice id",
@@ -132,13 +132,13 @@ const headCells = [
     label: "Customer",
   },
   {
-    id: "expiredDate",
+    id: "dueDate",
     numeric: false,
     disablePadding: false,
     label: "Expired Date",
   },
   {
-    id: "total",
+    id: "totalAmountAddedTax",
     numeric: true,
     disablePadding: false,
     label: "Total",
@@ -213,29 +213,30 @@ export default function AllInvoices() {
     },
   };
   const filters = [
+    "All",
     "Paid",
     "Overdue",
-    "คำร้องแก้ไขใบแจ้งหนี้",
-    "ใบแจ้งหนี้ที่กำลังรอดำเนินการ",
-    "ใบแจ้งหนี้ที่ถูกยกเลิก",
+    "Processing",
+    "Cancelled",
+    "Correction requested",
   ];
 
-  const rowb = [
-    {
-      billId: "test",
-      // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-      customerName: "สินชัย",
-      expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-      total: 17,
-    },
-    createData("1235", "โชคชัย คงมั่น", time, 4.3, "overdue"),
-    createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
-    createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
-    createData("q3467", "โชคชัย", time3, 6.0),
-    createData("2345260", "โชคชัย", time4, 4.0),
-    createData("1", "โชคชัย", time5, 3.9),
-    createData("Gingerbread", "โชคชัย", time5, 3.9),
-  ];
+  // const rowb = [
+  //   {
+  //     billId: "test",
+  //     // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+  //     customerName: "สินชัย",
+  //     expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
+  //     total: 17,
+  //   },
+  //   createData("1235", "โชคชัย คงมั่น", time, 4.3, "overdue"),
+  //   createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
+  //   createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
+  //   createData("q3467", "โชคชัย", time3, 6.0),
+  //   createData("2345260", "โชคชัย", time4, 4.0),
+  //   createData("1", "โชคชัย", time5, 3.9),
+  //   createData("Gingerbread", "โชคชัย", time5, 3.9),
+  // ];
 
   useEffect(() => {
     async function fetchInvoice() {
@@ -247,9 +248,6 @@ export default function AllInvoices() {
       await invoiceService.invoice_inquiry(data).then(function (response) {
         // console.log(response["invoices"]);
         setRows(response["invoices"]);
-        rows.map((item, index) => {
-          console.log(item);
-        });
       });
     }
     fetchInvoice();
@@ -314,10 +312,29 @@ export default function AllInvoices() {
   const handleClickFilter = (event) => {
     setAnchorFilter(event.currentTarget);
   };
-  const handleChangeFilter = (string) => {
-    // console.log(string);
+  const handleChangeFilter = async (string) => {
+    console.log(string.toLowerCase());
     setStatusFilter(string);
-    setRows(rowb);
+    let data = {};
+    let data2 = {};
+    role === "biller"
+      ? (data = { billerId: userId, status: string.toLowerCase() })
+      : (data = { payerId: userId, status: string.toLowerCase() });
+
+    if (string === "All") {
+      role === "biller"
+        ? (data2 = { billerId: userId })
+        : (data2 = { payerId: userId });
+
+      await invoiceService.invoice_inquiry(data2).then(function (response) {
+        setRows(response["invoices"]);
+      });
+    } else {
+      await invoiceService.invoice_inquiry(data).then(function (response) {
+        setRows(response["invoices"]);
+      });
+    }
+
     setAnchorFilter(null);
   };
 
@@ -328,7 +345,8 @@ export default function AllInvoices() {
   );
 
   function applySortFilter(array, comparator, query) {
-    // console.log(array[0]["totalAmountAddedTax"])
+    // console.log(array)
+
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
@@ -338,7 +356,8 @@ export default function AllInvoices() {
     if (query) {
       return filter(
         array,
-        (bill) => bill.billId.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        (bill) =>
+          bill.id.toString().toLowerCase().indexOf(query.toLowerCase()) !== -1
       );
     }
     return stabilizedThis.map((el) => el[0]);
@@ -369,16 +388,17 @@ export default function AllInvoices() {
     <Box sx={{ width: "85%", margin: "auto", p: 3 }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <Toolbar>
-          <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
-            All Invoice
-            {/* {statusFilter === "" ? null : (
-              <Grid sx={{ paddingLeft: 1 }}>
-                <Button variant="outlined" color="error">
-                  {statusFilter}
-                </Button>
-              </Grid>
-            )} */}
-          </Typography>
+          <Box sx={{ flex: "1 100%" }}>
+            <Stack direction={"row"} spacing={2}>
+         
+              <Typography variant="h6" id="tableTitle">
+                All Invoice
+              </Typography>
+              {statusFilter === "" || statusFilter === "All" ? null : (
+                <Chip label={statusFilter} variant="outlined" />
+              )}
+            </Stack>
+          </Box>
 
           <Stack direction={{ xs: "row", sm: "row" }}>
             <TextField
@@ -437,6 +457,7 @@ export default function AllInvoices() {
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
+                  // console.log(row["id"])
                   return (
                     <TableRow
                       hover

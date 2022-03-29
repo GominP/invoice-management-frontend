@@ -42,6 +42,10 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const CardTotal = ({ text, amount }) => {
   const theme = useTheme();
 
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <div>
 
@@ -67,7 +71,7 @@ const CardTotal = ({ text, amount }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4"> $ {amount}  </Typography>}
+                primary={<Typography variant="h4"> $ {currencyFormat(amount)}  </Typography>}
                 secondary={
                   <Typography
                     variant="subtitle2"

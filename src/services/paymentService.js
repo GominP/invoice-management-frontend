@@ -21,3 +21,10 @@ export const payment_inquiry = async (data) => {
   });
   return response.data;
 };
+
+export const payment_detail_inquiry = async (data) => {
+  const response = await axios.post(url + "payment-detail-inquiry", data, {
+    headers: { Authorization: token },
+  });
+  return response.data;
+};

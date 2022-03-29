@@ -223,7 +223,7 @@ export default function AllPayment() {
       : (data = { payerId: userId });
 
     await paymentService.payment_inquiry(data).then(async function (response) {
-      // console.log(response["payments"]);
+      console.log(response["payments"]);
       setRows(response["payments"]);
     });
   };
@@ -263,6 +263,10 @@ export default function AllPayment() {
     setAnchorFilter(null);
   };
 
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const filteredInvoice = applySortFilter(
     rows,
     getComparator(order, orderBy),
@@ -285,8 +289,9 @@ export default function AllPayment() {
     return stabilizedThis.map((el) => el[0]);
   }
 
-  const handleClick = (event, billId) => {
-    navigate("/allbill/billinfo/" + billId);
+  const handleClick = (event, id) => {
+    console.log(id);
+    navigate("/paymentDetail/" + id);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -335,14 +340,6 @@ export default function AllPayment() {
                     ),
                   }}
                 />
-                <Button
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={handleClickFilter}>
-                  <FilterListIcon />
-                </Button>
               </Stack>
             </Toolbar>
             <TableContainer>
@@ -385,7 +382,7 @@ export default function AllPayment() {
                             <TableCell align="left">{nameTemp}</TableCell>
                           )}
 
-                          <TableCell align="left">{row.amount}</TableCell>
+                          <TableCell align="left">{currencyFormat(row.amount)}</TableCell>
                           {/* <TableCell align="right">
                       {row.totalAmountAddedTax}
                     </TableCell> */}

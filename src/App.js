@@ -22,7 +22,7 @@ import AddBiller from "./pages/AddBiller";
 import PaymentDetailSuccess from "./pages/PaymentDetailSuccess";
 import { useEffect } from "react";
 import AllPayment from "./pages/AllPayment";
-import TestNoti from "./pages/TestNoti";
+import PaymentDetail from "./pages/PaymentDetail";
 
 const theme = createTheme(
   {
@@ -57,8 +57,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/addBiller" element={<AddBiller />} />
-          <Route path="/test" element={<TestNoti />} />
-
+          <Route path="/paymentDetail/:id" element={<PaymentDetail />} />
           <Route path="/payer" element={<Payer />} />
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
