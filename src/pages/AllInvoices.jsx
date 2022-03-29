@@ -238,7 +238,22 @@ export default function AllInvoices() {
   ];
 
   useEffect(() => {
-    callApi();
+    async function fetchInvoice() {
+      let data = {};
+      role === "biller"
+        ? (data = { billerId: userId })
+        : (data = { payerId: userId });
+
+      await invoiceService.invoice_inquiry(data).then(function (response) {
+        // console.log(response["invoices"]);
+        setRows(response["invoices"]);
+        rows.map((item, index) => {
+          console.log(item);
+        });
+      });
+    }
+    fetchInvoice();
+    // callApi();
   }, []);
 
   const callApi = async () => {
@@ -283,8 +298,7 @@ export default function AllInvoices() {
   };
 
   function formatDate(date) {
-    return new Date(date).toLocaleDateString("fr")
-    
+    return new Date(date).toLocaleDateString("fr");
   }
 
   const handleRequestSort = (event, property) => {
@@ -314,6 +328,7 @@ export default function AllInvoices() {
   );
 
   function applySortFilter(array, comparator, query) {
+    // console.log(array[0]["totalAmountAddedTax"])
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]);
@@ -450,7 +465,9 @@ export default function AllInvoices() {
                         </TableCell>
                       )}
 
-                      <TableCell align="left">{formatDate(row.dueDate)}</TableCell>
+                      <TableCell align="left">
+                        {formatDate(row.dueDate)}
+                      </TableCell>
                       <TableCell align="right">
                         {row.totalAmountAddedTax}
                       </TableCell>

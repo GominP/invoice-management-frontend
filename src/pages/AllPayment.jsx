@@ -223,7 +223,7 @@ export default function AllPayment() {
       : (data = { payerId: userId });
 
     await paymentService.payment_inquiry(data).then(async function (response) {
-      console.log(response["payments"]);
+      // console.log(response["payments"]);
       setRows(response["payments"]);
     });
   };
