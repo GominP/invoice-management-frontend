@@ -7,3 +7,14 @@ export const notification_inquiry = async (data) => {
   });
   return response.data;
 };
+
+export const notification_unread_count_inquiry = async (data) => {
+  const response = await axios.post(
+    url + "notification-unread-count-inquiry",
+    data,
+    {
+      headers: { Authorization: token },
+    }
+  );
+  return response.data;
+};

@@ -33,7 +33,7 @@ import moment from "moment";
 import { set } from "date-fns";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 import { makeStyles } from "@mui/styles";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   setRole,
   setId,
@@ -47,6 +47,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
 import * as invoiceService from "../services/invoiceService";
+import * as notificationService from "../services/notificationService";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -72,8 +73,12 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateBill() {
   const classes = useStyles();
   let params = useParams();
+  let navigate = useNavigate();
+
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
+
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [total, setTotal] = useState(400);
@@ -115,7 +120,7 @@ export default function CreateBill() {
 
   useEffect(() => {
     customerInfoApi();
-  }, []);
+  }, [allProduct]);
 
   const customerInfoApi = async () => {
     let data = { id: params.id };
@@ -205,7 +210,13 @@ export default function CreateBill() {
     initValues.totalAmountAddedTax = totalAmountAddedTax;
     console.log(initValues);
 
-    invoiceService.invoice_create(initValues);
+    invoiceService.invoice_create(initValues).then(async function (response) {
+      const noti = await notificationService.notification_unread_count_inquiry({
+        billerId: userId,
+      });
+      dispatch(setNotiCount(noti["unreadCount"]));
+      navigate("/allbill");
+    });
   };
 
   const handleChange = () => {
@@ -225,6 +236,14 @@ export default function CreateBill() {
     setUnit(null);
 
     console.log(allProduct);
+  };
+
+  const handleDeleteProduct = (index) => {
+    setAllProduct(
+      allProduct.filter(function (el) {
+        return el.index !== index;
+      })
+    );
   };
 
   function currencyFormat(num) {
@@ -354,12 +373,12 @@ export default function CreateBill() {
                             direction={{ xs: "column", sm: "row" }}
                             spacing={2}>
                             <Grid>
-                              <TextField
+                              {/* <TextField
                                 id="outlined-name"
                                 label="Ref. number"
                                 value={name}
                                 onChange={handleChange}
-                              />
+                              /> */}
                             </Grid>
                             <Grid>
                               <FormControl>
@@ -416,7 +435,14 @@ export default function CreateBill() {
                                         component="th"
                                         scope="row"
                                         padding="normal">
-                                        {row.index}
+                                        <Button
+                                          color="error"
+                                          onClick={() =>
+                                            handleDeleteProduct(row.index)
+                                          }>
+                                          Delete
+                                        </Button>
+                                        {/* {row.index} */}
                                       </TableCell>
                                       <TableCell align="center">
                                         <Stack direction={"column"} spacing={1}>
@@ -485,7 +511,7 @@ export default function CreateBill() {
                         <Button onClick={() => addProduct()}>
                           + Add Product
                         </Button>
-                        {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
+                        <Button onClick={() => handleChange()}>mf]vsd</Button>
                       </Grid>
                     </Grid>
                   </Grid>

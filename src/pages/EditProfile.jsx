@@ -457,7 +457,7 @@ const EditProfile = () => {
             <DialogContent>
               <DialogContentText>
                 <Grid pt={2} spacing={3}>
-                  <Stack direction={"row"} spacing={2} pb={2}>
+                  <Stack direction={"column"} spacing={2} pb={2}>
                     <Controls.InputPassword
                       name="oldPassword"
                       label="Old Password"
@@ -465,9 +465,6 @@ const EditProfile = () => {
                       onChange={handleInputChagePassword}
                       error={errorPassword.oldPassword}
                       showPassword={false}></Controls.InputPassword>
-                  </Stack>
-
-                  <Stack direction={"row"} spacing={2}>
                     <Controls.InputPassword
                       label="New Password"
                       name="newPassword"
