@@ -102,7 +102,8 @@ const Payer = () => {
                 {/* <ResponsiveHeader text={textHeader}></ResponsiveHeader> */}
 
                 <Card className={classes.card}>
-                  <CardActionArea onClick={() => navigate("/detailUser/1")}>
+                  <CardActionArea
+                    onClick={() => navigate("/detailUser/" + info.id)}>
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">
                         {info.name} {info.lastname}
@@ -117,7 +118,6 @@ const Payer = () => {
                   </CardActionArea>
                   <CardActions
                     sx={{ display: "flex", justifyContent: "space-between" }}>
-                    
                     <Button
                       size="small"
                       color="primary"

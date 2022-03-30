@@ -55,6 +55,8 @@ export default function DetailUser() {
   const classes = useStyles();
   let params = useParams();
   const role = useSelector(getRole);
+  const userId = useSelector(getUserID);
+
   const [textHeader, setTextHeader] = useState("Infomation Payer");
   const [dataInfo, setDataInfo] = useState({});
   const [relation_id, setRelation_id] = useState();
@@ -69,36 +71,27 @@ export default function DetailUser() {
 
   const callApi = async () => {
     let data = { id: params.id };
-    let relationId = {};
+
     if (role === "biller") {
       await payerService.payer_detail_inquiry(data).then(function (response) {
         setDataInfo(response);
-        relationId = { payerId: dataInfo.id };
       });
     } else if (role === "payer") {
       billerService.biller_detail_inquiry(data).then(function (response) {
         setDataInfo(response);
-        relationId = { billerId: dataInfo.id };
       });
-
-      await relationService
-        .relationship_inquiry(relationId)
-        .then(function (response) {
-          console.log(response);
-        });
     }
-
-    const resRelationInquiry = await relationService.relationship_inquiry(
-      relationId
-    );
-    console.log(resRelationInquiry);
 
     // dataInfo.id
   };
 
   const handleDisconnet = () => {
     console.log("test cancel");
-    relationService.relationship_status_update();
+    let data = {};
+    role === "biller"
+      ? (data = { billerId: userId, payerId: params.id })
+      : (data = { billerId: params.id, payerId: userId });
+    relationService.relationship_status_update(data);
     // relationship_status_update
   };
 
@@ -154,7 +147,6 @@ export default function DetailUser() {
                     textButton={"Disconnect"}
                     deleteRelation={true}
                     color={"error"}></ResponsiveDialog>
-                  {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}
                 </CardActions>
               </Box>
             </Grid>

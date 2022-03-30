@@ -244,16 +244,10 @@ function ResponsiveDialog(props) {
             <DialogContentText>
               {deleteRelation === true ? (
                 <Grid item xs={12} md={12} spacing={4}>
-                  {/* <Typography>Detail :</Typography> */}
-                  <Box pt={3}>
-                    {" "}
-                    <TextField
-                      fullWidth
-                      id="outlined-textarea"
-                      label="Detail"
-                      placeholder="Detail"
-                      multiline
-                    />
+                  <Box pt={2}>
+                    <Typography>
+                      Are you sure disconnect this biller ?
+                    </Typography>
                   </Box>
                 </Grid>
               ) : cancelInvoice === true ? (
@@ -292,7 +286,7 @@ function ResponsiveDialog(props) {
               <Button autoFocus onClick={handleClose}>
                 Cancel
               </Button>
-              <Button onClick={onClick} autoFocus>
+              <Button onClick={onClick} color={"error"} autoFocus>
                 Disconnect
               </Button>
             </DialogActions>
