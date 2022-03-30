@@ -125,11 +125,12 @@ export default function CreateBill() {
   };
 
   const headProduct = [
-    { id: "index", label: "#" },
+  
     { id: "description", label: "Product" },
     { id: "quantity", label: "Qty." },
     { id: "unitPrice", label: "Price/Unit" },
     { id: "amount", label: "total" },
+    { id: "index", label: "#" },
   ];
 
   function handleChangeUnit(e, row_index, key) {
@@ -454,20 +455,7 @@ export default function CreateBill() {
                                       role="checkbox"
                                       tabIndex={-1}
                                       key={row.id}>
-                                      <TableCell
-                                        id={labelId}
-                                        component="th"
-                                        scope="row"
-                                        padding="normal">
-                                        <Button
-                                          color="error"
-                                          onClick={() =>
-                                            handleDeleteProduct(row.index)
-                                          }>
-                                          Delete
-                                        </Button>
-                                        {/* {row.index} */}
-                                      </TableCell>
+                                      
                                       <TableCell align="center">
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
@@ -524,6 +512,20 @@ export default function CreateBill() {
                                       </TableCell>
                                       <TableCell align="center">
                                         {currencyFormat(row.amount)}
+                                      </TableCell>
+                                      <TableCell
+                                        id={labelId}
+                                        component="th"
+                                        scope="row"
+                                        padding="normal">
+                                        <Button
+                                          color="error"
+                                          onClick={() =>
+                                            handleDeleteProduct(row.index)
+                                          }>
+                                          Delete
+                                        </Button>
+                                        {/* {row.index} */}
                                       </TableCell>
                                     </TableRow>
                                   );

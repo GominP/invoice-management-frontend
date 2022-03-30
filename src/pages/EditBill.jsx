@@ -19,6 +19,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  CardContent,
+  Card,
+  CardHeader,
 } from "@mui/material";
 import MainCard from "../component/MainCard";
 import { gridSpacing } from "../store/constant";
@@ -48,6 +51,7 @@ import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
 import * as invoiceService from "../services/invoiceService";
 import * as notificationService from "../services/notificationService";
+import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -85,14 +89,19 @@ export default function EditBill() {
   const today = new Date().toLocaleString().split(" ")[0];
   const [value, setValue] = useState(new Date());
   const [allProduct, setAllProduct] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [unit, setUnit] = useState();
   const [dataCustomerInfo, setDataCustomerInfo] = useState({});
-  const [isTax, setIsTax] = useState("Yes");
-  const [vats, setVats] = useState(0.0);
-  const [totalAmountAddedTax, setTotalAmountAddedTax] = useState(0.0);
-  const [totalAmount, setTotalAmount] = useState(0.0);
+  // const [isTax, setIsTax] = useState("Yes");
+  const [totalAmountAddedTax, setTotalAmountAddedTax] = useState(0);
   const [invoiceInfo, setInvoiceInfo] = useState({});
+  //-------------------SnackBar-------------------------------------->
+  const [textSnackbar, setTextSnackbar] = useState("Edit Success");
+  const [severity, setServerity] = useState("success");
+  const [openSuccess, setOpenSuccess] = useState(false);
+  //------------------ShowTotal-------------------------------------->
+  const [vats, setVats] = useState(0.0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0.0);
 
   const TAX_RATE = 0.07;
 
@@ -103,6 +112,7 @@ export default function EditBill() {
     vat: 0.0,
     dueDate: "",
     totalAmountAddedTax: 0.0,
+    lists: [{}],
   };
 
   useEffect(() => {
@@ -113,14 +123,19 @@ export default function EditBill() {
   }, []);
 
   const customerInfoApi = async () => {
+    let dataTemp = {};
     await invoiceService
       .invoice_detail_inquiry({
         id: params.id,
       })
       .then(function (response) {
+        console.log(response);
         setInvoiceInfo(response);
+
         setAllProduct(response["lists"]);
-        setTotalPrice(subtotal(response["lists"]));
+        setTotalAmount(response["totalAmount"]);
+        setTotalPrice(response["totalAmountAddedTax"]);
+        setVats(response["vat"]);
       });
     await payerService
       .payer_detail_inquiry({ id: params.payerId })
@@ -130,40 +145,39 @@ export default function EditBill() {
   };
 
   const headProduct = [
-    { id: "index", label: "#" },
     { id: "description", label: "Product" },
     { id: "quantity", label: "Qty." },
     { id: "unitPrice", label: "Price/Unit" },
     { id: "amount", label: "total" },
+    { id: "index", label: "#" },
   ];
 
   function handleChangeUnit(e, row_index, key) {
     let arr = [...allProduct];
-    if (key === "description") {
-      console.log(e.target.value);
-      arr[row_index - 1]["description"] = e.target.value;
-    }
 
-    if (key === "quantity") {
-      if (arr[row_index - 1]["unitPrice"] === 0) {
-        arr[row_index - 1]["amount"] = 0;
-      } else {
-        arr[row_index - 1]["amount"] =
-          e.target.value * arr[row_index - 1]["unitPrice"];
+    arr.map((item) => {
+      if (item.id === row_index) {
+        if (key === "description") {
+          item.description = e.target.value;
+        }
+        if (key === "quantity") {
+          if (item.unitPrice === 0) {
+            item.amount = 0;
+          } else {
+            item.amount = +e.target.value * item.unitPrice;
+          }
+          item.quantity = +e.target.value;
+        }
+        if (key === "unitPrice") {
+          if (item.quantity === 0) {
+            item.amount = 0;
+          } else {
+            item.amount = +e.target.value * item.quantity;
+          }
+          item.unitPrice = +e.target.value;
+        }
       }
-    } else if (key === "unitPrice") {
-      if (arr[row_index - 1]["quantity"] === 0) {
-        arr[row_index - 1]["amount"] = e.target.value * 1;
-      } else {
-        arr[row_index - 1]["amount"] =
-          e.target.value * arr[row_index - 1]["quantity"];
-      }
-    }
-    if (key === "description") {
-      arr[row_index - 1][key] = e.target.value;
-    } else {
-      arr[row_index - 1][key] = +e.target.value;
-    }
+    });
     setAllProduct(arr);
     let priceAllProduct = 0;
     allProduct.map((data, index) => {
@@ -171,33 +185,19 @@ export default function EditBill() {
     });
     let temp = TAX_RATE * priceAllProduct;
 
-    if (isTax === "Yes") {
-      console.log("true Tax");
-
-      setTotalPrice(temp + priceAllProduct);
-    } else if (isTax === "no") {
-      console.log("false Tax");
-
-      setTotalPrice(priceAllProduct);
-    }
+    setTotalPrice(temp + priceAllProduct);
 
     setVats(temp);
     setTotalAmount(priceAllProduct);
     setTotalAmountAddedTax(temp + priceAllProduct);
   }
 
-  const handleChangeTax = (event) => {
-    setIsTax(event.target.value);
-    if (event.target.value === "Yes") {
-      console.log("true Tax");
-      let temp = TAX_RATE * totalAmount;
-      setTotalPrice(temp + totalAmount);
-    } else if (event.target.value === "no") {
-      console.log("false Tax");
-
-      console.log(subtotal(allProduct));
-      setTotalPrice(subtotal(allProduct));
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
     }
+
+    setOpenSuccess(false);
   };
 
   function subtotal(items) {
@@ -208,23 +208,62 @@ export default function EditBill() {
     return total;
   }
   const handleEditInvoice = () => {
-    initValues.lists = allProduct;
-    initValues.vat = vats;
-    initValues.totalAmount = totalAmount;
-    initValues.dueDate = value;
-    initValues.totalAmountAddedTax = totalAmountAddedTax;
-    console.log(initValues);
+    let nullProduct = false;
 
-    invoiceService.invoice_update(initValues).then(async function (response) {
-      const noti = await notificationService.notification_unread_count_inquiry({
-        billerId: userId,
-      });
-      dispatch(setNotiCount(noti["unreadCount"]));
-      navigate("/allbill");
+    allProduct.map((item) => {
+      if (item.description === "") {
+        nullProduct = true;
+      }
     });
-  };
 
-  function validate() {}
+    if (allProduct.length === 0) {
+      console.log("null");
+      setServerity("error");
+      setTextSnackbar("Please add Product");
+      setOpenSuccess(true);
+    } else if (nullProduct === true) {
+      setServerity("error");
+      setTextSnackbar("Please fill Product");
+      setOpenSuccess(true);
+    } else {
+      initValues.lists = allProduct;
+      initValues.vat = vats;
+      initValues.totalAmount = totalAmount;
+      initValues.dueDate = value;
+      initValues.totalAmountAddedTax = totalAmountAddedTax;
+      console.log(initValues);
+      // invoiceService
+      //   .invoice_status_update({
+      //     id: invoiceInfo.id,
+      //     status: "cancelled",
+      //   })
+      //   .then(function (response) {
+      //     console.log(response);
+      //     invoiceService
+      //       .invoice_create(initValues)
+      //       .then(function (response) {
+      //         console.log(response);
+      //       })
+      //       .catch((err) => {
+      //         console.log(err);
+      //       });
+      //   });
+
+      let tempData = {
+        payerId: +params.payerId,
+        billerId: userId,
+        totalAmount: totalAmount,
+        vat: vats,
+        dueDate: value,
+        totalAmountAddedTax: totalAmountAddedTax,
+        lists: allProduct,
+      };
+
+      invoiceService.invoice_create(tempData).then(function (response) {
+        console.log(response);
+      });
+    }
+  };
 
   const handleChange = () => {
     console.log(allProduct);
@@ -315,48 +354,69 @@ export default function EditBill() {
                               }
                             />
                           </Grid>
+                          <Grid item xs={12} md={8} pt={3}>
+                            <TextField
+                              id="outlined-name"
+                              label="Date"
+                              disabled
+                              value={today}
+                            />
+                          </Grid>
+
+                          <Grid item xs={12} md={8} pt={3}>
+                            <DatePicker
+                              label="Expired Date"
+                              openTo="year"
+                              views={["year", "month", "day"]}
+                              value={value}
+                              onChange={(newValue) => {
+                                setValue(newValue);
+                              }}
+                              renderInput={(params) => (
+                                <TextField {...params} />
+                              )}
+                            />
+                          </Grid>
+
+                          <Grid item xs={12} md={8} pt={3}>
+                            <TextField
+                              id="outlined-name"
+                              label={invoiceInfo.billerName}
+                              disabled
+                            />
+                          </Grid>
                         </Grid>
 
                         <Grid item md={6} xs={12}>
-                          <Typography sx={{ color: "purple" }} variant="h5">
+                          <Typography sx={{ color: "purple" }} variant="h3">
                             TOTAL
                           </Typography>
-                          <Typography>{currencyFormat(totalPrice)}</Typography>
+                          <Typography variant="h4" pt={2}>
+                            {currencyFormat(totalPrice)}
+                          </Typography>
                           <Box paddingTop={3}>
-                            <Grid container spacing={2}>
-                              {/* <Grid item xs={12} md={4}>
-                                <Typography>Date</Typography>
-                              </Grid> */}
-                              <Grid item xs={12} md={8}>
-                                <TextField
-                                  id="outlined-name"
-                                  label="Date"
-                                  disabled
-                                  value={today}
-                                />
+                            <Grid container>
+                              <Grid item xs={4} md={3}>
+                                <Typography>Subtotal</Typography>
                               </Grid>
-
-                              <Grid item xs={12} md={8}>
-                                <DatePicker
-                                  label="Expired Date"
-                                  openTo="year"
-                                  views={["year", "month", "day"]}
-                                  value={value}
-                                  onChange={(newValue) => {
-                                    setValue(newValue);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField {...params} />
-                                  )}
-                                />
+                              <Grid item xs={8} md={9}>
+                                <Typography>
+                                  {currencyFormat(totalAmount)}
+                                </Typography>
                               </Grid>
-
-                              <Grid item xs={12} md={8}>
-                                <TextField
-                                  id="outlined-name"
-                                  label={invoiceInfo.billerName}
-                                  disabled
-                                />
+                              <Grid item xs={4} md={3}>
+                                Vats 7%
+                              </Grid>
+                              <Grid item xs={8} md={9}>
+                                <Typography>{currencyFormat(vats)}</Typography>
+                              </Grid>
+                              <Grid item xs={4} md={3}>
+                                Total
+                              </Grid>
+                              <Grid item xs={8} md={9}>
+                                <Typography>
+                                  {currencyFormat(totalPrice)}
+                                </Typography>
                               </Grid>
                             </Grid>
                           </Box>
@@ -370,36 +430,7 @@ export default function EditBill() {
                           <Stack
                             direction={{ xs: "column", sm: "row" }}
                             spacing={2}>
-                            <Grid>
-                              {/* <TextField
-                                id="outlined-name"
-                                label="Ref. number"
-                                value={name}
-                                onChange={handleChange}
-                              /> */}
-                            </Grid>
-                            <Grid>
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-controlled-radio-buttons-group"
-                                  name="controlled-radio-buttons-group"
-                                  value={isTax}
-                                  defaultValue={isTax}
-                                  onChange={handleChangeTax}>
-                                  <FormControlLabel
-                                    value="no"
-                                    control={<Radio />}
-                                    label="No Tax"
-                                  />
-                                  <FormControlLabel
-                                    value="Yes"
-                                    control={<Radio />}
-                                    label="Tax"
-                                  />
-                                </RadioGroup>
-                              </FormControl>
-                            </Grid>
+                            <Grid></Grid>
                           </Stack>
                         </Grid>
                         <Grid item xs={12} md={12}>
@@ -428,26 +459,11 @@ export default function EditBill() {
                                       role="checkbox"
                                       tabIndex={-1}
                                       key={row.id}>
-                                      <TableCell
-                                        id={labelId}
-                                        component="th"
-                                        scope="row"
-                                        padding="normal">
-                                        <Button
-                                          color="error"
-                                          onClick={() =>
-                                            handleDeleteProduct(row.id)
-                                          }>
-                                          Delete
-                                        </Button>
-                                        {/* {row.index} */}
-                                      </TableCell>
                                       <TableCell align="center">
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
                                             id="outlined-name"
                                             label="Product"
-                                            required
                                             defaultValue={row.description}
                                             onChange={(event) =>
                                               handleChangeUnit(
@@ -502,6 +518,19 @@ export default function EditBill() {
                                       <TableCell align="center">
                                         {currencyFormat(row.amount)}
                                       </TableCell>
+                                      <TableCell
+                                        id={labelId}
+                                        component="th"
+                                        scope="row"
+                                        padding="normal">
+                                        <Button
+                                          color="error"
+                                          onClick={() =>
+                                            handleDeleteProduct(row.id)
+                                          }>
+                                          Delete
+                                        </Button>
+                                      </TableCell>
                                     </TableRow>
                                   );
                                 })}
@@ -519,8 +548,19 @@ export default function EditBill() {
                 </Box>
               </MainCard>
             </Grid>
+            <Grid m={7}>
+              <Card>
+                <CardHeader title="Edit detail"></CardHeader>
+                <CardContent>{invoiceInfo.correctionRequest}</CardContent>
+              </Card>
+            </Grid>
           </Grid>
         </Box>
+        <ResponsiveSnackbar
+          text={textSnackbar}
+          severity={severity}
+          openSuccess={openSuccess}
+          handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
       </LocalizationProvider>
     </>
   );
