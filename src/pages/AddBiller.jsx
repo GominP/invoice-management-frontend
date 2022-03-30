@@ -85,19 +85,29 @@ export default function AddBiller() {
 
     if (validate()) {
       console.log(values);
-      const checkCode = billerServices
+      const checkCode = await billerServices
         .biller_detail_inquiry({ code: values.code })
-        .then(function (response) {
-          console.log(checkCode);
+        .then(async function (response) {
+          const addBiller = await relationService
+            .relationship_create(dataAPi)
+            .then(function (test) {
+              setOpenSuccess(true);
+            })
+            .catch((err) => {
+              setTextError("Something Wrong.");
+              setOpenError(true);
+            });
         })
         .catch((err) => {
           console.log(err.response.status);
           setTextError("This code doesn't exist in the system.");
           setOpenError(true);
         });
+      console.log(checkCode);
 
-      // const response = relationService.relationship_create(dataAPi).then(function);
-      setOpenSuccess(true);
+      // if (checkCode.sta) {
+
+      // }
     } else {
       setOpenError(true);
     }
@@ -139,7 +149,7 @@ export default function AddBiller() {
                       </Typography>
 
                       <Typography variant="h7">
-                        สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว
+                        {/* สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว */}
                       </Typography>
 
                       <Grid pt={2}>
