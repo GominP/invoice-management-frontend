@@ -81,14 +81,10 @@ export default function PasswordForm(props) {
             console.log(err);
             if (err.response.status === 500) {
               setSubmitting(!isSubmitting);
+              setFieldError("oldPassword", "Old password is invalid");
               textSnackbar("Old password is invalid");
               serverity("error");
               openSuccess(true);
-              //   Yup.object().shape({
-              //     oldPassword: Yup.string().required("Old Password is invalid"),
-              //   });
-
-              //   handleClosePassword()
             }
           });
       }, 4000);
@@ -106,6 +102,7 @@ export default function PasswordForm(props) {
     isSubmitting,
     getFieldProps,
     setSubmitting,
+    setFieldError,
   } = formik;
 
   const handleShowPassword = () => {

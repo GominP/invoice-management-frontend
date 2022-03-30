@@ -92,16 +92,23 @@ export default function RegisterForm(props) {
       }, 2000);
       setTimeout(() => {
         openSuccessSnackBar();
-        setSubmitting(!isSubmitting)
+        setSubmitting(!isSubmitting);
       }, 3000);
-      // setTimeout(() => {
-      //   navigate("/");
-      // }, 4000);
+      setTimeout(() => {
+        navigate("/");
+      }, 4000);
     },
   });
 
-  const { values, errors, touched, handleSubmit, isSubmitting, getFieldProps,setSubmitting } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    setSubmitting,
+  } = formik;
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);

@@ -27,7 +27,6 @@ export const landing = async () => {
     }
   );
 
-  // console.log(response)
 
   return response;
 };

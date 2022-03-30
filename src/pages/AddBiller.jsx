@@ -33,9 +33,9 @@ import * as billerServices from "../services/billerServices";
 
 import Controls from "../component/controls/Controls";
 import { useForm, Form } from "../utils/useForm";
+import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
+import AddBillerForm from "../component/controls/AddBillerForm";
 // import {userId} from "../store/constant";
-
-const url = "http://localhost:8080/";
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -49,77 +49,21 @@ export default function AddBiller() {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   let params = useParams();
-  const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
   const [checkNull, setCheckNull] = useState("กรุณาใส่รหัสผู้ออกใบแจ้งหนี้");
   const [textError, setTextError] = useState("Somthing Wrong !");
-  // const {values} = useForm(initial)
 
-  useEffect(() => {
-    // console.log(userId);
-  }, []);
+  const [textSnackbar, setTextSnackbar] = useState("Add Biller Successful");
+  const [severity, setServerity] = useState("success");
+  const [openSuccess, setOpenSuccess] = useState(false);
 
-  const validate = (fieldValues = values) => {
-    let temp = { ...errors };
-    if ("code" in fieldValues) {
-      temp.code = values.code ? "" : "Please fill out this field";
-    }
-    setErrors({
-      ...temp,
-    });
+  useEffect(() => {}, []);
 
-    if (fieldValues === values) {
-      return Object.values(temp).every((x) => x === "");
-    }
-  };
-
-  const { values, setValues, handleInputChage, setErrors, errors } = useForm(
-    initValues,
-    true,
-    validate
-  );
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    let dataAPi = { payerId: userid_dispatch, code: values.code };
-
-    if (validate()) {
-      console.log(values);
-      const checkCode = await billerServices
-        .biller_detail_inquiry({ code: values.code })
-        .then(async function (response) {
-          const addBiller = await relationService
-            .relationship_create(dataAPi)
-            .then(function (test) {
-              setOpenSuccess(true);
-            })
-            .catch((err) => {
-              setTextError("Something Wrong.");
-              setOpenError(true);
-            });
-        })
-        .catch((err) => {
-          console.log(err.response.status);
-          setTextError("This code doesn't exist in the system.");
-          setOpenError(true);
-        });
-      console.log(checkCode);
-
-      // if (checkCode.sta) {
-
-      // }
-    } else {
-      setOpenError(true);
-    }
-  };
-
-  const handleClose = (event, reason) => {
+  const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpenSuccess(false);
-    setOpenError(false);
   };
 
   return (
@@ -132,79 +76,60 @@ export default function AddBiller() {
         Add New Biller
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Form onSubmit={handleSubmit}>
-          <Grid>
-            <Grid item xs={12}>
-              <Card sx={{ boxShadow: 3 }}>
-                <CardMedia />
-                <CardContent>
-                  <Grid>
-                    <Grid
-                      item
-                      sx={{
-                        "& .MuiTextField-root": { m: 0, width: "100%" },
-                      }}>
-                      <Typography variant="h6" p={0}>
-                        Add biller from code
-                      </Typography>
+        <Grid>
+          <Grid item xs={12}>
+            <Card sx={{ boxShadow: 3 }}>
+              <CardMedia />
+              <CardContent>
+                <Grid>
+                  <Grid
+                    item
+                    sx={{
+                      "& .MuiTextField-root": { m: 0, width: "100%" },
+                    }}>
+                    <Typography variant="h6" p={0}>
+                      Add biller from code
+                    </Typography>
 
-                      <Typography variant="h7">
-                        {/* สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว */}
-                      </Typography>
+                    <Typography variant="h7">
+                      {/* สอบถามรหัสจากผู้สร้างใบแจ้งหนี้ที่คุณได้ทำการติดต่อแล้ว */}
+                    </Typography>
 
-                      <Grid pt={2}>
-                        <Controls.Input
-                          name="code"
-                          label="Biller code"
-                          value={values.code}
-                          onChange={handleInputChage}
-                          error={errors.code}></Controls.Input>
-                      </Grid>
+                    <Grid pt={2}>
+                      <AddBillerForm
+                        payerId={userid_dispatch}
+                        textSnackbar={setTextSnackbar}
+                        serverity={setServerity}
+                        openSuccess={setOpenSuccess}></AddBillerForm>
+                      {/* <Controls.Input
+                        name="code"
+                        label="Biller code"
+                        value={values.code}
+                        onChange={handleInputChage}
+                        error={errors.code}></Controls.Input> */}
                     </Grid>
                   </Grid>
+                </Grid>
 
-                  {/* {openSuccess === true ? (
-              <Alert severity="success">สมัครสมาชิกสำเร็จ</Alert>
-            ) : null} */}
-
-                  <Snackbar
-                    open={openSuccess}
-                    autoHideDuration={2000}
-                    onClose={handleClose}>
-                    <Alert
-                      onClose={handleClose}
-                      severity="success"
-                      sx={{ width: "100%" }}>
-                      เพิ่มสำเร็จ
-                    </Alert>
-                  </Snackbar>
-                  <Snackbar
-                    open={openError}
-                    autoHideDuration={2000}
-                    onClose={handleClose}>
-                    <Alert
-                      onClose={handleClose}
-                      severity="error"
-                      sx={{ width: "100%" }}>
-                      {textError}
-                    </Alert>
-                  </Snackbar>
-
-                  {/* <Grid item xs={6} sm={6} md={6} xl={6}></Grid> */}
-                </CardContent>
-                <CardActions>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mb: 2 }}>
-                    + New Biller
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
+                <ResponsiveSnackbar
+                  text={textSnackbar}
+                  severity={severity}
+                  openSuccess={openSuccess}
+                  handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
+              </CardContent>
+              <CardActions>
+                {/* <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2 }}>
+                  + New Biller
+                </Button> */}
+              </CardActions>
+            </Card>
           </Grid>
-        </Form>
+        </Grid>
+        {/* </Form> */}
       </Box>
     </div>
   );

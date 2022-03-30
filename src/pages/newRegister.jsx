@@ -92,7 +92,8 @@ export default function Register() {
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              {params.role === "biller" ? "Get started for create your invoice" :"Get started absolutely free."}
+              
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
               Free forever. No credit card needed.
