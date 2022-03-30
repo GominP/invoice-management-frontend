@@ -256,16 +256,11 @@ function ResponsiveDialog(props) {
                 </Grid>
               ) : cancelInvoice === true ? (
                 <Grid container>
-                  <Grid item xs={6}>
-                    <Typography>Invoice ID :</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography>{invoiceInfo.id}</Typography>
-                  </Grid>
                   <Grid item xs={12} md={12} spacing={4}>
-                    {/* <Typography>Detail :</Typography> */}
                     <Box pt={2}>
-                      <Typography> Are you sure cancel this invoice</Typography>
+                      <Typography>
+                        Are you sure cancel this invoice ?
+                      </Typography>
                     </Box>
                   </Grid>
                 </Grid>

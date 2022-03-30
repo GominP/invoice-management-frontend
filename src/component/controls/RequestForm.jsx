@@ -65,10 +65,11 @@ export default function RequestForm(props) {
       setTimeout(() => {
         onClose();
       }, 2000);
+      setTimeout(() => {
+        window.location.href = "/allbill/billinfo/" + invoiceId;
+      }, 4000);
 
       console.log(values);
-
-      // window.location.href = "/allbill/billinfo/" + invoiceId;
     },
   });
 

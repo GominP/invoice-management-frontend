@@ -28,7 +28,7 @@ function ResponsiveSnackbar(props) {
     <div>
       <Snackbar
         open={openSuccess}
-        autoHideDuration={2000}
+        autoHideDuration={5000}
         onClose={handleClose}>
         <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
           {text}

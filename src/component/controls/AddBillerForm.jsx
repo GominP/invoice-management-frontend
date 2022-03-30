@@ -67,6 +67,7 @@ export default function AddBillerForm(props) {
               setTimeout(() => {
                 setSubmitting(!isSubmitting);
                 openSuccess(true);
+                resetForm();
               }, 4000);
             })
             .catch((err) => {
@@ -79,34 +80,6 @@ export default function AddBillerForm(props) {
           setSubmitting(!isSubmitting);
           setFieldError("code", "Code is invalid");
         });
-      //   setTimeout(() => {
-      //     authService
-      //       .password_update(values)
-      //       .then(function (response) {
-      //         console.log(response);
-      //         textSnackbar("Change password Successful");
-      //         serverity("success");
-      //         // openSuccess(true);
-      //         handleClosePassword();
-      //       })
-      //       .catch((err) => {
-      //         console.log(err);
-      //         if (err.response.status === 500) {
-      //           setSubmitting(!isSubmitting);
-      //           textSnackbar("Old password is invalid");
-      //           serverity("error");
-      //           openSuccess(true);
-      //           //   Yup.object().shape({
-      //           //     oldPassword: Yup.string().required("Old Password is invalid"),
-      //           //   });
-
-      //           //   handleClosePassword()
-      //         }
-      //       });
-      //   }, 4000);
-      //   setTimeout(() => {
-      //     openSuccess(true);
-      //   }, 7000);
     },
   });
 
@@ -119,6 +92,7 @@ export default function AddBillerForm(props) {
     getFieldProps,
     setSubmitting,
     setFieldError,
+    resetForm,
   } = formik;
 
   return (

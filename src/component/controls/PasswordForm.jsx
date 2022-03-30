@@ -74,7 +74,7 @@ export default function PasswordForm(props) {
             console.log(response);
             textSnackbar("Change password Successful");
             serverity("success");
-            // openSuccess(true);
+            openSuccess(true);
             handleClosePassword();
           })
           .catch((err) => {
@@ -87,10 +87,10 @@ export default function PasswordForm(props) {
               openSuccess(true);
             }
           });
-      }, 4000);
-      setTimeout(() => {
-        openSuccess(true);
-      }, 7000);
+      }, 2000);
+    //   setTimeout(() => {
+    //     // openSuccess(true);
+    //   }, 7000);
     },
   });
 

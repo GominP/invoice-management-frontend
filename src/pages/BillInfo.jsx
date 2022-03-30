@@ -42,6 +42,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as payerService from "../services/payerService";
 import * as billerService from "../services/billerServices";
 import * as paymentService from "../services/paymentService";
+import * as notificationService from "../services/notificationService";
 
 // function createRow(desc, qty, unit) {
 //   const price = priceRow(qty, unit);
@@ -60,6 +61,7 @@ import * as paymentService from "../services/paymentService";
 export default function BillInfo() {
   let params = useParams();
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
@@ -130,16 +132,20 @@ export default function BillInfo() {
   };
 
   const handleEdit = () => {
-    navigate("/allbill/editBill/" + invoiceInfo.id + "/"+ invoiceInfo.payerId);
+    navigate("/allbill/editBill/" + invoiceInfo.id + "/" + invoiceInfo.payerId);
   };
 
-  const handleCancelInvoice = () => {
+  const handleCancelInvoice = async () => {
     let data = {
       id: invoiceInfo.id,
       status: "cancelled",
     };
     console.log(data);
     invoiceService.invoice_status_update(data);
+    const noti = await notificationService.notification_unread_count_inquiry({
+      payerId: userId,
+    });
+    dispatch(setNotiCount(noti["unreadCount"]));
     navigate("/allbill");
   };
   return (
