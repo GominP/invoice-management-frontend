@@ -63,7 +63,7 @@ export default function BillInfo() {
 
   const TAX_RATE = 0.07;
 
-  const invoiceSubtotal = subtotal(rowData);
+  // const invoiceSubtotal = subtotal(invoiceInfo);
   const invoiceTaxes = TAX_RATE * total;
   const invoiceTotal = invoiceTaxes + total;
 
@@ -265,11 +265,11 @@ export default function BillInfo() {
                                   <TableCell rowSpan={3} />
                                   <TableCell colSpan={2}>Subtotal</TableCell>
                                   <TableCell align="right">
-                                    {currencyFormat(invoiceSubtotal)}
+                                    {currencyFormat(+total)}
                                   </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                  <TableCell>Tax </TableCell>
+                                  <TableCell>Vats </TableCell>
                                   <TableCell align="right">{`${(
                                     TAX_RATE * 100
                                   ).toFixed(0)} %`}</TableCell>
