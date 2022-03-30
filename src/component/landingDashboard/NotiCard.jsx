@@ -11,6 +11,15 @@ import {
   MenuItem,
   Typography,
   Badge,
+  Card,
+  DialogActions,
+  Button,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
+  Dialog,
+  useMediaQuery,
+  Stack,
 } from "@mui/material";
 import { green, pink, indigo, blue, red } from "@mui/material/colors";
 
@@ -28,6 +37,18 @@ import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+
+import * as notificationService from "../../services/notificationService";
+
+import {
+  setRole,
+  setNotiCount,
+  getRole,
+  getNotiCount,
+  getUserID,
+} from "../../redux/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: blue[800],
@@ -40,84 +61,126 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 const NotiCard = ({ isLoading, notification }) => {
   const theme = useTheme();
+  const [open, setOpen] = useState(false);
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [allNoti, setAllNoti] = useState([{}]);
+  const role = useSelector(getRole);
+  const noti = useSelector(getNotiCount);
+  const userId = useSelector(getUserID);
+  const dispatch = useDispatch();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [name, setname] = useState("สินชัย มั่นคง");
-  // const [unred, setunred] = useState(4)
+  useEffect(() => {}, [allNoti]);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const callNoti = async () => {
+    // dispatch(setNotiCount(0));
+    let data = {};
+    role === "biller"
+      ? (data = { billerId: userId })
+      : (data = { payerId: userId });
+    const notiRes = await notificationService
+      .notification_inquiry(data)
+      .then(function (response) {
+        setAllNoti(response["notifications"]);
+      });
+  };
+
+  const handleClickOpen = () => {
+    callNoti();
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
+  };
+
+  const notiNevigate = (id) => {
+    // navigate("/allbill/billinfo/"+id);
+    window.location.href = "/allbill/billinfo/" + id;
   };
 
   return (
     <>
       <CardWrapper border={false} content={false}>
-        <Box sx={{ p: 2.5 }}>
-          <Grid container direction="column">
-            <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Avatar
-                    variant="rounded"
-                    sx={{
-                      bgcolor: indigo[500],
-                      mt: 1,
-                    }}>
-                    <Badge badgeContent={notification} color="primary">
-                      <NotificationsNoneOutlinedIcon color="action" />
-                    </Badge>
-                  </Avatar>
+        <MenuItem onClick={handleClickOpen}>
+          <Box sx={{ p: 2.5 }}>
+            <Grid container direction="column">
+              <Grid item>
+                <Grid container justifyContent="space-between">
+                  <Grid item>
+                    <Avatar
+                      variant="rounded"
+                      sx={{
+                        bgcolor: indigo[500],
+                        mt: 1,
+                      }}>
+                      <Badge badgeContent={notification} color="primary">
+                        <NotificationsNoneOutlinedIcon color="action" />
+                      </Badge>
+                    </Avatar>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <Typography
+                      sx={{
+                        fontSize: "2.125rem",
+                        fontWeight: 500,
+                        mr: 1,
+                        mt: 1.75,
+                        mb: 0.75,
+                      }}>
+                      {notification === 0
+                        ? "No notifications today"
+                        : notification + " Notification Today"}
+                    </Typography>
+                  </Grid>
+                  <Grid item></Grid>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item>
-              <Grid container alignItems="center">
-                <Grid item>
-                  <Typography
-                    sx={{
-                      fontSize: "2.125rem",
-                      fontWeight: 500,
-                      mr: 1,
-                      mt: 1.75,
-                      mb: 0.75,
-                    }}>
-                    {notification === 0
-                      ? "No notifications today"
-                      : notification + " Notification Today"}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  {/* <Avatar
-                    sx={{
-                      cursor: "pointer",
-                      ...theme.typography.smallAvatar,
-                      backgroundColor: blue[50],
-                      color: theme.palette.secondary.dark,
-                    }}>
-                    <ArrowUpwardIcon
-                      fontSize="inherit"
-                      sx={{ transform: "rotate3d(1, 1, 1, 45deg)" }}
-                    />
-                  </Avatar> */}
-                </Grid>
-              </Grid>
-            </Grid>
-            {/* <Grid item sx={{ mb: 1.25 }}>
-              <Typography
-                sx={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: theme.palette.secondary[200],
-                }}>
-                ขอให้เป็นวันที่ดีนะครับ
-              </Typography>
-            </Grid> */}
-          </Grid>
-        </Box>
+          </Box>
+        </MenuItem>
+
+        <Dialog
+          fullScreen={fullScreen}
+          open={open}
+          scroll={"paper"}
+          onClose={handleClose}
+          aria-labelledby="responsive-dialog-title">
+          <DialogTitle id="responsive-dialog-title">
+            {"Notification"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {allNoti.map((noti) => (
+                <MenuItem
+                  key={noti}
+                  onClick={() => notiNevigate(noti.invoiceId)}>
+                  <Stack direction="row" spacing={4}>
+                    <ReceiptOutlinedIcon />
+                    <Typography
+                      textAlign="left"
+                      noWrap
+                      sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+                      width={200}>
+                      {noti.message}
+                    </Typography>
+                  </Stack>
+                </MenuItem>
+              ))}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleClose}>
+              cancel
+            </Button>
+            {/* <Button onClick={handleClose} autoFocus>
+              Agree
+            </Button> */}
+          </DialogActions>
+        </Dialog>
       </CardWrapper>
     </>
   );
