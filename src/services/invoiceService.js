@@ -21,6 +21,7 @@ export const invoice_detail_inquiry = async (data) => {
   const response = await axios.post(url + "invoice-detail-inquiry", data, {
     headers: { Authorization: token },
   });
+  console.log(response.data);
   return response.data;
 };
 

@@ -119,16 +119,21 @@ export default function LandingPage() {
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
               {/* {rowTotalText.map((item,index) => ( */}
-                <Grid item xs={12} md={4}>
-                  <CardTotal text={rowTotalText[0]} amount={allTotal[0]}></CardTotal>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <CardTotal2 text={rowTotalText[1]} amount={allTotal[1]}></CardTotal2>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <CardTotal3 text={rowTotalText[2]} amount={allTotal[2]}></CardTotal3>
-                </Grid>
-      
+              <Grid item xs={12} md={4}>
+                <CardTotal
+                  text={rowTotalText[0]}
+                  amount={allTotal[0]}></CardTotal>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CardTotal2
+                  text={rowTotalText[1]}
+                  amount={allTotal[1]}></CardTotal2>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <CardTotal3
+                  text={rowTotalText[2]}
+                  amount={allTotal[2]}></CardTotal3>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

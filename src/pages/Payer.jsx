@@ -24,6 +24,7 @@ import axios from "axios";
 import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
 import NotFoundUser from "../component/NotFoundUser";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 const url = "http://localhost:8080/";
 
@@ -114,7 +115,9 @@ const Payer = () => {
                       </Typography>
                     </CardContent>
                   </CardActionArea>
-                  <CardActions>
+                  <CardActions
+                    sx={{ display: "flex", justifyContent: "space-between" }}>
+                    
                     <Button
                       size="small"
                       color="primary"
@@ -126,6 +129,7 @@ const Payer = () => {
                         size="small"
                         color="primary"
                         onClick={() => navigate("/payer/bill/" + info.id)}>
+                        {/* <AddOutlinedIcon fontSize="70"/> */}
                         Create Invoice
                       </Button>
                     )}

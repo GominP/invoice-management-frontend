@@ -48,6 +48,9 @@ import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
 import * as invoiceService from "../services/invoiceService";
 import * as notificationService from "../services/notificationService";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import { Icon } from "@material-ui/core";
+import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -92,6 +95,11 @@ export default function CreateBill() {
   const [vats, setVats] = useState(0.0);
   const [totalAmountAddedTax, setTotalAmountAddedTax] = useState(0.0);
   const [totalAmount, setTotalAmount] = useState(0.0);
+
+  //------Snackbar----------------------------------------------------------->
+  const [textSnackbar, setTextSnackbar] = useState("Edit Success");
+  const [severity, setServerity] = useState("success");
+  const [openSuccess, setOpenSuccess] = useState(false);
 
   const TAX_RATE = 0.07;
 
@@ -190,20 +198,40 @@ export default function CreateBill() {
     return total;
   }
   const handleCreateBill = () => {
-    initValues.lists = allProduct;
-    initValues.vat = vats;
-    initValues.totalAmount = totalAmount;
-    initValues.dueDate = value;
-    initValues.totalAmountAddedTax = totalAmountAddedTax;
-    console.log(initValues);
+    let nullProduct = false;
 
-    invoiceService.invoice_create(initValues).then(async function (response) {
-      const noti = await notificationService.notification_unread_count_inquiry({
-        billerId: userId,
-      });
-      dispatch(setNotiCount(noti["unreadCount"]));
-      navigate("/allbill");
+    allProduct.map((item) => {
+      if (item.description === "") {
+        nullProduct = true;
+      }
     });
+
+    if (allProduct.length === 0) {
+      console.log("null");
+      setServerity("error");
+      setTextSnackbar("Please add Product");
+      setOpenSuccess(true);
+    } else if (nullProduct === true) {
+      setServerity("error");
+      setTextSnackbar("Please fill Product");
+      setOpenSuccess(true);
+    } else {
+      initValues.lists = allProduct;
+      initValues.vat = vats;
+      initValues.totalAmount = totalAmount;
+      initValues.dueDate = value;
+      initValues.totalAmountAddedTax = totalAmountAddedTax;
+      console.log(initValues);
+
+      invoiceService.invoice_create(initValues).then(async function (response) {
+        const noti =
+          await notificationService.notification_unread_count_inquiry({
+            billerId: userId,
+          });
+        dispatch(setNotiCount(noti["unreadCount"]));
+        navigate("/allbill");
+      });
+    }
   };
 
   const handleChange = () => {
@@ -237,6 +265,14 @@ export default function CreateBill() {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSuccess(false);
+  };
+
   return (
     <>
       <LocalizationProvider dateAdapter={DateAdapterMoment} locale="fr">
@@ -250,7 +286,8 @@ export default function CreateBill() {
                 <Button
                   variant="outlined"
                   color="success"
-                  onClick={handleCreateBill}>
+                  onClick={handleCreateBill}
+                  startIcon={<AddOutlinedIcon />}>
                   Create Invoice
                 </Button>
               </Stack>
@@ -498,7 +535,7 @@ export default function CreateBill() {
                         <Button onClick={() => addProduct()}>
                           + Add Product
                         </Button>
-                        <Button onClick={() => handleChange()}>mf]vsd</Button>
+                        {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -507,6 +544,12 @@ export default function CreateBill() {
             </Grid>
           </Grid>
         </Box>
+
+        <ResponsiveSnackbar
+          text={textSnackbar}
+          severity={severity}
+          openSuccess={openSuccess}
+          handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
       </LocalizationProvider>
     </>
   );
