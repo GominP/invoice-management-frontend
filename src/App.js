@@ -23,15 +23,17 @@ import PaymentDetailSuccess from "./pages/PaymentDetailSuccess";
 import { useEffect } from "react";
 import AllPayment from "./pages/AllPayment";
 import PaymentDetail from "./pages/PaymentDetail";
+import EditBill from "./pages/EditBill";
 
 const theme = createTheme(
   {
     typography: {
-      fontFamily: ["Mitr", "sans-serif"].join(","),
+      fontFamily: ["Public Sans", "sans-serif"].join(","),
     },
     palette: {
+      // mode: "dark",
       background: {
-        default: "#e4f0e2",
+        default: "#f5f5f5",
       },
     },
   }
@@ -66,6 +68,8 @@ function App() {
           <Route path="/register/:id" element={<Register />} />
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill/:id" element={<CreateBill />} />
+          <Route path="/allbill/editBill/:id/:payerId" element={<EditBill />} />
+
           <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
           <Route path="/payment" element={<AllPayment />} />
         </Routes>

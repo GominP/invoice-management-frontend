@@ -10,16 +10,11 @@ export function postRegiter(data) {
 }
 
 export async function login(data) {
-  await axios
-    .post(url + "login", data)
-    .then(function (response) {
-      localStorage.setItem("token", response.data["jwtToken"]);
-      console.log(response.data["jwtToken"]);
-      window.location.href = "/landing";
-    })
-    .finally(() => {
-      console.log("Experiment completed");
-    });
+  await axios.post(url + "login", data).then(function (response) {
+    localStorage.setItem("token", response.data["jwtToken"]);
+    console.log(response.data["jwtToken"]);
+    window.location.href = "/landing";
+  });
 }
 
 export const landing = async () => {

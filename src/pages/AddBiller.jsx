@@ -29,10 +29,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import * as relationService from "../services/relationService";
+import * as billerServices from "../services/billerServices";
+
 import Controls from "../component/controls/Controls";
 import { useForm, Form } from "../utils/useForm";
 // import {userId} from "../store/constant";
-
 
 const url = "http://localhost:8080/";
 
@@ -51,6 +52,7 @@ export default function AddBiller() {
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
   const [checkNull, setCheckNull] = useState("กรุณาใส่รหัสผู้ออกใบแจ้งหนี้");
+  const [textError, setTextError] = useState("Somthing Wrong !");
   // const {values} = useForm(initial)
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function AddBiller() {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("code" in fieldValues) {
-      temp.code = values.code ? "" : "กรุณากรอกรหัส";
+      temp.code = values.code ? "" : "Please fill out this field";
     }
     setErrors({
       ...temp,
@@ -83,8 +85,19 @@ export default function AddBiller() {
 
     if (validate()) {
       console.log(values);
-      await relationService.relationship_create(dataAPi);
-      await setOpenSuccess(true);
+      const checkCode = billerServices
+        .biller_detail_inquiry({ code: values.code })
+        .then(function (response) {
+          console.log(checkCode);
+        })
+        .catch((err) => {
+          console.log(err.response.status);
+          setTextError("This code doesn't exist in the system.");
+          setOpenError(true);
+        });
+
+      // const response = relationService.relationship_create(dataAPi).then(function);
+      setOpenSuccess(true);
     } else {
       setOpenError(true);
     }
@@ -112,7 +125,7 @@ export default function AddBiller() {
         <Form onSubmit={handleSubmit}>
           <Grid>
             <Grid item xs={12}>
-              <Card>
+              <Card sx={{ boxShadow: 3 }}>
                 <CardMedia />
                 <CardContent>
                   <Grid>
@@ -163,7 +176,7 @@ export default function AddBiller() {
                       onClose={handleClose}
                       severity="error"
                       sx={{ width: "100%" }}>
-                      มีบางอย่างผิดพลาด
+                      {textError}
                     </Alert>
                   </Snackbar>
 

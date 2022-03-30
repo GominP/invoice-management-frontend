@@ -60,7 +60,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   th: {
-    backgroundColor: "#48A0AC",
+    backgroundColor: "#ba68c8",
+    color: "white",
   },
   form: {
     width: 600,
@@ -218,7 +219,7 @@ export default function AllInvoices() {
     "Overdue",
     "Processing",
     "Cancelled",
-    "Correction requested",
+    "Correctionrequested",
   ];
 
   // const rowb = [
@@ -246,7 +247,7 @@ export default function AllInvoices() {
         : (data = { payerId: userId });
 
       await invoiceService.invoice_inquiry(data).then(function (response) {
-        // console.log(response["invoices"]);
+        console.log(response["invoices"]);
         setRows(response["invoices"]);
       });
     }
@@ -254,30 +255,30 @@ export default function AllInvoices() {
     // callApi();
   }, []);
 
-  const callApi = async () => {
-    let tempRow = [];
-    let tempDataRow = {};
+  // const callApi = async () => {
+  //   let tempRow = [];
+  //   let tempDataRow = {};
 
-    let data = {};
-    role === "biller"
-      ? (data = { billerId: userId })
-      : (data = { payerId: userId });
+  //   let data = {};
+  //   role === "biller"
+  //     ? (data = { billerId: userId })
+  //     : (data = { payerId: userId });
 
-    await invoiceService.invoice_inquiry(data).then(function (response) {
-      // console.log(response["invoices"]);
-      setRows(response["invoices"]);
-    });
+  //   await invoiceService.invoice_inquiry(data).then(function (response) {
+  //     // console.log(response["invoices"]);
+  //     setRows(response["invoices"]);
+  //   });
 
-    // await billerService.biller_detail_inquiry(data).then(function (response) {
-    //   console.log(response);
-    //   // return response["name"];
-    // });
+  //   // await billerService.biller_detail_inquiry(data).then(function (response) {
+  //   //   console.log(response);
+  //   //   // return response["name"];
+  //   // });
 
-    // await payerService.payer_detail_inquiry(data).then(function (response) {
-    //   console.log(response);
-    //   // return response["name"];
-    // });
-  };
+  //   // await payerService.payer_detail_inquiry(data).then(function (response) {
+  //   //   console.log(response);
+  //   //   // return response["name"];
+  //   // });
+  // };
 
   const findNamebyId = (temp) => {
     let data = { id: temp };
@@ -297,6 +298,10 @@ export default function AllInvoices() {
 
   function formatDate(date) {
     return new Date(date).toLocaleDateString("fr");
+  }
+
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const handleRequestSort = (event, property) => {
@@ -335,6 +340,10 @@ export default function AllInvoices() {
       });
     }
 
+    setAnchorFilter(null);
+  };
+
+  const handleClose = () => {
     setAnchorFilter(null);
   };
 
@@ -386,11 +395,10 @@ export default function AllInvoices() {
 
   return (
     <Box sx={{ width: "85%", margin: "auto", p: 3 }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper sx={{ width: "100%", mb: 2, boxShadow: 3 }}>
         <Toolbar>
           <Box sx={{ flex: "1 100%" }}>
             <Stack direction={"row"} spacing={2}>
-         
               <Typography variant="h6" id="tableTitle">
                 All Invoice
               </Typography>
@@ -428,7 +436,7 @@ export default function AllInvoices() {
               id="basic-menu"
               anchorEl={anchorFilter}
               open={open}
-              onClose={handleChangeFilter}
+              onClose={handleClose}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
               }}>
@@ -476,23 +484,31 @@ export default function AllInvoices() {
                         {row.id}
                       </TableCell>
                       {role === "payer" ? (
-                        <TableCell align="left">
-                          {findNamebyId(row.billerId)}
-                        </TableCell>
+                        <TableCell align="left">{row.billerName}</TableCell>
                       ) : (
-                        <TableCell align="left">
-                          bbbbbbbbbbbbbbb
-                          {/* {findNamebyId(row.billerId)} */}
-                        </TableCell>
+                        <TableCell align="left">{row.payerName}</TableCell>
                       )}
 
                       <TableCell align="left">
                         {formatDate(row.dueDate)}
                       </TableCell>
                       <TableCell align="right">
-                        {row.totalAmountAddedTax}
+                        {currencyFormat(row.totalAmountAddedTax)}
                       </TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
+                      <TableCell align="right">
+                        <Button
+                          color={
+                            row.status === "cancelled"
+                              ? "error"
+                              : row.status === "overdue"
+                              ? "warning"
+                              : row.status === "paid"
+                              ? "success"
+                              : "primary"
+                          }>
+                          {row.status}
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   );
                 })}

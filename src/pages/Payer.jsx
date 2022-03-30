@@ -82,6 +82,13 @@ const Payer = () => {
   return (
     <div>
       <Box sx={{ px: 5 }}>
+        <Typography
+          variant="h4"
+          component="h1"
+          p={4}
+          sx={{ display: "flex", justifyContent: "center" }}>
+          {textHeader}
+        </Typography>
         {rows.length === 0 ? (
           <NotFoundUser></NotFoundUser>
         ) : (
@@ -91,7 +98,7 @@ const Payer = () => {
             columns={{ xs: 2, sm: 8, md: 12, xl: 20 }}>
             {rows.map((info, index) => (
               <Grid item xs={2} sm={4} md={4} xl={4} key={index}>
-                <ResponsiveHeader text={textHeader}></ResponsiveHeader>
+                {/* <ResponsiveHeader text={textHeader}></ResponsiveHeader> */}
 
                 <Card className={classes.card}>
                   <CardActionArea onClick={() => navigate("/detailUser/1")}>

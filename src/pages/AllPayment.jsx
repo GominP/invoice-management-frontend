@@ -60,7 +60,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   th: {
-    backgroundColor: "#48A0AC",
+    backgroundColor: "#ba68c8",
+    color: "white",
   },
   form: {
     width: 600,
@@ -281,10 +282,19 @@ export default function AllPayment() {
       return a[1] - b[1];
     });
     if (query) {
-      return filter(
-        array,
-        (bill) => bill.billId.toLowerCase().indexOf(query.toLowerCase()) !== -1
-      );
+      if (role === "payer") {
+        return filter(
+          array,
+          (bill) =>
+            bill.billerName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        );
+      } else {
+        return filter(
+          array,
+          (bill) =>
+            bill.payerName.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        );
+      }
     }
     return stabilizedThis.map((el) => el[0]);
   }
@@ -369,20 +379,15 @@ export default function AllPayment() {
                           key={row.id}
                           // selected={isItemSelected}
                         >
-                          {/* <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="normal">
-                      {row.}
-                    </TableCell> */}
                           {role === "payer" ? (
-                            <TableCell align="left">{nameTemp}</TableCell>
+                            <TableCell align="left">{row.billerName}</TableCell>
                           ) : (
-                            <TableCell align="left">{nameTemp}</TableCell>
+                            <TableCell align="left">{row.payerName}</TableCell>
                           )}
 
-                          <TableCell align="left">{currencyFormat(row.amount)}</TableCell>
+                          <TableCell align="left">
+                            {currencyFormat(row.amount)}
+                          </TableCell>
                           {/* <TableCell align="right">
                       {row.totalAmountAddedTax}
                     </TableCell> */}

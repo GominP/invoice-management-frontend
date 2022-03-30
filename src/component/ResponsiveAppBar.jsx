@@ -191,7 +191,7 @@ const ResponsiveAppBar = () => {
       style={{
         backgroundColor: "white",
         color: "black",
-        boxShadow: "0px 0px 0px 0px",
+        boxShadow: "0px 0px 5px 0px",
       }}>
       <Toolbar disableGutters sx={{ p: 3 }}>
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>

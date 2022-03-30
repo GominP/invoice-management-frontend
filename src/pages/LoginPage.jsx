@@ -22,13 +22,24 @@ import {
   Stack,
 } from "@mui/material";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate, useLocation } from "react-router-dom";
 import { blue } from "@mui/material/colors";
 import * as authService from "../services/authService";
 import axios from "axios";
+import LoginForm from "../component/controls/LoginForm";
 
 const theme = createTheme();
+
+const ContentStyle = styled("div")(({ theme }) => ({
+  maxWidth: 480,
+  margin: "auto",
+  display: "flex",
+  minHeight: "100vh",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: theme.spacing(12, 0),
+}));
 
 export default function SignIn() {
   let navigate = useNavigate();
@@ -47,88 +58,35 @@ export default function SignIn() {
     <ThemeProvider theme={theme}>
       {/* <CssBaseline /> */}
       <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}>
-        <Grid>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <Grid item>
-              <Card>
-                <CardMedia />
-                <CardContent
-                  sx={{
-                    // marginTop: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}>
-                  <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                  <Typography component="h1" variant="h5">
-                    Sign in
+        sx={
+          {
+            // display: "flex",
+            // flexDirection: "column",
+            // alignItems: "center",
+          }
+        }>
+        <Container maxWidth="sm">
+          <ContentStyle>
+            <Card>
+              <CardContent>
+                <Stack sx={{ mb: 5 }}>
+                  <Typography variant="h4" gutterBottom>
+                    Sign in to Invoice Guard
                   </Typography>
+                  <Typography sx={{ color: "text.secondary" }}>
+                    Enter your details below.
+                  </Typography>
+                </Stack>
+                {/* <AuthSocial /> */}
+                <LoginForm />
+              </CardContent>
+            </Card>
 
-                  <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}>
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="username"
-                      label="Username"
-                      name="username"
-                      autoComplete="username"
-                      autoFocus
-                    />
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      autoComplete="current-password"
-                    />
-                    {/* <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                /> */}
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}>
-                      Login
-                    </Button>
-                    <Grid container>
-                      <Grid item xs>
-                        {/* <Link href="#" variant="body2">
-                      ลืมรหัสผ่าน
-                    </Link> */}
-                      </Grid>
-                      <Grid item>
-                        {/* <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link> */}
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item>
+            <Grid item sx={{ mt: 3 }}>
               <Card
                 sx={{
                   border: "1px solid",
-                  borderColor: blue[300] + 75,
+                  borderColor: blue[600],
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -140,7 +98,7 @@ export default function SignIn() {
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                   <StickyNote2Icon />
                 </Avatar>
-                <CardHeader title={"Not a member yet? Join us now"} />
+                {/* <CardHeader title={"Not a member yet? Join us now"} /> */}
 
                 <CardActionArea onClick={() => navigate("/register/biller")}>
                   <CardContent
@@ -161,8 +119,8 @@ export default function SignIn() {
                 </CardActionArea>
               </Card>
             </Grid>
-          </Stack>
-        </Grid>
+          </ContentStyle>
+        </Container>
       </Box>
     </ThemeProvider>
   );

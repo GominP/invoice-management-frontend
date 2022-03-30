@@ -2,13 +2,33 @@ import axios from "axios";
 import { token } from "../store/constant";
 import { url } from "../store/constant";
 
-export function relationship_create(data) {
+export async function relationship_create(data) {
   console.log(data);
-  axios
-    .post(url + "relationship-create", data, {
+  const response = await axios.post(url + "relationship-create", data, {
+    headers: { Authorization: token },
+  });
+
+  return response;
+}
+
+export async function relationship_status_update(data) {
+  console.log(data);
+  const response = await axios.post(
+    url + "relationship-status-update",
+    { relationshipId: data },
+    {
       headers: { Authorization: token },
-    })
-    .then(function (response) {
-      console.log(response);
-    });
+    }
+  );
+
+  return response;
+}
+
+export async function relationship_inquiry(data) {
+  console.log(data);
+  const response = await axios.post(url + "relationship-inquiry", data, {
+    headers: { Authorization: token },
+  });
+
+  return response.data;
 }
