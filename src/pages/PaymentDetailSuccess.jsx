@@ -50,6 +50,10 @@ export default function PaymentDetailSuccess() {
   const classes = useStyles();
   const billInfo = useSelector(get_info_slip_verification);
 
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const [name, setname] = useState("testname");
   const [amount, setamount] = useState(2000);
 

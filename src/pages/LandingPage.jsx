@@ -34,6 +34,8 @@ import {
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as authService from "../services/authService";
+import CardTotal3 from "../component/landingDashboard/CardTotal3";
+import CardTotal2 from "../component/landingDashboard/CardTotal2";
 
 const billerText = [
   "Total Income Today",
@@ -63,10 +65,11 @@ export default function LandingPage() {
   const [monthTotal, setMonthTotal] = useState(0);
   const [yearTotal, setYearTotal] = useState(0);
   const allTotal = [dayTotal, monthTotal, yearTotal];
+  const [rowTotalText, setRowTotalText] = useState([]);
 
   useEffect(() => {
     callApiLanding();
-  }, []);
+  }, [rowTotalText]);
 
   const callApiLanding = async () => {
     let textRole = "";
@@ -75,9 +78,12 @@ export default function LandingPage() {
       if (response.data["biller"] === null) {
         textRole = "payer";
         textTotal = "totalExpenses";
+        setRowTotalText(payerText);
       } else {
         textRole = "biller";
         textTotal = "totalIncome";
+        setRowTotalText(billerText);
+
         setIsBiller(true);
       }
 
@@ -112,21 +118,11 @@ export default function LandingPage() {
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
-              {isBiller === true
-                ? billerText.map((option, index) => (
-                    <Grid item xs={12} md={4}>
-                      <CardTotal
-                        text={option}
-                        amount={allTotal[index]}></CardTotal>
-                    </Grid>
-                  ))
-                : payerText.map((option, index) => (
-                    <Grid item xs={12} md={4}>
-                      <CardTotal
-                        text={option}
-                        amount={allTotal[index]}></CardTotal>
-                    </Grid>
-                  ))}
+              {rowTotalText.map((item) => (
+                <Grid item xs={12} md={4}>
+                  <CardTotal text={item} amount={allTotal[0]}></CardTotal>
+                </Grid>
+              ))}
             </Grid>
           </Grid>
         </Grid>

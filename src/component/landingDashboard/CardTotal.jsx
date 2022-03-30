@@ -22,7 +22,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    background: `linear-gradient(210.04deg, ${theme.palette.warning.dark} -50.94%, rgba(14, 202, 249, 0) 83.49%)`,
     borderRadius: "50%",
     top: -30,
     right: -180,
@@ -32,7 +32,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(144, 202, 249, 0) 70.50%)`,
+    background: `linear-gradient(140.9deg, ${theme.palette.warning.dark} -14.02%, rgba(0, 0, 249, 0) 70.50%)`,
     borderRadius: "50%",
     top: -160,
     right: -130,
@@ -48,7 +48,6 @@ const CardTotal = ({ text, amount }) => {
 
   return (
     <div>
-
       <CardWrapper border={false} content={false}>
         <Box sx={{ p: 1 }}>
           <List sx={{ py: 0 }}>
@@ -71,7 +70,11 @@ const CardTotal = ({ text, amount }) => {
                   mt: 0.45,
                   mb: 0.45,
                 }}
-                primary={<Typography variant="h4"> $ {currencyFormat(amount)}  </Typography>}
+                primary={
+                  <Typography variant="h4">
+                    $ {currencyFormat(amount)}{" "}
+                  </Typography>
+                }
                 secondary={
                   <Typography
                     variant="subtitle2"
