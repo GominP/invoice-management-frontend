@@ -197,7 +197,9 @@ function ResponsiveDialog(props) {
                     <Typography>Total :</Typography>
                   </Grid>
                   <Grid item xs={12} md={6} pb={2}>
-                    <Typography>{invoiceInfo.totalAmountAddedTax}</Typography>
+                    <Typography>
+                      {currencyFormat(+invoiceInfo.totalAmountAddedTax)}
+                    </Typography>
                   </Grid>
                   <Grid item xs={12} md={6}>
                     {/* <Typography>พนักงานออกใบแจ้งหนี้ :</Typography> */}
