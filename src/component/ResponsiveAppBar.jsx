@@ -274,22 +274,34 @@ const ResponsiveAppBar = () => {
               }}
               open={Boolean(anchorElNoti)}
               onClose={handleCloseNotiMenu}>
-              {allNoti.map((noti, index) => (
-                <MenuItem
-                  key={noti}
-                  onClick={() => notiNevigate(noti.invoiceId)}>
-                  <Stack direction="row" spacing={2}>
-                    <ReceiptOutlinedIcon />
-                    <Typography
-                      textAlign="left"
-                      noWrap
-                      sx={{ display: "inline-block", whiteSpace: "pre-line" }}
-                      width={200}>
-                      {noti.message}
-                    </Typography>
-                  </Stack>
+              {allNoti.length === 0 ? (
+                <MenuItem>
+                  <Typography
+                    textAlign="left"
+                    noWrap
+                    sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+                    width={200}>
+                    No Notification
+                  </Typography>
                 </MenuItem>
-              ))}
+              ) : (
+                allNoti.map((noti, index) => (
+                  <MenuItem
+                    key={noti}
+                    onClick={() => notiNevigate(noti.invoiceId)}>
+                    <Stack direction="row" spacing={2}>
+                      <ReceiptOutlinedIcon />
+                      <Typography
+                        textAlign="left"
+                        noWrap
+                        sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+                        width={200}>
+                        {noti.message}
+                      </Typography>
+                    </Stack>
+                  </MenuItem>
+                ))
+              )}
             </Menu>
           </Tabs>
         </Box>

@@ -18,6 +18,8 @@ import QRCode from "qrcode";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import * as paymentService from "../services/paymentService";
+import * as notificationService from "../services/notificationService";
+
 import {
   setRole,
   setId,
@@ -29,19 +31,28 @@ import {
   get_info_slip_verification,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import RequesForm from "./controls/RequestForm";
+import ResponsiveSnackbar from "./ResponsiveSnackbar";
 
 function ResponsiveDialog(props) {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const userId = useSelector(getUserID);
+
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [severity, setServerity] = useState("success");
+  const [textSnackbar, setTextSnackbar] = useState("Request Successful");
 
   const {
     textButton,
     requestEdit,
     deleteRelation,
+    cancelInvoice,
     color,
     qrcode,
     invoiceInfo,
     billerInfo,
+    onClick,
   } = props;
   const [open, setOpen] = useState(false);
   const [qrcodeInfo, setQrcodeInfo] = useState({});
@@ -51,6 +62,18 @@ function ResponsiveDialog(props) {
   }, [qrcode, invoiceInfo, billerInfo]);
 
   const theme = useTheme();
+
+  const handleOpenSnackBar = (event, reason) => {
+    setOpenSuccess(true);
+  };
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSuccess(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,6 +88,9 @@ function ResponsiveDialog(props) {
     // console.log(qrcode);
     QRCode.toDataURL(qrcode.data.qrRawData).then(setQrcodeInfo);
   };
+  function currencyFormat(num) {
+    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -82,44 +108,61 @@ function ResponsiveDialog(props) {
       invoiceId: qrcode.invoiceId,
     };
 
-    paymentService.payment_slip_verification(token).then(function (response) {
-      if (response["status"]["code"] === "1000") {
-        let temp = {
-          amount: response["data"]["amount"],
-          paidLocalAmount: response["data"]["paidLocalAmount"],
-          receiver: {
-            name: response["data"]["receiver"]["name"],
-            proxy: {
-              type: response["data"]["receiver"]["proxy"]["type"],
-              value: response["data"]["receiver"]["proxy"]["value"],
+    paymentService
+      .payment_slip_verification(token)
+      .then(async function (response) {
+        if (response["status"]["code"] === "1000") {
+          let temp = {
+            amount: response["data"]["amount"],
+            paidLocalAmount: response["data"]["paidLocalAmount"],
+            receiver: {
+              name: response["data"]["receiver"]["name"],
+              proxy: {
+                type: response["data"]["receiver"]["proxy"]["type"],
+                value: response["data"]["receiver"]["proxy"]["value"],
+              },
             },
-          },
-          sender: {
-            name: response["data"]["sender"]["name"],
-            proxy: {
-              type: response["data"]["sender"]["proxy"]["type"],
-              value: response["data"]["sender"]["proxy"]["value"],
+            sender: {
+              name: response["data"]["sender"]["name"],
+              proxy: {
+                type: response["data"]["sender"]["proxy"]["type"],
+                value: response["data"]["sender"]["proxy"]["value"],
+              },
             },
-          },
-          transDate: response["data"]["transDate"],
-          transRef: response["data"]["transRef"],
-          transTime: response["data"]["transTime"],
-        };
-        dispatch(setInfoSlip(temp));
-        navigate("/paymentsuccess");
+            transDate: response["data"]["transDate"],
+            transRef: response["data"]["transRef"],
+            transTime: response["data"]["transTime"],
+          };
+          dispatch(setInfoSlip(temp));
+          const noti =
+            await notificationService.notification_unread_count_inquiry({
+              payerId: userId,
+            });
+          dispatch(setNotiCount(noti["unreadCount"]));
 
-        console.log(temp);
-      } else {
-        console.log("cannot send false");
-      }
+          navigate("/paymentsuccess");
 
-      console.log(response);
-    });
+          console.log(temp);
+        } else {
+          console.log("cannot send false");
+        }
+
+        console.log(response);
+      });
   };
 
   function currencyFormat(num) {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  const handleRequest = () => {
+    let temp = {
+      invoiceId: invoiceInfo.id,
+      status: "correctionRequested",
+      correctionRequest: "",
+    };
+    console.log(temp);
+  };
 
   return (
     <div>
@@ -199,47 +242,90 @@ function ResponsiveDialog(props) {
             <DialogContentText>
               {deleteRelation === true ? (
                 <Grid item xs={12} md={12} spacing={4}>
-                  <Typography>รายละเอียดหมายเหตุ :</Typography>
-                  <TextField
-                    fullWidth
-                    id="outlined-textarea"
-                    // label="รายละเอียดหมายเหตุ"
-                    placeholder="รายละเอียดหมายเหตุ"
-                    multiline
-                  />
-                </Grid>
-              ) : (
-                <Grid container>
-                  <Grid item xs={4} md={3}>
-                    <Typography>เลขที่ใบแจ้งหนี้ :</Typography>
-                  </Grid>
-                  <Grid item xs={8} md={9}>
-                    <Typography>b61104561</Typography>
-                  </Grid>
-                  <Grid item xs={12} md={12} spacing={4}>
-                    <Typography>รายละเอียดหมายเหตุ :</Typography>
+                  {/* <Typography>Detail :</Typography> */}
+                  <Box pt={3}>
+                    {" "}
                     <TextField
                       fullWidth
                       id="outlined-textarea"
-                      // label="รายละเอียดหมายเหตุ"
-                      placeholder="รายละเอียดหมายเหตุ"
+                      label="Detail"
+                      placeholder="Detail"
                       multiline
                     />
+                  </Box>
+                </Grid>
+              ) : cancelInvoice === true ? (
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Invoice ID :</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>{invoiceInfo.id}</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12} spacing={4}>
+                    {/* <Typography>Detail :</Typography> */}
+                    <Box pt={2}>
+                      <Typography> Are you sure cancel this invoice</Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              ) : (
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Invoice ID :</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>{invoiceInfo.id}</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12} spacing={4}>
+                    {/* <Typography>Detail :</Typography> */}
+                    <Box pt={2}>
+                      <RequesForm
+                        invoiceId={invoiceInfo.id}
+                        onClose={handleClose}
+                        openSuccessSnackBar={handleOpenSnackBar}></RequesForm>
+                    </Box>
                   </Grid>
                 </Grid>
               )}
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleClose}>
-              ยกเลิก
-            </Button>
-            <Button onClick={handleClose} autoFocus>
-              ส่งคำร้อง
-            </Button>
-          </DialogActions>
+          {deleteRelation === true ? (
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button onClick={onClick} autoFocus>
+                Disconnect
+              </Button>
+            </DialogActions>
+          ) : cancelInvoice === true ? (
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button color="error" onClick={onClick} autoFocus>
+                Confirm
+              </Button>
+            </DialogActions>
+          ) : (
+            <DialogActions>
+              <Button autoFocus onClick={handleClose}>
+                Cancel
+              </Button>
+              {/* <Button onClick={handleRequest} autoFocus>
+                Request
+              </Button> */}
+            </DialogActions>
+          )}
         </Dialog>
       )}
+
+      <ResponsiveSnackbar
+        text={textSnackbar}
+        severity={severity}
+        openSuccess={openSuccess}
+        handleClose={handleCloseSnackBar}></ResponsiveSnackbar>
     </div>
   );
 }
@@ -252,6 +338,8 @@ ResponsiveDialog.propTypes = {
   qrcode: PropTypes.string,
   invoiceInfo: PropTypes.array.isRequired,
   billerInfo: PropTypes.array.isRequired,
+  onClick: PropTypes.func,
+  cancelInvoice: PropTypes.bool,
 };
 
 export default ResponsiveDialog;

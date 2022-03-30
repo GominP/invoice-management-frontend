@@ -4,7 +4,6 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useFormik, Form, FormikProvider } from "formik";
 import { Icon } from "@iconify/react";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 // material
 import {
@@ -56,7 +55,7 @@ export default function LoginForm() {
           console.log(err.response.status);
           if (err.response.status === 401) {
             setSubmitting(!isSubmitting);
-            setShowError(true)
+            setShowError(true);
             // touched.username = "wewdasdadad"
             // window.location.href = "/";
           }
@@ -80,7 +79,11 @@ export default function LoginForm() {
   } = formik;
 
   const handleShowPassword = () => {
-    setShowPassword((show) => !show);
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = () => {
+    setShowPassword(!showPassword);
   };
   const handleClose = () => {
     setShowError(false);
@@ -107,20 +110,37 @@ export default function LoginForm() {
             label="Password"
             {...getFieldProps("password")}
             InputProps={{
+              // <-- This is where the toggle button is added.
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    <Icon
-                      icon={
-                        showPassword
-                          ? VisibilityOutlinedIcon
-                          : VisibilityOffOutlinedIcon
-                      }
-                    />
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleShowPassword}
+                    onMouseDown={handleMouseDownPassword}>
+                    {showPassword ? (
+                      <VisibilityOutlinedIcon />
+                    ) : (
+                      <VisibilityOffOutlinedIcon />
+                    )}
                   </IconButton>
                 </InputAdornment>
               ),
             }}
+            // InputProps={{
+            //   endAdornment: (
+            //     <InputAdornment position="end">
+            //       <IconButton onClick={handleShowPassword} edge="end">
+            //         <Icon
+            //           icon={
+            //             showPassword
+            //               ? VisibilityOutlinedIcon
+            //               : VisibilityOffOutlinedIcon
+            //           }
+            //         />
+            //       </IconButton>
+            //     </InputAdornment>
+            //   ),
+            // }}
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
@@ -148,7 +168,6 @@ export default function LoginForm() {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
-
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Your login credentials don't match an account in our system
