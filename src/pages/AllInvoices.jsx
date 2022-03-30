@@ -412,7 +412,6 @@ export default function AllInvoices() {
             <TextField
               value={filterName}
               onChange={handleFilterByName}
-              // label="ค้นหา"
               placeholder="Search Invoice"
               InputProps={{
                 endAdornment: (

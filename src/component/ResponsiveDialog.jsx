@@ -31,7 +31,7 @@ import {
   get_info_slip_verification,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-import RequesForm from "./controls/RequestForm";
+import RequestForm from "./controls/RequestForm";
 import ResponsiveSnackbar from "./ResponsiveSnackbar";
 
 function ResponsiveDialog(props) {
@@ -280,10 +280,10 @@ function ResponsiveDialog(props) {
                   <Grid item xs={12} md={12} spacing={4}>
                     {/* <Typography>Detail :</Typography> */}
                     <Box pt={2}>
-                      <RequesForm
+                      <RequestForm
                         invoiceId={invoiceInfo.id}
                         onClose={handleClose}
-                        openSuccessSnackBar={handleOpenSnackBar}></RequesForm>
+                        openSuccessSnackBar={handleOpenSnackBar}></RequestForm>
                     </Box>
                   </Grid>
                 </Grid>

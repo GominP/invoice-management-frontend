@@ -2,10 +2,11 @@ import axios from "axios";
 import { url, token } from "../store/constant";
 
 export function postRegiter(data) {
+  // console.log(data)
   axios.post(url + "register", data).then(function (response) {
     localStorage.setItem("token", response.data["jwtToken"]);
     console.log(response.data["jwtToken"]);
-    window.location.href = "/";
+    // window.location.href = "/";
   });
 }
 

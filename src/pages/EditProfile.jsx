@@ -35,6 +35,7 @@ import { useForm, Form } from "../utils/useForm";
 import { useFormPassword, FormPassword } from "../utils/useFormPassword";
 
 import { Controls } from "../component/controls/Controls";
+import PasswordForm from "../component/controls/PasswordForm";
 
 const useStyles = makeStyles((theme) => ({
   previewChip: {
@@ -121,35 +122,40 @@ const EditProfile = () => {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("username" in fieldValues) {
-      temp.username = values.username ? "" : "กรุณากรอก username";
+      temp.username = values.username ? "" : "Please fill username";
     }
     if ("name" in fieldValues) {
-      temp.name = values.name ? "" : "กรุณากรอกชื่อ";
+      temp.name = values.name ? "" : "Please fill firstname";
+    }
+    if ("lastname" in fieldValues) {
+      temp.lastname = values.lastname ? "" : "Please fill lastname";
     }
     if ("phone" in fieldValues) {
-      temp.phone = values.phone ? "" : "กรุณากรอกเบอร์โทรศัพท์";
+      temp.phone = values.phone ? "" : "Please fill phone number";
     }
     if ("addressDetail" in fieldValues) {
-      temp.addressDetail = values.addressDetail ? "" : "กรุณากรอกบ้านเลขที่";
+      temp.addressDetail = values.addressDetail
+        ? ""
+        : "Please fill address detail";
     }
     if ("road" in fieldValues) {
-      temp.road = values.road ? "" : "กรุณากรอกถนน";
+      temp.road = values.road ? "" : "Please fill road";
     }
     if ("district" in fieldValues) {
-      temp.district = values.district ? "" : "กรุณากรอกอำเภอ";
+      temp.district = values.district ? "" : "Please fill district";
     }
     if ("subDistrict" in fieldValues) {
-      temp.subDistrict = values.subDistrict ? "" : "กรุณากรอกตำบล";
+      temp.subDistrict = values.subDistrict ? "" : "Please fill subdistrict";
     }
     if ("province" in fieldValues) {
-      temp.province = values.province ? "" : "กรุณากรอกจังหวัด";
+      temp.province = values.province ? "" : "Please fill province";
     }
     if ("zipCode" in fieldValues) {
-      temp.zipCode = values.zipCode ? "" : "กรุณากรอกเลขไปรษณีย์";
+      temp.zipCode = values.zipCode ? "" : "Please fill zipcode";
     }
 
     if ("citizenId" in fieldValues) {
-      temp.citizenId = values.citizenId ? "" : "กรุณากรอกเลขประจำตัว";
+      temp.citizenId = values.citizenId ? "" : "Please fill citizen id";
     }
 
     setErrors({
@@ -169,44 +175,6 @@ const EditProfile = () => {
     errors,
     changeCitizen,
   } = useForm(initValues, true, validate);
-
-  const validatePassword = (fieldValues = valuesPassword) => {
-    let temp = { ...errorPassword };
-    if ("oldPassword" in fieldValues) {
-      temp.oldPassword = valuesPassword.oldPassword
-        ? ""
-        : "Please fill out this field";
-    }
-    if ("newPassword" in fieldValues) {
-      temp.newPassword = valuesPassword.newPassword
-        ? ""
-        : "Please fill out this field";
-    }
-    if ("confirmNewPassword" in fieldValues) {
-      temp.confirmNewPassword = valuesPassword.confirmNewPassword
-        ? ""
-        : "Please fill out this field";
-    }
-    if (valuesPassword.confirmNewPassword !== valuesPassword.newPassword) {
-      temp.confirmNewPassword = "Password not correct";
-    }
-
-    setErrorsPassword({
-      ...temp,
-    });
-
-    if (fieldValues === valuesPassword) {
-      return Object.values(temp).every((x) => x === "");
-    }
-  };
-
-  const {
-    valuesPassword,
-    setValuesPassword,
-    handleInputChagePassword,
-    setErrorsPassword,
-    errorPassword,
-  } = useFormPassword(initValuesPassword, true, validatePassword);
 
   const handleClickOpenPassword = () => {
     setOpenPassword(true);
@@ -236,26 +204,11 @@ const EditProfile = () => {
     }
   };
 
-  const handleSubmitPassword = async (event) => {
-    event.preventDefault();
-    if (validatePassword()) {
-      authService.password_update(valuesPassword);
-      setTextSnackbar("Edit Success");
-      setServerity("success");
-      setOpenSuccess(true);
-      handleClosePassword();
-      navigate("/editprofile/" + role);
-    } else {
-      setTextSnackbar("Something worg");
-      setServerity("error");
-      setOpenSuccess(true);
-    }
-  };
-
   const handleEdit = () => {
     setEditFlag(!editFlag);
     if (editFlag === false) {
-      navigate("/editProfile/" + role);
+      window.location.href = "/editProfile/" + role;
+      // navigate("/editProfile/" + role);
       initValues.name = tempInfo.name;
       initValues.lastname = tempInfo.lastname;
       initValues.phone = tempInfo.phone;
@@ -450,14 +403,19 @@ const EditProfile = () => {
           open={openPassword}
           onClose={handleClosePassword}
           aria-labelledby="responsive-dialog-title">
-          <FormPassword onSubmit={handleSubmitPassword}>
-            <DialogTitle id="responsive-dialog-title">
-              {"Change Password"}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                <Grid pt={2} spacing={3}>
-                  <Stack direction={"column"} spacing={2} pb={2}>
+          {/* <FormPassword onSubmit={handleSubmitPassword}> */}
+          <DialogTitle id="responsive-dialog-title">
+            {"Change Password"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Grid pt={2} spacing={3}>
+                <PasswordForm
+                  handleClosePassword={handleClosePassword}
+                  textSnackbar={setTextSnackbar}
+                  serverity={setServerity}
+                  openSuccess={setOpenSuccess}></PasswordForm>
+                {/* <Stack direction={"column"} spacing={2} pb={2}>
                     <Controls.InputPassword
                       name="oldPassword"
                       label="Old Password"
@@ -483,19 +441,19 @@ const EditProfile = () => {
                       error={
                         errorPassword.confirmNewPassword
                       }></Controls.InputPassword>
-                  </Stack>
-                </Grid>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button autoFocus color="error" onClick={handleClosePassword}>
-                Cancel
-              </Button>
-              <Button type="submit" color="primary" autoFocus>
+                  </Stack> */}
+              </Grid>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus color="error" onClick={handleClosePassword}>
+              Cancel
+            </Button>
+            {/* <Button type="submit" color="primary" autoFocus>
                 Change Password
-              </Button>
-            </DialogActions>
-          </FormPassword>
+              </Button> */}
+          </DialogActions>
+          {/* </FormPassword> */}
         </Dialog>
       </Box>
     </div>

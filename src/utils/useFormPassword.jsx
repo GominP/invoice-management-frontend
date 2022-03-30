@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-export function useFormPassword(initValues, validateOnChange = false, validatePassword) {
+export function useFormPassword(
+  initValues,
+  validateOnChange = false,
+  validatePassword
+) {
   const [valuesPassword, setValuesPassword] = useState(initValues);
   const [errorPassword, setErrorsPassword] = useState({});
 
@@ -15,7 +19,7 @@ export function useFormPassword(initValues, validateOnChange = false, validatePa
       [name]: value,
     });
     if (validateOnChange) {
-        validatePassword({ [name]: value });
+      validatePassword({ [name]: value });
     }
   };
 

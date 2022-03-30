@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import AllPayment from "./pages/AllPayment";
 import PaymentDetail from "./pages/PaymentDetail";
 import EditBill from "./pages/EditBill";
+import NewRegister from "./pages/newRegister";
 
 const theme = createTheme(
   {
@@ -65,10 +66,11 @@ function App() {
           <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
           <Route path="/detailUser/:id" element={<DetailUser />} />
-          <Route path="/register/:id" element={<Register />} />
+          <Route path="/register/:role" element={<NewRegister />} />
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill/:id" element={<CreateBill />} />
           <Route path="/allbill/editBill/:id/:payerId" element={<EditBill />} />
+          {/* <Route path="/new" element={<NewRegister />} /> */}
 
           <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
           <Route path="/payment" element={<AllPayment />} />

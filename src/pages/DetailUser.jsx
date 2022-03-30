@@ -80,6 +80,12 @@ export default function DetailUser() {
         setDataInfo(response);
         relationId = { billerId: dataInfo.id };
       });
+
+      await relationService
+        .relationship_inquiry(relationId)
+        .then(function (response) {
+          console.log(response);
+        });
     }
 
     const resRelationInquiry = await relationService.relationship_inquiry(
