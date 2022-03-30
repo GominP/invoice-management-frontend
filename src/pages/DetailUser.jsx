@@ -35,6 +35,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
+import * as relationService from "../services/relationService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +57,7 @@ export default function DetailUser() {
   const role = useSelector(getRole);
   const [textHeader, setTextHeader] = useState("Infomation Payer");
   const [dataInfo, setDataInfo] = useState({});
+  const [relation_id, setRelation_id] = useState();
 
   useEffect(() => {
     callApi();
@@ -67,15 +69,31 @@ export default function DetailUser() {
 
   const callApi = async () => {
     let data = { id: params.id };
+    let relationId = {};
     if (role === "biller") {
       await payerService.payer_detail_inquiry(data).then(function (response) {
         setDataInfo(response);
+        relationId = { payerId: dataInfo.id };
       });
     } else if (role === "payer") {
       billerService.biller_detail_inquiry(data).then(function (response) {
         setDataInfo(response);
+        relationId = { billerId: dataInfo.id };
       });
     }
+
+    const resRelationInquiry = await relationService.relationship_inquiry(
+      relationId
+    );
+    console.log(resRelationInquiry);
+
+    // dataInfo.id
+  };
+
+  const handleDisconnet = () => {
+    console.log("test cancel");
+    relationService.relationship_status_update();
+    // relationship_status_update
   };
 
   return (
@@ -126,7 +144,8 @@ export default function DetailUser() {
                 <CardActions
                   sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <ResponsiveDialog
-                    textButton={"Cancel Invoice"}
+                    onClick={handleDisconnet}
+                    textButton={"Disconnect"}
                     deleteRelation={true}
                     color={"error"}></ResponsiveDialog>
                   {/* <Button>ยกเลิกใขแจ้งหนี้</Button> */}

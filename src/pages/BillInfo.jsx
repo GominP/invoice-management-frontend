@@ -38,7 +38,7 @@ import {
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as invoiceService from "../services/invoiceService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as payerService from "../services/payerService";
 import * as billerService from "../services/billerServices";
 import * as paymentService from "../services/paymentService";
@@ -59,6 +59,8 @@ import * as paymentService from "../services/paymentService";
 
 export default function BillInfo() {
   let params = useParams();
+  let navigate = useNavigate();
+
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
   const [isPayerBill, setIsPayerBill] = useState(false);
@@ -85,8 +87,7 @@ export default function BillInfo() {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   function formatDate(date) {
-    return new Date(date).toLocaleDateString("fr")
-    
+    return new Date(date).toLocaleDateString("fr");
   }
 
   useEffect(() => {
@@ -128,6 +129,19 @@ export default function BillInfo() {
       });
   };
 
+  const handleEdit = () => {
+    navigate("/allbill/editBill/" + invoiceInfo.id + "/"+ invoiceInfo.payerId);
+  };
+
+  const handleCancelInvoice = () => {
+    let data = {
+      id: invoiceInfo.id,
+      status: "cancelled",
+    };
+    console.log(data);
+    invoiceService.invoice_status_update(data);
+    navigate("/allbill");
+  };
   return (
     <>
       <Box sx={{ p: 3 }}>
@@ -136,7 +150,17 @@ export default function BillInfo() {
             <MainCard>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
                 <ResponsiveHeader text="Invoice Check" />
-                <Button variant="outlined" color="error">
+                <Button
+                  variant="outlined"
+                  color={
+                    invoiceInfo.status === "cancelled"
+                      ? "error"
+                      : invoiceInfo.status === "overdue"
+                      ? "warning"
+                      : invoiceInfo.status === "paid"
+                      ? "success"
+                      : "primary"
+                  }>
                   {invoiceInfo.status}
                 </Button>
               </Stack>
@@ -188,7 +212,9 @@ export default function BillInfo() {
                                   <Typography>Expired Date</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
-                                  <Typography>{formatDate(invoiceInfo.dueDate)}</Typography>
+                                  <Typography>
+                                    {formatDate(invoiceInfo.dueDate)}
+                                  </Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
                                   <Typography>Biller</Typography>
@@ -274,7 +300,10 @@ export default function BillInfo() {
                   </Grid>
                 </Stack>
               </Box>
-              {isPayerBill && invoiceInfo.status !== "paid" ? (
+              {isPayerBill &&
+              invoiceInfo.status !== "paid" &&
+              invoiceInfo.status !== "correctionRequested" &&
+              invoiceInfo.status !== "cancelled" ? (
                 <Grid>
                   <Stack
                     direction={{
@@ -290,10 +319,52 @@ export default function BillInfo() {
                       textButton="Paid"
                       requestEdit={false}></ResponsiveDialog>
                     <ResponsiveDialog
+                      invoiceInfo={invoiceInfo}
+                      // onClick={handleRequest}
                       textButton="Request Edit "
                       requestEdit={true}></ResponsiveDialog>
                   </Stack>
                 </Grid>
+              ) : isPayerBill === false &&
+                invoiceInfo.status === "correctionRequested" ? (
+                <Box>
+                  <Grid>
+                    <Stack
+                      direction={{
+                        xs: "column",
+                        sm: "row",
+                        md: "column",
+                      }}
+                      spacing={1}>
+                      <Button variant="outlined" onClick={handleEdit}>
+                        {" "}
+                        Edit
+                      </Button>
+                    </Stack>
+                  </Grid>
+                </Box>
+              ) : isPayerBill === false &&
+                invoiceInfo.status === "processing" ? (
+                <Box>
+                  <Grid>
+                    <Stack
+                      direction={{
+                        xs: "column",
+                        sm: "row",
+                        md: "column",
+                      }}
+                      spacing={1}>
+                      <ResponsiveDialog
+                        color="error"
+                        invoiceInfo={invoiceInfo}
+                        // onClick={handleRequest}
+                        onClick={handleCancelInvoice}
+                        cancelInvoice={true}
+                        textButton="Abandoned Invoice"
+                        requestEdit={true}></ResponsiveDialog>
+                    </Stack>
+                  </Grid>
+                </Box>
               ) : null}
             </MainCard>
           </Grid>

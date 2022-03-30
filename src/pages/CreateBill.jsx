@@ -96,26 +96,13 @@ export default function CreateBill() {
   const TAX_RATE = 0.07;
 
   const initValues = {
-    payerId: userId,
-    billerId: params.id,
+    payerId: +params.id,
+    billerId: userId,
     totalAmount: 0.0,
     vat: 0.0,
     dueDate: "",
     totalAmountAddedTax: 0.0,
-    lists: [
-      {
-        quantity: 10,
-        amount: 400.0,
-        description: "น้ำยาซักผ้า",
-        unitPrice: 40.0,
-      },
-      {
-        quantity: 10,
-        amount: 300.0,
-        description: "ผงซักฟอก",
-        unitPrice: 30.0,
-      },
-    ],
+    lists: [{}],
   };
 
   useEffect(() => {
@@ -220,7 +207,7 @@ export default function CreateBill() {
   };
 
   const handleChange = () => {
-    console.log(allProduct);
+    console.log(initValues);
   };
   const addProduct = () => {
     setAllProduct([
@@ -252,14 +239,14 @@ export default function CreateBill() {
 
   return (
     <>
-      <LocalizationProvider dateAdapter={DateAdapterMoment} locale="frLocale">
+      <LocalizationProvider dateAdapter={DateAdapterMoment} locale="fr">
         <Box sx={{ p: 3 }}>
           <Grid container className={classes.center}>
             <Grid item xs={12} md={7} pb={3}>
               <Stack
                 className={classes.header_create}
                 direction={{ xs: "column", sm: "row" }}>
-                <ResponsiveHeader text="หน้าสร้างใบแจ้งหนี้" />
+                <ResponsiveHeader text="Invoice" />
                 <Button
                   variant="outlined"
                   color="success"
