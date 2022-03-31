@@ -318,7 +318,7 @@ export default function BillInfo() {
                   </Stack>
                 </Grid>
               ) : isPayerBill === false &&
-                invoiceInfo.status === "correctionRequested" ? (
+                invoiceInfo.status !== "cancelled" ? (
                 <Box>
                   <Grid>
                     <Stack
@@ -332,20 +332,6 @@ export default function BillInfo() {
                         {" "}
                         Edit
                       </Button>
-                    </Stack>
-                  </Grid>
-                </Box>
-              ) : isPayerBill === false &&
-                invoiceInfo.status === "processing" ? (
-                <Box>
-                  <Grid>
-                    <Stack
-                      direction={{
-                        xs: "column",
-                        sm: "row",
-                        md: "column",
-                      }}
-                      spacing={1}>
                       <ResponsiveDialog
                         color="error"
                         invoiceInfo={invoiceInfo}

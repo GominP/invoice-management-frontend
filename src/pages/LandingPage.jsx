@@ -36,7 +36,6 @@ import { useSelector, useDispatch } from "react-redux";
 import * as authService from "../services/authService";
 import CardTotal3 from "../component/landingDashboard/CardTotal3";
 import CardTotal2 from "../component/landingDashboard/CardTotal2";
-import TestCard from "../component/landingDashboard/TestCard";
 import NavigateCard from "../component/landingDashboard/NavigateCard";
 import payerIcon from "../asset/images/payer.png";
 import billerIcon from "../asset/images/biller.png";
@@ -126,7 +125,11 @@ export default function LandingPage() {
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <NavigateCard
                   headText={role === "biller" ? "PAYERS" : "BILLER"}
-                  detail={role === "biller" ? "Check detail about payer." : "Check detail about biller."}
+                  detail={
+                    role === "biller"
+                      ? "Check detail about payer."
+                      : "Check detail about biller."
+                  }
                   img={role === "biller" ? payerIcon : billerIcon}
                   handleNavigate={"/payer"}
                 />

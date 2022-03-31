@@ -541,7 +541,7 @@ export default function EditBill() {
                         <Button onClick={() => addProduct()}>
                           + Add Product
                         </Button>
-                        <Button onClick={() => handleChange()}>mf]vsd</Button>
+                        {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
                       </Grid>
                     </Grid>
                   </Grid>
