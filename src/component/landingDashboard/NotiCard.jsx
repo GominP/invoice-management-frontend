@@ -154,22 +154,32 @@ const NotiCard = ({ isLoading, notification }) => {
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {allNoti.map((noti) => (
-                <MenuItem
-                  key={noti}
-                  onClick={() => notiNevigate(noti.invoiceId)}>
-                  <Stack direction="row" spacing={4}>
-                    <ReceiptOutlinedIcon />
-                    <Typography
-                      textAlign="left"
-                      noWrap
-                      sx={{ display: "inline-block", whiteSpace: "pre-line" }}
-                      width={200}>
-                      {noti.message}
-                    </Typography>
-                  </Stack>
+              {allNoti.length === 0 ? (
+                <MenuItem>
+                  {" "}
+                  <Typography>No notification </Typography>
                 </MenuItem>
-              ))}
+              ) : (
+                allNoti.map((noti) => (
+                  <MenuItem
+                    key={noti}
+                    onClick={() => notiNevigate(noti.invoiceId)}>
+                    <Stack direction="row" spacing={4}>
+                      <ReceiptOutlinedIcon />
+                      <Typography
+                        textAlign="left"
+                        noWrap
+                        sx={{
+                          display: "inline-block",
+                          whiteSpace: "pre-line",
+                        }}
+                        width={200}>
+                        {noti.message}
+                      </Typography>
+                    </Stack>
+                  </MenuItem>
+                ))
+              )}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

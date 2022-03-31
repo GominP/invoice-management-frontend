@@ -29,13 +29,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import * as notificationService from "../services/notificationService";
 
-const biller = ["INVOICE GUARD", "All Invoice", "Payer", "Payment"];
+const biller = ["INVOICE GUARD", "All Invoices", "All Payers", "All Payments"];
 const payer = [
   "INVOICE GUARD",
-  "All Invoice",
-  "Biller",
+  "All Invoices",
+  "All Billers",
   "Add Biller",
-  "Payment",
+  "All Payments",
 ];
 
 const ResponsiveAppBar = () => {
@@ -146,16 +146,16 @@ const ResponsiveAppBar = () => {
 
   function changePage(page) {
     switch (page) {
-      case "All Invoice":
+      case "All Invoices":
         navigate("/allbill");
         // window.location.href = "/allbill";
 
         break;
-      case "Biller":
+      case "All Billers":
         navigate("/payer");
         // window.location.href = "/payer";
         break;
-      case "Payer":
+      case "All Payers":
         navigate("/payer");
         // window.location.href = "/payer";
         break;
@@ -168,7 +168,7 @@ const ResponsiveAppBar = () => {
         navigate("/addBiller");
         // window.location.href = "/addBiller";
         break;
-      case "Payment":
+      case "All Payments":
         navigate("/payment");
         // window.location.href = "/addBiller";
         break;

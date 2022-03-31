@@ -27,7 +27,6 @@ export const landing = async () => {
     }
   );
 
-
   return response;
 };
 
@@ -35,5 +34,16 @@ export const password_update = async (data) => {
   const response = await axios.post(url + "password-update", data, {
     headers: { Authorization: token },
   });
+  return response;
+};
+
+export const username_exists = async (data) => {
+  const response = await axios.post(
+    url + "username-exists",
+    { username: data },
+    {
+      headers: { Authorization: token },
+    }
+  );
   return response;
 };

@@ -46,6 +46,7 @@ const WelcomeCard = ({ isLoading, name }) => {
   return (
     <>
       <CardWrapper border={false} content={false}>
+      <MenuItem> 
         <Box sx={{ p: 3.5 }}>
           <Grid container direction="column">
             <Grid item>
@@ -112,6 +113,7 @@ const WelcomeCard = ({ isLoading, name }) => {
             </Grid>
           </Grid>
         </Box>
+        </MenuItem>
       </CardWrapper>
     </>
   );

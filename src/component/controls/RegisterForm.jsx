@@ -38,6 +38,7 @@ export default function RegisterForm(props) {
       .min(2, "Too Short!")
       .max(50, "Too Long!")
       .required("First name required"),
+
     lastname: Yup.string().required("Last name required"),
     username: Yup.string().required("Username is required"),
     password: Yup.string()
@@ -108,6 +109,10 @@ export default function RegisterForm(props) {
     isSubmitting,
     getFieldProps,
     setSubmitting,
+    handleChange,
+
+    setFieldValue,
+    setFieldError,
   } = formik;
 
   const handleShowPassword = () => {
@@ -125,9 +130,15 @@ export default function RegisterForm(props) {
   const handleMouseDownConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  //   const handleClose = () => {
-  //     setShowError(false);
-  //   };
+  const handleExist = (e) => {
+    console.log(e.target.value);
+    const checkUsername = authService.username_exists(e.target.value);
+    if (checkUsername === true) {
+      setFieldValue("name", e.target.value);
+    } else {
+      setFieldError("name", "Username is Exist");
+    }
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -135,9 +146,14 @@ export default function RegisterForm(props) {
         <Stack spacing={3}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <TextField
+              onChange={(e) => {
+                console.log("onChange", e.currentTarget.value);
+                handleExist(e);
+              }}
               fullWidth
               label="Firstname"
-              {...getFieldProps("name")}
+              // onChange={handleExist}
+              // {...getFieldProps("name")}
               error={Boolean(touched.name && errors.name)}
               helperText={touched.name && errors.name}
             />
