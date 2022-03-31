@@ -125,7 +125,6 @@ export default function CreateBill() {
   };
 
   const headProduct = [
-  
     { id: "description", label: "Product" },
     { id: "quantity", label: "Qty." },
     { id: "unitPrice", label: "Price/Unit" },
@@ -176,20 +175,6 @@ export default function CreateBill() {
     setTotalAmount(priceAllProduct);
     setTotalAmountAddedTax(temp + priceAllProduct);
   }
-
-  const handleChangeTax = (event) => {
-    setIsTax(event.target.value);
-    if (event.target.value === "Yes") {
-      console.log("true Tax");
-      let temp = TAX_RATE * totalAmount;
-      setTotalPrice(temp + totalAmount);
-    } else if (event.target.value === "no") {
-      console.log("false Tax");
-
-      console.log(subtotal(allProduct));
-      setTotalPrice(subtotal(allProduct));
-    }
-  };
 
   function subtotal(items) {
     let total = 0;
@@ -309,17 +294,7 @@ export default function CreateBill() {
                             onChange={handleChange}
                             disabled
                           />
-                          {/* <Grid pt={3}>
-                            <TextField
-                              id="outlined"
-                              label="Detail"
-                              placeholder="Detail"
-                              disabled
-                              value={
-                               
-                              }
-                            />
-                          </Grid> */}
+
                           <Grid pt={3}>
                             <TextField
                               id="outlined-textarea"
@@ -342,6 +317,33 @@ export default function CreateBill() {
                               }
                             />
                           </Grid>
+                          <Grid item pt={3}>
+                            <TextField
+                              id="outlined-name"
+                              label="Date"
+                              disabled
+                              value={today}
+                            />
+                          </Grid>
+
+                          <Grid item pt={3}>
+                            <DatePicker
+                              label="Expired Date"
+                              openTo="year"
+                              views={["year", "month", "day"]}
+                              value={value}
+                              onChange={(newValue) => {
+                                setValue(newValue);
+                              }}
+                              renderInput={(params) => (
+                                <TextField {...params} />
+                              )}
+                            />
+                          </Grid>
+
+                          <Grid item pt={3}>
+                            <TextField id="outlined-name" label="Biller" />
+                          </Grid>
                         </Grid>
 
                         <Grid item md={6} xs={12}>
@@ -350,40 +352,28 @@ export default function CreateBill() {
                           </Typography>
                           <Typography>{currencyFormat(totalPrice)}</Typography>
                           <Box paddingTop={3}>
-                            <Grid container spacing={2}>
-                              {/* <Grid item xs={12} md={4}>
-                                <Typography>Date</Typography>
-                              </Grid> */}
-                              <Grid item xs={12} md={8}>
-                                <TextField
-                                  id="outlined-name"
-                                  label="Date"
-                                  disabled
-                                  value={today}
-                                />
+                            <Grid container>
+                              <Grid item xs={4} md={3}>
+                                <Typography>Subtotal</Typography>
                               </Grid>
-                              {/* <Grid item xs={12} md={4}>
-                                <Typography>Expired date</Typography>
-                              </Grid> */}
-                              <Grid item xs={12} md={8}>
-                                <DatePicker
-                                  label="Expired Date"
-                                  openTo="year"
-                                  views={["year", "month", "day"]}
-                                  value={value}
-                                  onChange={(newValue) => {
-                                    setValue(newValue);
-                                  }}
-                                  renderInput={(params) => (
-                                    <TextField {...params} />
-                                  )}
-                                />
+                              <Grid item xs={8} md={9}>
+                                <Typography>
+                                  {currencyFormat(totalAmount)}
+                                </Typography>
                               </Grid>
-                              {/* <Grid item xs={12} md={4}>
-                                <Typography>Biller</Typography>
-                              </Grid> */}
-                              <Grid item xs={12} md={8}>
-                                <TextField id="outlined-name" label="Biller" />
+                              <Grid item xs={4} md={3}>
+                                Vats 7%
+                              </Grid>
+                              <Grid item xs={8} md={9}>
+                                <Typography>{currencyFormat(vats)}</Typography>
+                              </Grid>
+                              <Grid item xs={4} md={3}>
+                                Total
+                              </Grid>
+                              <Grid item xs={8} md={9}>
+                                <Typography>
+                                  {currencyFormat(totalPrice)}
+                                </Typography>
                               </Grid>
                             </Grid>
                           </Box>
@@ -393,42 +383,6 @@ export default function CreateBill() {
                     <Divider sx={{ p: 2 }}></Divider>
                     <Grid item xs={12} sx={{ pt: 2 }}>
                       <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12} md={12} lg={12} spacing={2}>
-                          <Stack
-                            direction={{ xs: "column", sm: "row" }}
-                            spacing={2}>
-                            <Grid>
-                              {/* <TextField
-                                id="outlined-name"
-                                label="Ref. number"
-                                value={name}
-                                onChange={handleChange}
-                              /> */}
-                            </Grid>
-                            <Grid>
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-controlled-radio-buttons-group"
-                                  name="controlled-radio-buttons-group"
-                                  value={isTax}
-                                  defaultValue={isTax}
-                                  onChange={handleChangeTax}>
-                                  <FormControlLabel
-                                    value="no"
-                                    control={<Radio />}
-                                    label="No Tax"
-                                  />
-                                  <FormControlLabel
-                                    value="Yes"
-                                    control={<Radio />}
-                                    label="Tax"
-                                  />
-                                </RadioGroup>
-                              </FormControl>
-                            </Grid>
-                          </Stack>
-                        </Grid>
                         <Grid item xs={12} md={12}>
                           <TableContainer>
                             <Table aria-labelledby="tableTitle" size="medium">
@@ -455,7 +409,6 @@ export default function CreateBill() {
                                       role="checkbox"
                                       tabIndex={-1}
                                       key={row.id}>
-                                      
                                       <TableCell align="center">
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
