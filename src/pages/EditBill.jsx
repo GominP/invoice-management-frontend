@@ -52,6 +52,7 @@ import * as payerService from "../services/payerService";
 import * as invoiceService from "../services/invoiceService";
 import * as notificationService from "../services/notificationService";
 import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
+import { LoadingButton } from "@mui/lab";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -102,6 +103,7 @@ export default function EditBill() {
   const [vats, setVats] = useState(0.0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0.0);
+  const [loading, setLoading] = useState(false);
 
   const TAX_RATE = 0.07;
 
@@ -135,6 +137,7 @@ export default function EditBill() {
         setAllProduct(response["lists"]);
         setTotalAmount(response["totalAmount"]);
         setTotalPrice(response["totalAmountAddedTax"]);
+        setTotalAmountAddedTax(response["totalAmountAddedTax"]);
         setVats(response["vat"]);
       });
     await payerService
@@ -209,6 +212,7 @@ export default function EditBill() {
   }
   const handleEditInvoice = () => {
     let nullProduct = false;
+    setLoading(true);
 
     allProduct.map((item) => {
       if (item.description === "") {
@@ -232,22 +236,32 @@ export default function EditBill() {
       initValues.dueDate = value;
       initValues.totalAmountAddedTax = totalAmountAddedTax;
       console.log(initValues);
-      // invoiceService
-      //   .invoice_status_update({
-      //     id: invoiceInfo.id,
-      //     status: "cancelled",
-      //   })
-      //   .then(function (response) {
-      //     console.log(response);
-      //     invoiceService
-      //       .invoice_create(initValues)
-      //       .then(function (response) {
-      //         console.log(response);
-      //       })
-      //       .catch((err) => {
-      //         console.log(err);
-      //       });
-      //   });
+      invoiceService
+        .invoice_status_update({
+          id: invoiceInfo.id,
+          status: "cancelled",
+        })
+        .then(function (response) {
+          console.log(response);
+          invoiceService
+            .invoice_create(initValues)
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      setTimeout(() => {
+        setServerity("success");
+        setTextSnackbar("Edit Successful");
+        setOpenSuccess(true);
+        setLoading(false);
+      }, 2000);
+
+      setTimeout(() => {
+        window.location.href = "/allbill";
+      }, 4000);
 
       let tempData = {
         payerId: +params.payerId,
@@ -258,10 +272,6 @@ export default function EditBill() {
         totalAmountAddedTax: totalAmountAddedTax,
         lists: allProduct,
       };
-
-      invoiceService.invoice_create(tempData).then(function (response) {
-        console.log(response);
-      });
     }
   };
 
@@ -286,10 +296,14 @@ export default function EditBill() {
 
   const handleDeleteProduct = (index) => {
     setAllProduct(
-      allProduct.filter(function (el) {
-        return el.id !== index;
+      allProduct.filter(function (item) {
+        return item.id !== index;
       })
     );
+  };
+
+  const handleCancel = () => {
+    navigate("/allbill/billinfo/" + params.id);
   };
 
   function currencyFormat(num) {
@@ -306,13 +320,22 @@ export default function EditBill() {
                 className={classes.header_create}
                 direction={{ xs: "column", sm: "row" }}>
                 <ResponsiveHeader text="Invoice" />
-                <Button
-                  variant="outlined"
-                  color="success"
-                  type="submit"
-                  onClick={handleEditInvoice}>
-                  Edit Invoice
-                </Button>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <Button
+                    color="error"
+                    variant="outlined"
+                    onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                  <LoadingButton
+                    onClick={handleEditInvoice}
+                    loading={loading}
+                    color={"success"}
+                    loadingIndicator="Loading..."
+                    variant="outlined">
+                    Edit Invoice
+                  </LoadingButton>
+                </Stack>
               </Stack>
               <MainCard>
                 <Box padding={3}>

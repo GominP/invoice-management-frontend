@@ -174,7 +174,7 @@ const Payer = () => {
           console.log(arr);
           setRows(arr);
         });
-    } else if (role === "biller") {
+    } else {
       await payerService
         .payer_inquiry({ billerId: id })
         .then(function (response) {
@@ -184,7 +184,6 @@ const Payer = () => {
             }
           });
           console.log(arr);
-
           setRows(arr);
         });
     }

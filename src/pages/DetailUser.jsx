@@ -91,7 +91,10 @@ export default function DetailUser() {
     role === "biller"
       ? (data = { billerId: userId, payerId: params.id })
       : (data = { billerId: params.id, payerId: userId });
-    relationService.relationship_status_update(data);
+    relationService.relationship_status_update(data).then(function (response) {
+      console.log(response)
+      window.location.href = "/payer"
+    });
     // relationship_status_update
   };
 

@@ -130,15 +130,15 @@ export default function RegisterForm(props) {
   const handleMouseDownConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  const handleExist = (e) => {
-    console.log(e.target.value);
-    const checkUsername = authService.username_exists(e.target.value);
-    if (checkUsername === true) {
-      setFieldValue("name", e.target.value);
-    } else {
-      setFieldError("name", "Username is Exist");
-    }
-  };
+  // const handleExist = (e) => {
+  //   console.log(e.target.value);
+  //   const checkUsername = authService.username_exists(e.target.value);
+  //   if (checkUsername === true) {
+  //     setFieldValue("name", e.target.value);
+  //   } else {
+  //     setFieldError("name", "Username is Exist");
+  //   }
+  // };
 
   return (
     <FormikProvider value={formik}>
@@ -146,14 +146,14 @@ export default function RegisterForm(props) {
         <Stack spacing={3}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <TextField
-              onChange={(e) => {
-                console.log("onChange", e.currentTarget.value);
-                handleExist(e);
-              }}
+              // onChange={(e) => {
+              //   console.log("onChange", e.currentTarget.value);
+              //   handleExist(e);
+              // }}
               fullWidth
               label="Firstname"
               // onChange={handleExist}
-              // {...getFieldProps("name")}
+              {...getFieldProps("name")}
               error={Boolean(touched.name && errors.name)}
               helperText={touched.name && errors.name}
             />
