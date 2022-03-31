@@ -16,7 +16,7 @@ import {
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import img2 from "../asset/images/Cat03.jpg";
+
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { makeStyles } from "@mui/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";

@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
   th: {
     backgroundColor: "#ba68c8",
     color: "white",
+    
   },
   form: {
     width: 600,

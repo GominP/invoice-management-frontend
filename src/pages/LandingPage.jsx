@@ -36,6 +36,13 @@ import { useSelector, useDispatch } from "react-redux";
 import * as authService from "../services/authService";
 import CardTotal3 from "../component/landingDashboard/CardTotal3";
 import CardTotal2 from "../component/landingDashboard/CardTotal2";
+import TestCard from "../component/landingDashboard/TestCard";
+import NavigateCard from "../component/landingDashboard/NavigateCard";
+import payerIcon from "../asset/images/payer.png";
+import billerIcon from "../asset/images/biller.png";
+import paymentIcon from "../asset/images/notes.png";
+import invoiceIcon from "../asset/images/bill.png";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const billerText = [
   "Total Income Today",
@@ -52,11 +59,12 @@ export default function LandingPage() {
   //redux
   const role = useSelector(getRole);
   const id = useSelector(getUserID);
-
   const dispatch = useDispatch();
   const [userRole, setUserRole] = useState("");
   // const [countNoti, setCountNoti] = useState();
   const noti = useSelector(getNotiCount);
+
+  let navigate = useNavigate();
 
   //---------------
   const [isBiller, setIsBiller] = useState(false);
@@ -98,10 +106,6 @@ export default function LandingPage() {
     });
   };
 
-  // const setTotal = () => {
-  //   allTotal[0];
-  // };
-
   return (
     <div>
       <Box padding={5} sx={{ display: "flex", justifyContent: "center" }}>
@@ -116,23 +120,47 @@ export default function LandingPage() {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item xs={12}>
             <Grid container spacing={gridSpacing}>
-              {/* {rowTotalText.map((item,index) => ( */}
-              <Grid item xs={12} md={4}>
-                <CardTotal
-                  text={rowTotalText[0]}
-                  amount={allTotal[0]}></CardTotal>
+              <Grid item lg={4} md={6} sm={6} xs={12}>
+                <NavigateCard
+                  headText={role === "biller" ? "PAYERS" : "BILLER"}
+                  detail={role === "biller" ? "Check detail about payer." : "Check detail about biller."}
+                  img={role === "biller" ? payerIcon : billerIcon}
+                  handleNavigate={"/payer"}
+                />
               </Grid>
-              <Grid item xs={12} md={4}>
-                <CardTotal2
-                  text={rowTotalText[1]}
-                  amount={allTotal[1]}></CardTotal2>
+              <Grid item lg={4} md={6} sm={6} xs={12}>
+                <NavigateCard
+                  headText="INVOICES"
+                  detail="Check All Invoices. Oh wait  Did u know invoice ?  "
+                  img={invoiceIcon}
+                  handleNavigate={"/allbill"}
+                />
               </Grid>
-              <Grid item xs={12} md={4}>
-                <CardTotal3
-                  text={rowTotalText[2]}
-                  amount={allTotal[2]}></CardTotal3>
+
+              <Grid item lg={4} md={12} sm={12} xs={12}>
+                <Grid container spacing={gridSpacing}>
+                  <Grid item sm={6} xs={12} md={6} lg={12}>
+                    <CardTotal
+                      text={rowTotalText[0]}
+                      amount={allTotal[0]}></CardTotal>
+                  </Grid>
+                  <Grid item sm={6} xs={12} md={6} lg={12}>
+                    <CardTotal2
+                      text={rowTotalText[1]}
+                      amount={allTotal[1]}></CardTotal2>
+                  </Grid>
+                  <Grid item sm={6} xs={12} md={6} lg={12}>
+                    <CardTotal3
+                      text={rowTotalText[2]}
+                      amount={allTotal[2]}></CardTotal3>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                {/* <NavigateCard headText="PAYMENTS" detail="" img={paymentIcon} /> */}
               </Grid>
             </Grid>
           </Grid>

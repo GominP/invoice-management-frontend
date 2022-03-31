@@ -19,7 +19,7 @@ import { useTheme } from "@mui/material/styles";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import ResponsiveHeader from "../component/ResponsiveHeader";
 import { useNavigate } from "react-router-dom";
-import img from "../asset/images/contemplative-reptile.jpg";
+
 import { useEffect, useState } from "react";
 import { getRole, getUserID } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";

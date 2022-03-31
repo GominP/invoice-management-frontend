@@ -44,7 +44,7 @@ const MainCard = forwardRef(
                     ':hover': {
                         boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
                     },
-                    borderRadius: 6,
+                    borderRadius: 2,
                     ...sx
                 }}
             >

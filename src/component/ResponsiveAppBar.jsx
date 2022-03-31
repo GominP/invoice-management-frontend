@@ -28,6 +28,8 @@ import {
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as notificationService from "../services/notificationService";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const biller = ["INVOICE GUARD", "All Invoices", "All Payers", "All Payments"];
 const payer = [
@@ -323,7 +325,9 @@ const ResponsiveAppBar = () => {
               aria-controls={open ? "account-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}>
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar sx={{ width: 32, height: 32 }}>
+                <PermIdentityOutlinedIcon />
+              </Avatar>
             </IconButton>
           </Tooltip>
         </Box>
@@ -365,7 +369,7 @@ const ResponsiveAppBar = () => {
             onClick={() => {
               navigate("/editprofile/" + role);
             }}>
-            <Avatar /> Profile
+            <EditRoundedIcon sx={{ paddingRight: 1 }} /> Edit Profile
           </MenuItem>
 
           <Divider />
