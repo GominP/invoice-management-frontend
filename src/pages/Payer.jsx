@@ -225,7 +225,9 @@ const Payer = () => {
 
                 <Card className={classes.card}>
                   <CardActionArea
-                    onClick={() => navigate("/detailUser/" + info.id)}>
+                    onClick={() =>
+                      navigate("/detailUser/" + info.id + "/" + info.status)
+                    }>
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">
                         {info.name} {info.lastname}
@@ -243,10 +245,12 @@ const Payer = () => {
                     <Button
                       size="small"
                       color="primary"
-                      onClick={() => navigate("/detailUser/" + info.id)}>
+                      onClick={() =>
+                        navigate("/detailUser/" + info.id + "/" + info.status)
+                      }>
                       Datail
                     </Button>
-                    {role === "payer" ? null : (
+                    {role === "payer" || info.status === "inactive" ? null : (
                       <Button
                         size="small"
                         color="primary"

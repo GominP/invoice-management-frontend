@@ -44,6 +44,7 @@ function ResponsiveDialog(props) {
   const [textSnackbar, setTextSnackbar] = useState("Request Successful");
 
   const {
+    status,
     textButton,
     requestEdit,
     deleteRelation,
@@ -286,8 +287,11 @@ function ResponsiveDialog(props) {
               <Button autoFocus onClick={handleClose}>
                 Cancel
               </Button>
-              <Button onClick={onClick} color={"error"} autoFocus>
-                Disconnect
+              <Button
+                onClick={onClick}
+                color={status === "inactive" ? "success" : "error"}
+                autoFocus>
+                {status === "inactive" ? "Connect" : "Disconnect"}
               </Button>
             </DialogActions>
           ) : cancelInvoice === true ? (
@@ -322,6 +326,8 @@ function ResponsiveDialog(props) {
 }
 
 ResponsiveDialog.propTypes = {
+  status: PropTypes.string.isRequired,
+
   textButton: PropTypes.string.isRequired,
   requestEdit: PropTypes.bool.isRequired,
   deleteRelation: PropTypes.bool.isRequired,

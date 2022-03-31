@@ -92,8 +92,8 @@ export default function DetailUser() {
       ? (data = { billerId: userId, payerId: params.id })
       : (data = { billerId: params.id, payerId: userId });
     relationService.relationship_status_update(data).then(function (response) {
-      console.log(response)
-      window.location.href = "/payer"
+      console.log(response);
+      window.location.href = "/payer";
     });
     // relationship_status_update
   };
@@ -147,9 +147,14 @@ export default function DetailUser() {
                   sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <ResponsiveDialog
                     onClick={handleDisconnet}
-                    textButton={"Disconnect"}
+                    status={params.status}
+                    textButton={
+                      params.status === "inactive" ? "Connect" : "Disconnect"
+                    }
                     deleteRelation={true}
-                    color={"error"}></ResponsiveDialog>
+                    color={
+                      params.status === "inactive" ? "success" : "error"
+                    }></ResponsiveDialog>
                 </CardActions>
               </Box>
             </Grid>

@@ -65,7 +65,7 @@ function App() {
           <Route path="/allget" element={<TotalIncome />} />
           <Route path="/allbill" element={<AllInvoices />} />
           <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
-          <Route path="/detailUser/:id" element={<DetailUser />} />
+          <Route path="/detailUser/:id/:status" element={<DetailUser />} />
           <Route path="/register/:role" element={<NewRegister />} />
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill/:id" element={<CreateBill />} />
