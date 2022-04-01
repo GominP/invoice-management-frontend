@@ -46,21 +46,21 @@ const WelcomeCard = ({ isLoading, name }) => {
   return (
     <>
       <CardWrapper border={false} content={false}>
-      <MenuItem> 
-        <Box sx={{ p: 3.5 }}>
-          <Grid container direction="column">
-            <Grid item>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Typography
-                    sx={{
-                      fontSize: "1rem",
-                      fontWeight: 500,
-                      color: theme.palette.secondary[200],
-                    }}>
-                    Welcome
-                  </Typography>
-                  {/* <Avatar
+        <MenuItem>
+          <Box sx={{ p: 5.5 }}>
+            <Grid container direction="column">
+              <Grid item>
+                <Grid container justifyContent="space-between">
+                  <Grid item>
+                    <Typography
+                      sx={{
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        color: theme.palette.secondary[200],
+                      }}>
+                      Welcome
+                    </Typography>
+                    {/* <Avatar
                     variant="rounded"
                     sx={{
                       bgcolor: indigo[500],
@@ -68,51 +68,29 @@ const WelcomeCard = ({ isLoading, name }) => {
                     }}>
                     <AttachMoneyIcon/>
                   </Avatar> */}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container alignItems="center">
-                <Grid item>
-                  <Typography
-                    sx={{
-                      fontSize: "2.125rem",
-                      fontWeight: 500,
-                      mr: 1,
-                      mt: 1.75,
-                      mb: 0.75,
-                    }}>
-                    {name} {}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  {/* <Avatar
-                    sx={{
-                      cursor: "pointer",
-                      ...theme.typography.smallAvatar,
-                      backgroundColor: blue[50],
-                      color: theme.palette.secondary.dark,
-                    }}>
-                    <ArrowUpwardIcon
-                      fontSize="inherit"
-                      sx={{ transform: "rotate3d(1, 1, 1, 45deg)" }}
-                    />
-                  </Avatar> */}
+              <Grid item>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <Typography
+                      sx={{
+                        fontSize: "3.125rem",
+                        fontWeight: 500,
+                        mr: 1,
+                        mt: 1.75,
+                        mb: 0.75,
+                      }}>
+                      {name} {}
+                    </Typography>
+                  </Grid>
+                  <Grid item></Grid>
                 </Grid>
               </Grid>
+              <Grid item sx={{ mb: 1.25 }}></Grid>
             </Grid>
-            <Grid item sx={{ mb: 1.25 }}>
-              {/* <Typography
-                sx={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  color: theme.palette.secondary[200],
-                }}>
-                ขอให้เป็นวันที่ดีนะครับ
-              </Typography> */}
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
         </MenuItem>
       </CardWrapper>
     </>

@@ -72,7 +72,7 @@ export default function PasswordForm(props) {
           .password_update(values)
           .then(function (response) {
             console.log(response);
-            textSnackbar("Change password Successful");
+            textSnackbar("Change password successfully.");
             serverity("success");
             openSuccess(true);
             handleClosePassword();

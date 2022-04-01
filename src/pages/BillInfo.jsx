@@ -134,6 +134,7 @@ export default function BillInfo() {
     dispatch(setNotiCount(noti["unreadCount"]));
     navigate("/allbill");
   };
+
   return (
     <>
       <Box sx={{ p: 3 }}>
@@ -141,7 +142,7 @@ export default function BillInfo() {
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <MainCard>
               <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
-                <ResponsiveHeader text="Invoice Check" />
+                <ResponsiveHeader text="Invoice" />
                 <Button
                   variant="outlined"
                   color={
@@ -201,7 +202,7 @@ export default function BillInfo() {
                                   </Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>Expired Date</Typography>
+                                  <Typography>Due Date</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>
@@ -256,7 +257,7 @@ export default function BillInfo() {
                                     <TableCell align="right">
                                       {currencyFormat(
                                         row.unitPrice * row.quantity
-                                      )}
+                                      )} Baht
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -265,22 +266,22 @@ export default function BillInfo() {
                                   <TableCell rowSpan={3} />
                                   <TableCell colSpan={2}>Subtotal</TableCell>
                                   <TableCell align="right">
-                                    {currencyFormat(+total)}
+                                    {currencyFormat(+total)} Baht
                                   </TableCell>
                                 </TableRow>
                                 <TableRow>
                                   <TableCell>Vats </TableCell>
                                   <TableCell align="right">{`${(
                                     TAX_RATE * 100
-                                  ).toFixed(0)} %`}</TableCell>
+                                  ).toFixed(0)} %`} </TableCell>
                                   <TableCell align="right">
-                                    {currencyFormat(invoiceTaxes)}
+                                    {currencyFormat(invoiceTaxes)} Baht
                                   </TableCell>
                                 </TableRow>
                                 <TableRow>
                                   <TableCell colSpan={2}>Total</TableCell>
                                   <TableCell align="right">
-                                    {currencyFormat(invoiceTotal)}
+                                    {currencyFormat(invoiceTotal)} Baht
                                   </TableCell>
                                 </TableRow>
                               </TableBody>

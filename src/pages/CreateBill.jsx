@@ -19,6 +19,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Avatar,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import MainCard from "../component/MainCard";
 import { gridSpacing } from "../store/constant";
@@ -51,6 +54,9 @@ import * as notificationService from "../services/notificationService";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Icon } from "@material-ui/core";
 import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
+import { LoadingButton } from "@mui/lab";
+import { green } from "@mui/material/colors";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -101,6 +107,9 @@ export default function CreateBill() {
   const [severity, setServerity] = useState("success");
   const [openSuccess, setOpenSuccess] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [inputPrice, setInputPrice] = useState(0);
+
   const TAX_RATE = 0.07;
 
   const initValues = {
@@ -125,7 +134,7 @@ export default function CreateBill() {
   };
 
   const headProduct = [
-    { id: "description", label: "Product" },
+    { id: "description", label: "Description" },
     { id: "quantity", label: "Qty." },
     { id: "unitPrice", label: "Price/Unit" },
     { id: "amount", label: "total" },
@@ -185,6 +194,7 @@ export default function CreateBill() {
   }
   const handleCreateBill = () => {
     let nullProduct = false;
+    setLoading(true);
 
     allProduct.map((item) => {
       if (item.description === "") {
@@ -215,8 +225,17 @@ export default function CreateBill() {
             billerId: userId,
           });
         dispatch(setNotiCount(noti["unreadCount"]));
-        navigate("/allbill");
       });
+
+      setTimeout(() => {
+        setServerity("success");
+        setTextSnackbar("Create successfully.");
+        setOpenSuccess(true);
+        setLoading(false);
+      }, 2000);
+      setTimeout(() => {
+        navigate("/allbill");
+      }, 4000);
     }
   };
 
@@ -259,6 +278,10 @@ export default function CreateBill() {
     setOpenSuccess(false);
   };
 
+  const fotmatDate = (date) => {
+    return new Date(date).toLocaleDateString("fr");
+  };
+
   return (
     <>
       <LocalizationProvider dateAdapter={DateAdapterMoment} locale="fr">
@@ -269,115 +292,119 @@ export default function CreateBill() {
                 className={classes.header_create}
                 direction={{ xs: "column", sm: "row" }}>
                 <ResponsiveHeader text="Invoice" />
-                <Button
+                <LoadingButton
                   variant="outlined"
                   color="success"
+                  loading={loading}
+                  loadingIndicator="Loading..."
                   onClick={handleCreateBill}
                   startIcon={<AddOutlinedIcon />}>
                   Create Invoice
-                </Button>
+                </LoadingButton>
               </Stack>
               <MainCard>
                 <Box padding={3}>
                   <Grid spacing={3}>
-                    <Grid item xs={12}>
-                      <Grid container spacing={3}>
-                        <Grid item md={6} xs={12}>
+                    <Grid container spacing={3}>
+                      <Grid item md={6} xs={12}>
+                        <TextField
+                          id="outlined"
+                          label="Customer"
+                          value={
+                            dataCustomerInfo.name +
+                            " " +
+                            dataCustomerInfo.lastname
+                          }
+                          onChange={handleChange}
+                          disabled
+                        />
+
+                        <Grid pt={3}>
                           <TextField
-                            id="outlined"
-                            label="Customer"
-                            value={
-                              dataCustomerInfo.name +
-                              " " +
-                              dataCustomerInfo.lastname
-                            }
-                            onChange={handleChange}
+                            id="outlined-textarea"
+                            label="Address"
+                            placeholder="Address"
                             disabled
+                            multiline
+                            value={
+                              dataCustomerInfo.addressDetail +
+                              " " +
+                              dataCustomerInfo.road +
+                              " " +
+                              dataCustomerInfo.subDistrict +
+                              " " +
+                              dataCustomerInfo.district +
+                              " " +
+                              dataCustomerInfo.province +
+                              " " +
+                              dataCustomerInfo.zipCode
+                            }
                           />
-
-                          <Grid pt={3}>
-                            <TextField
-                              id="outlined-textarea"
-                              label="Address"
-                              placeholder="Address"
-                              disabled
-                              multiline
-                              value={
-                                dataCustomerInfo.addressDetail +
-                                " " +
-                                dataCustomerInfo.road +
-                                " " +
-                                dataCustomerInfo.subDistrict +
-                                " " +
-                                dataCustomerInfo.district +
-                                " " +
-                                dataCustomerInfo.province +
-                                " " +
-                                dataCustomerInfo.zipCode
-                              }
-                            />
-                          </Grid>
-                          <Grid item pt={3}>
-                            <TextField
-                              id="outlined-name"
-                              label="Date"
-                              disabled
-                              value={today}
-                            />
-                          </Grid>
-
-                          <Grid item pt={3}>
-                            <DatePicker
-                              label="Expired Date"
-                              openTo="year"
-                              views={["year", "month", "day"]}
-                              value={value}
-                              onChange={(newValue) => {
-                                setValue(newValue);
-                              }}
-                              renderInput={(params) => (
-                                <TextField {...params} />
-                              )}
-                            />
-                          </Grid>
-
-                          <Grid item pt={3}>
-                            <TextField id="outlined-name" label="Biller" />
-                          </Grid>
+                        </Grid>
+                        <Grid item pt={3}>
+                          <TextField
+                            id="outlined-name"
+                            label="Date"
+                            disabled
+                            value={fotmatDate(today)}
+                          />
                         </Grid>
 
-                        <Grid item md={6} xs={12}>
-                          <Typography sx={{ color: "purple" }} variant="h5">
-                            TOTAL
-                          </Typography>
-                          <Typography>{currencyFormat(totalPrice)}</Typography>
-                          <Box paddingTop={3}>
-                            <Grid container>
-                              <Grid item xs={4} md={3}>
-                                <Typography>Subtotal</Typography>
-                              </Grid>
-                              <Grid item xs={8} md={9}>
-                                <Typography>
-                                  {currencyFormat(totalAmount)}
-                                </Typography>
-                              </Grid>
-                              <Grid item xs={4} md={3}>
-                                Vats 7%
-                              </Grid>
-                              <Grid item xs={8} md={9}>
-                                <Typography>{currencyFormat(vats)}</Typography>
-                              </Grid>
-                              <Grid item xs={4} md={3}>
-                                Total
-                              </Grid>
-                              <Grid item xs={8} md={9}>
-                                <Typography>
-                                  {currencyFormat(totalPrice)}
-                                </Typography>
-                              </Grid>
+                        <Grid item pt={3}>
+                          <DatePicker
+                            label="Due Date"
+                            openTo="year"
+                            views={["year", "month", "day"]}
+                            value={value}
+                            disablePast
+                            inputFormat={"DD/MM/YYYY"}
+                            onChange={(newValue) => {
+                              setValue(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </Grid>
+
+                        <Grid item pt={3}>
+                          <TextField id="outlined-name" label="Biller" />
+                        </Grid>
+                      </Grid>
+
+                      <Grid item md={6} xs={12}>
+                        <Typography sx={{ color: "purple" }} variant="h3">
+                          TOTAL
+                        </Typography>
+                        <Typography variant="h4" pt={2}>
+                          {currencyFormat(totalPrice)}
+                        </Typography>
+                        <Box paddingTop={3}>
+                          <Grid container>
+                            <Grid item xs={4} md={6}>
+                              <Typography variant="h5">Subtotal</Typography>
                             </Grid>
-                          </Box>
-                        </Grid>
+                            <Grid item xs={8} md={6}>
+                              <Typography variant="h5">
+                                {currencyFormat(totalAmount)} Baht
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={4} md={6}>
+                              <Typography variant="h5">Vats 7%</Typography>
+                            </Grid>
+                            <Grid item xs={8} md={6}>
+                              <Typography variant="h5">
+                                {currencyFormat(vats)} Baht
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={4} md={6}>
+                              <Typography variant="h5">Total</Typography>
+                            </Grid>
+                            <Grid item xs={8} md={6}>
+                              <Typography variant="h5">
+                                {currencyFormat(totalPrice)} Baht
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Box>
                       </Grid>
                     </Grid>
                     <Divider sx={{ p: 2 }}></Divider>
@@ -413,7 +440,7 @@ export default function CreateBill() {
                                         <Stack direction={"column"} spacing={1}>
                                           <TextField
                                             id="outlined-name"
-                                            label="Product"
+                                            label="Description"
                                             required
                                             onChange={(event) =>
                                               handleChangeUnit(
@@ -448,11 +475,10 @@ export default function CreateBill() {
                                           id="outlined-price"
                                           label="Price"
                                           type={"number"}
-                                          maxLength={6}
                                           inputProps={{
                                             inputMode: "numeric",
                                             pattern: "[0-9]*",
-                                            maxLength: 10,
+                                            maxLength: 11,
                                             step: "1",
                                           }}
                                           onChange={(event) =>
@@ -464,12 +490,13 @@ export default function CreateBill() {
                                           }></TextField>
                                       </TableCell>
                                       <TableCell align="center">
-                                        {currencyFormat(row.amount)}
+                                        {currencyFormat(row.amount)} Baht
                                       </TableCell>
                                       <TableCell
                                         id={labelId}
                                         component="th"
                                         scope="row"
+                                        align="center"
                                         padding="normal">
                                         <Button
                                           color="error"
@@ -486,10 +513,18 @@ export default function CreateBill() {
                               </TableBody>
                             </Table>
                           </TableContainer>
+                          <Tooltip title="Add List" placement="right">
+                            <IconButton onClick={addProduct}>
+                              <Avatar sx={{ bgcolor: green[500] }}>
+                                <AddRoundedIcon />
+                              </Avatar>
+                            </IconButton>
+                          </Tooltip>
                         </Grid>
-                        <Button onClick={() => addProduct()}>
-                          + Add Product
-                        </Button>
+
+                        {/* <Button onClick={() => addProduct()}>
+                          + Add Lists
+                        </Button> */}
                         {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
                       </Grid>
                     </Grid>

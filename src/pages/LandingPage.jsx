@@ -124,11 +124,11 @@ export default function LandingPage() {
             <Grid container spacing={gridSpacing}>
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <NavigateCard
-                  headText={role === "biller" ? "PAYERS" : "BILLER"}
+                  headText={role === "biller" ? "PAYERS" : "BILLERS"}
                   detail={
                     role === "biller"
-                      ? "Check detail about payer."
-                      : "Check detail about biller."
+                      ? "Check detail about payers."
+                      : "Check detail about billers."
                   }
                   img={role === "biller" ? payerIcon : billerIcon}
                   handleNavigate={"/payer"}
@@ -137,7 +137,7 @@ export default function LandingPage() {
               <Grid item lg={4} md={6} sm={6} xs={12}>
                 <NavigateCard
                   headText="INVOICES"
-                  detail="Check All Invoices. Oh wait  Did u know invoice ?  "
+                  detail="Check All Invoices."
                   img={invoiceIcon}
                   handleNavigate={"/allbill"}
                 />

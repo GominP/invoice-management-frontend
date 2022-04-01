@@ -82,11 +82,6 @@ function createData(billId, customerName, expiredDate, total, status) {
   };
 }
 
-const time = new Date(1646892000).toLocaleString("th-TH").split(" ")[0];
-const time2 = new Date("2019-2-11").toLocaleString("th-TH").split(" ")[0];
-const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
-const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
-const time5 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -104,54 +99,38 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) {
-//       return order;
-//     }
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
 
-const headCells = [
-  // {
-  //   id: "billId",
-  //   numeric: false,
-  //   disablePadding: true,
-  //   label: "Invoice id",
-  // },
 
-  {
-    id: "customerName",
-    numeric: false,
-    disablePadding: false,
-    label: "Customer",
-  },
-  {
-    id: "amount",
-    numeric: false,
-    disablePadding: false,
-    label: "Total",
-  },
-  {
-    id: "paidAt",
-    numeric: true,
-    disablePadding: false,
-    label: "Paid Date",
-  },
-];
 
 function EnhancedTableHead(props) {
   const classes = useStyles();
   const { order, orderBy, rowCount, onRequestSort } = props;
+
+  const role = useSelector(getRole);
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+  const headCells = [
+    {
+      id: "customerName",
+      numeric: false,
+      disablePadding: false,
+      label: role === "biller" ? "Payers" : "Biller",
+    },
+    {
+      id: "amount",
+      numeric: false,
+      disablePadding: false,
+      label: "Total",
+    },
+    {
+      id: "paidAt",
+      numeric: true,
+      disablePadding: false,
+      label: "Paid Date",
+    },
+  ];
 
   return (
     <TableHead>
@@ -331,7 +310,7 @@ export default function AllPayment() {
           <Paper sx={{ width: "100%", mb: 2 }}>
             <Toolbar>
               <Typography sx={{ flex: "1 100%" }} variant="h6" id="tableTitle">
-                All Payment
+                All Payments
               </Typography>
 
               <Stack direction={{ xs: "row", sm: "row" }}>

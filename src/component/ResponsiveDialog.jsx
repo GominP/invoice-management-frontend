@@ -41,7 +41,7 @@ function ResponsiveDialog(props) {
 
   const [openSuccess, setOpenSuccess] = useState(false);
   const [severity, setServerity] = useState("success");
-  const [textSnackbar, setTextSnackbar] = useState("Request Successful");
+  const [textSnackbar, setTextSnackbar] = useState("Request Successfully.");
 
   const {
     status,
@@ -184,31 +184,31 @@ function ResponsiveDialog(props) {
             <DialogTitle id="responsive-dialog-title">{textButton}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                <Grid container>
-                  <Grid item xs={12} md={6}>
+                <Grid
+                  container
+                  sx={{ display: "flex", justifyContent: "center" }}>
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <img src={qrcodeInfo} />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography>Biller :</Typography>
                   </Grid>
-                  <Grid item xs={12} md={6} pb={2}>
+                  <Grid item xs={6}  pb={2}>
                     <Typography>
                       {billerInfo.name} {billerInfo.lastname}
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography>Total :</Typography>
                   </Grid>
-                  <Grid item xs={12} md={6} pb={2}>
+                  <Grid item xs={6} pb={2}>
                     <Typography>
                       {currencyFormat(+invoiceInfo.totalAmountAddedTax)}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} md={6}>
-                    {/* <Typography>พนักงานออกใบแจ้งหนี้ :</Typography> */}
-                  </Grid>
-                  <Grid item xs={12} md={6} pb={2}>
-                    <Typography></Typography>
-                  </Grid>
-                  <img src={qrcodeInfo} />
 
                   <Grid item xs={12} md={12}>
                     <TextField
@@ -247,7 +247,9 @@ function ResponsiveDialog(props) {
                 <Grid item xs={12} md={12} spacing={4}>
                   <Box pt={2}>
                     <Typography>
-                      Are you sure disconnect this biller ?
+                      {status === "inactive"
+                        ? "Are you sure connect this biller"
+                        : "Are you sure disconnect this biller"}
                     </Typography>
                   </Box>
                 </Grid>

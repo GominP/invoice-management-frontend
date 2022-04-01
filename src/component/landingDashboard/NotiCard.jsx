@@ -49,8 +49,9 @@ import {
   getUserID,
 } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import MainCard2 from "../layouts/MainCard2";
 
-const CardWrapper = styled(MainCard)(({ theme }) => ({
+const CardWrapper = styled(MainCard2)(({ theme }) => ({
   backgroundColor: blue[800],
   color: "#fff",
   overflow: "hidden",
@@ -100,9 +101,9 @@ const NotiCard = ({ isLoading, notification }) => {
 
   return (
     <>
-      <CardWrapper border={false} content={false}>
-        <MenuItem onClick={handleClickOpen}>
-          <Box sx={{ p: 2.5 }}>
+      <CardWrapper border={false} content={false} onClick={handleClickOpen}>
+        {/* <MenuItem > */}
+          <Box sx={{ p: 5.5 }}>
             <Grid container direction="column">
               <Grid item>
                 <Grid container justifyContent="space-between">
@@ -125,7 +126,7 @@ const NotiCard = ({ isLoading, notification }) => {
                   <Grid item>
                     <Typography
                       sx={{
-                        fontSize: "2.125rem",
+                        fontSize: "3.125rem",
                         fontWeight: 500,
                         mr: 1,
                         mt: 1.75,
@@ -141,7 +142,7 @@ const NotiCard = ({ isLoading, notification }) => {
               </Grid>
             </Grid>
           </Box>
-        </MenuItem>
+        {/* </MenuItem> */}
 
         <Dialog
           fullScreen={fullScreen}

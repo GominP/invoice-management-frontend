@@ -28,6 +28,7 @@ import { blue } from "@mui/material/colors";
 import * as authService from "../services/authService";
 import axios from "axios";
 import LoginForm from "../component/controls/LoginForm";
+import RegisterCard from "../component/landingDashboard/RegisterCard";
 
 const theme = createTheme();
 
@@ -102,19 +103,20 @@ export default function SignIn() {
 
                 <CardActionArea onClick={() => navigate("/register/biller")}>
                   <CardContent
-                    sx={{ display: "flex", justifyContent: "center" }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Register For Create Invoice
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <Divider />
-                <CardActionArea onClick={() => navigate("/register/payer")}>
-                  <CardContent
-                    sx={{ display: "flex", justifyContent: "center" }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Register
-                    </Typography>
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}>
+                    <Stack direction={"column"}>
+                      <RegisterCard
+                        headText="Register to create invoice"
+                        handleNavigate="biller"
+                      />
+                      <RegisterCard
+                        headText="Register to pay invoice"
+                        handleNavigate="payer"
+                      />
+                    </Stack>
                   </CardContent>
                 </CardActionArea>
               </Card>

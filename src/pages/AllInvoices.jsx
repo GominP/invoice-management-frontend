@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
   th: {
     backgroundColor: "#ba68c8",
     color: "white",
-    
   },
   form: {
     width: 600,
@@ -82,12 +81,6 @@ function createData(billId, customerName, expiredDate, total, status) {
     status,
   };
 }
-
-const time = new Date(1646892000).toLocaleString("th-TH").split(" ")[0];
-const time2 = new Date("2019-2-11").toLocaleString("th-TH").split(" ")[0];
-const time3 = new Date("2019/1/12").toLocaleString("th-TH").split(" ")[0];
-const time4 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
-const time5 = new Date("2019-11-12").toLocaleString("th-TH").split(" ")[0];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -119,46 +112,48 @@ function getComparator(order, orderBy) {
 //   return stabilizedThis.map((el) => el[0]);
 // }
 
-const headCells = [
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: true,
-    label: "Invoice id",
-  },
-
-  {
-    id: "customerName",
-    numeric: false,
-    disablePadding: false,
-    label: "Customer",
-  },
-  {
-    id: "dueDate",
-    numeric: false,
-    disablePadding: false,
-    label: "Expired Date",
-  },
-  {
-    id: "totalAmountAddedTax",
-    numeric: true,
-    disablePadding: false,
-    label: "Total",
-  },
-  {
-    id: "status",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
-];
-
 function EnhancedTableHead(props) {
   const classes = useStyles();
+  const role = useSelector(getRole);
+
   const { order, orderBy, rowCount, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+  const headCells = [
+    {
+      id: "id",
+      numeric: false,
+      disablePadding: true,
+      label: "Invoice id",
+    },
+
+    {
+      id: "customerName",
+      numeric: false,
+      disablePadding: false,
+      label: role === "biller" ? "Payers" : "Biller",
+    },
+    {
+      id: "dueDate",
+      numeric: false,
+      disablePadding: false,
+      label: "Due Date",
+    },
+    {
+      id: "totalAmountAddedTax",
+      numeric: true,
+      disablePadding: false,
+      label: "Total",
+    },
+    {
+      id: "status",
+      numeric: true,
+      disablePadding: false,
+      label: "Status",
+    },
+  ];
 
   return (
     <TableHead>
@@ -223,23 +218,6 @@ export default function AllInvoices() {
     "Correctionrequested",
   ];
 
-  // const rowb = [
-  //   {
-  //     billId: "test",
-  //     // date: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-  //     customerName: "สินชัย",
-  //     expiredDate: new Date("2019-2-2").toLocaleString("th-TH").split(" ")[0],
-  //     total: 17,
-  //   },
-  //   createData("1235", "โชคชัย คงมั่น", time, 4.3, "overdue"),
-  //   createData("b61104562", "โชคชัย ดีเด่น", time2, 4.9),
-  //   createData("b61104561", "โชคชัย ดีเด่น", time2, 4.9),
-  //   createData("q3467", "โชคชัย", time3, 6.0),
-  //   createData("2345260", "โชคชัย", time4, 4.0),
-  //   createData("1", "โชคชัย", time5, 3.9),
-  //   createData("Gingerbread", "โชคชัย", time5, 3.9),
-  // ];
-
   useEffect(() => {
     async function fetchInvoice() {
       let data = {};
@@ -253,49 +231,7 @@ export default function AllInvoices() {
       });
     }
     fetchInvoice();
-    // callApi();
   }, []);
-
-  // const callApi = async () => {
-  //   let tempRow = [];
-  //   let tempDataRow = {};
-
-  //   let data = {};
-  //   role === "biller"
-  //     ? (data = { billerId: userId })
-  //     : (data = { payerId: userId });
-
-  //   await invoiceService.invoice_inquiry(data).then(function (response) {
-  //     // console.log(response["invoices"]);
-  //     setRows(response["invoices"]);
-  //   });
-
-  //   // await billerService.biller_detail_inquiry(data).then(function (response) {
-  //   //   console.log(response);
-  //   //   // return response["name"];
-  //   // });
-
-  //   // await payerService.payer_detail_inquiry(data).then(function (response) {
-  //   //   console.log(response);
-  //   //   // return response["name"];
-  //   // });
-  // };
-
-  const findNamebyId = (temp) => {
-    let data = { id: temp };
-
-    let name = "sad";
-
-    // if (role === "biller") {
-    //   payerService.payer_detail_inquiry(data).then(function (response) {
-    //     return response["name"];
-    //   });
-    // } else if (role === "payer") {
-    //   billerService.biller_detail_inquiry(data).then(function (response) {
-    //     return response["name"];
-    //   });
-    // }
-  };
 
   function formatDate(date) {
     return new Date(date).toLocaleDateString("fr");
@@ -404,7 +340,14 @@ export default function AllInvoices() {
                 All Invoice
               </Typography>
               {statusFilter === "" || statusFilter === "All" ? null : (
-                <Chip label={statusFilter} variant="outlined" />
+                <Chip
+                  label={
+                    statusFilter === "Correctionrequested"
+                      ? "Correction requested"
+                      : statusFilter
+                  }
+                  variant="outlined"
+                />
               )}
             </Stack>
           </Box>
@@ -442,7 +385,9 @@ export default function AllInvoices() {
               }}>
               {filters.map((filterItem) => (
                 <MenuItem onClick={() => handleChangeFilter(filterItem)}>
-                  {filterItem}
+                  {filterItem === "Correctionrequested"
+                    ? "Correction requested"
+                    : filterItem}
                 </MenuItem>
               ))}
             </Menu>
@@ -506,7 +451,9 @@ export default function AllInvoices() {
                               ? "success"
                               : "primary"
                           }>
-                          {row.status}
+                          {row.status === "correctionRequested"
+                            ? "Correction requested"
+                            : row.status}
                         </Button>
                       </TableCell>
                     </TableRow>

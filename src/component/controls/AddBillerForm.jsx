@@ -61,7 +61,7 @@ export default function AddBillerForm(props) {
           const addBiller = await relationService
             .relationship_create(values)
             .then(function (test) {
-              textSnackbar("Add biller successful");
+              textSnackbar("Add biller successfully.");
               serverity("success");
 
               setTimeout(() => {

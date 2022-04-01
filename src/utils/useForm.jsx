@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-export function useForm(initValues, validateOnChange = false, validate, role) {
+export function useForm(initValues, validateOnChange = false, validate, role,) {
   const [values, setValues] = useState(initValues);
   const [errors, setErrors] = useState({});
+  const [checkUsernameExist, setCheckUsernameExist] = useState(false)
 
   useEffect(() => {
     if (role === undefined) {
@@ -19,6 +20,12 @@ export function useForm(initValues, validateOnChange = false, validate, role) {
 
   const handleInputChage = (e) => {
     const { name, value } = e.target;
+
+    if (name === "username" && checkUsernameExist === true) {
+      console.log("Exist")
+
+      
+    }
 
     setValues({
       ...values,
@@ -44,6 +51,8 @@ export function useForm(initValues, validateOnChange = false, validate, role) {
     setErrors,
     changeCitizen,
     role,
+    checkUsernameExist,
+    setCheckUsernameExist
   };
 }
 

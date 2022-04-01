@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {
   Box,
   Card,
+  CardActionArea,
   CardContent,
   CardMedia,
   IconButton,
@@ -46,26 +47,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-export default function NavigateCard(props) {
+export default function RegisterCard(props) {
   const { headText, img, detail, handleNavigate } = props;
   const classes = useStyles();
   const theme = useTheme();
   let navigate = useNavigate();
 
   function changePage() {
-    switch (handleNavigate) {
-      case "/allbill":
-        // navigate("/allbill");
-        window.location.href = "/allbill";
-
-        break;
-      case "/payer":
-        // navigate("/payer");
-        window.location.href = "/payer";
-        break;
-
-      default:
-        window.location.href = "/";
+    if (handleNavigate === "biller") {
+      window.location.href = "/register/biller";
+    } else {
+      window.location.href = "/register/payer";
     }
 
     // setMenu(event.target.innerText);
@@ -77,6 +69,7 @@ export default function NavigateCard(props) {
         sx={{ display: "flex", justifyContent: "space-between" }}
         className={classes.card}
         onClick={changePage}>
+        {/* <CardActionArea > */}
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent>
             <Typography component="div" variant="h5">
@@ -85,27 +78,26 @@ export default function NavigateCard(props) {
             <Typography
               variant="subtitle1"
               color="text.secondary"
-              component="div">
-              {detail}
-            </Typography>
+              component="div"></Typography>
           </CardContent>
         </Box>
-        <CardMedia
-          className={classes.img}
+        {/* </CardActionArea> */}
+        {/* <CardMedia
+        //   className={classes.img}
           component="img"
           sx={{
-            width: 320,
+            width: 290,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "right",
           }}
           image={img}
           alt="Live from space album cover"
-        />
+        /> */}
       </Card>
     </div>
   );
 }
-NavigateCard.propTypes = {
+RegisterCard.propTypes = {
   headText: PropTypes.string.isRequired,
   img: PropTypes.string,
   detail: PropTypes.string,

@@ -53,9 +53,9 @@ export default function RegisterForm(props) {
 
     phone: Yup.string().required("Phone number is required"),
     citizenId: Yup.string()
-      .min(8, "Too Short!")
+      .min(13, "Too Short!")
       .required("Citizen ID is required"),
-    taxId: Yup.string().min(8, "Too Short!").required("Tax ID is required"),
+    taxId: Yup.string().min(13, "Too Short!").oneOf([Yup.ref("citizenId"), ""], "Tax id must match with citizen id").required("Tax ID is required"),
     isCitizen: Yup.bool().required("Please Select "),
     addressDetail: Yup.string().required("Address detail is required"),
     road: Yup.string().required("Road is required"),
@@ -70,7 +70,7 @@ export default function RegisterForm(props) {
     initialValues: {
       username: "",
       password: "",
-      // confirmPassword: "",
+      confirmPassword: "",
       name: "",
       lastname: "",
       phone: "",

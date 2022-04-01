@@ -44,7 +44,7 @@ export default function Register() {
   let params = useParams();
   const [openSuccess, setOpenSuccess] = useState(false);
   const [severity, setServerity] = useState("success");
-  const [textSnackbar, setTextSnackbar] = useState("Register Successful");
+  const [textSnackbar, setTextSnackbar] = useState("Register successfully.");
 
   const handleOpenSnackBar = (event, reason) => {
     setOpenSuccess(true);

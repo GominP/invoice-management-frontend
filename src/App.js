@@ -25,16 +25,17 @@ import AllPayment from "./pages/AllPayment";
 import PaymentDetail from "./pages/PaymentDetail";
 import EditBill from "./pages/EditBill";
 import NewRegister from "./pages/newRegister";
+import RegisterOld from "./pages/Register";
 
 const theme = createTheme(
   {
     typography: {
-      fontFamily: ["Public Sans", "sans-serif"].join(","),
+      fontFamily: ["Kanit", "sans-serif"].join(","),
     },
     palette: {
       // mode: "dark",
       background: {
-        default: "#f5f5f5",
+        default: "#bbdefb",
       },
     },
   }
@@ -70,7 +71,7 @@ function App() {
           <Route path="/editprofile/:role" element={<EditProfile />} />
           <Route path="/payer/bill/:id" element={<CreateBill />} />
           <Route path="/allbill/editBill/:id/:payerId" element={<EditBill />} />
-          {/* <Route path="/new" element={<NewRegister />} /> */}
+          <Route path="/new" element={<RegisterOld />} />
 
           <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
           <Route path="/payment" element={<AllPayment />} />

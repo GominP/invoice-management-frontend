@@ -258,7 +258,7 @@ const EditProfile = () => {
                       }}>
                       <Grid>
                         <Typography variant="h5" component="h1" p={1}>
-                          Infomation
+                          Information
                         </Typography>
                         <Grid>
                           <Controls.Input

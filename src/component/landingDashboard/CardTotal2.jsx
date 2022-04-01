@@ -16,8 +16,8 @@ import StorefrontTwoToneIcon from "@mui/icons-material/StorefrontTwoTone";
 import { blue } from "@mui/material/colors";
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-  color: theme.palette.primary.light,
+  backgroundColor: "#e0f2f1",
+  // color: "black",
   overflow: "hidden",
   position: "relative",
   "&:after": {
@@ -25,7 +25,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(110.04deg, ${theme.palette.primary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
+    background: `linear-gradient(90deg, rgba(237,162,250,0.8715861344537815) 10%, rgba(247,243,243,1) 71%)`,
     borderRadius: "50%",
     top: -30,
     right: -180,
@@ -35,7 +35,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: "absolute",
     width: 210,
     height: 210,
-    background: `linear-gradient(240.9deg, ${theme.palette.primary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
+    background: `linear-gradient(90deg, rgba(237,162,250,0.8715861344537815) 10%, rgba(247,243,243,1) 71%)`,
     borderRadius: "50%",
     top: -160,
     right: -130,
@@ -74,14 +74,14 @@ const CardTotal2 = ({ text, amount }) => {
                   mb: 0.45,
                 }}
                 primary={
-                  <Typography variant="h4" sx={{ color: "#fff" }}>
-                    $ {currencyFormat(amount)}{" "}
+                  <Typography variant="h4" sx={{ color: "black" }}>
+                     {currencyFormat(amount)} Baht 
                   </Typography>
                 }
                 secondary={
                   <Typography
-                    variant="subtitle2"
-                    sx={{ color: "#fff", mt: 0.25 }}>
+                  variant="h6"
+                  sx={{ color: "black", mt: 0.25 }}>
                     {text}
                   </Typography>
                 }

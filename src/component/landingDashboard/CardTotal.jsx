@@ -72,14 +72,14 @@ const CardTotal = ({ text, amount }) => {
                 }}
                 primary={
                   <Typography variant="h4">
-                    $ {currencyFormat(amount)}{" "}
+                    {currencyFormat(amount)} Baht
                   </Typography>
                 }
                 secondary={
                   <Typography
-                    variant="subtitle2"
+                    variant="h6"
                     sx={{
-                      color: theme.palette.grey[500],
+                      // color: theme.palette.grey[500],
                       mt: 0.5,
                     }}>
                     {text}

@@ -22,6 +22,9 @@ import {
   CardContent,
   Card,
   CardHeader,
+  Tooltip,
+  IconButton,
+  Avatar,
 } from "@mui/material";
 import MainCard from "../component/MainCard";
 import { gridSpacing } from "../store/constant";
@@ -46,6 +49,7 @@ import {
   getNotiCount,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 import * as billerService from "../services/billerServices";
 import * as payerService from "../services/payerService";
@@ -53,6 +57,8 @@ import * as invoiceService from "../services/invoiceService";
 import * as notificationService from "../services/notificationService";
 import ResponsiveSnackbar from "../component/ResponsiveSnackbar";
 import { LoadingButton } from "@mui/lab";
+import { green } from "@mui/material/colors";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -139,6 +145,7 @@ export default function EditBill() {
         setTotalPrice(response["totalAmountAddedTax"]);
         setTotalAmountAddedTax(response["totalAmountAddedTax"]);
         setVats(response["vat"]);
+        setValue(response["dueDate"]);
       });
     await payerService
       .payer_detail_inquiry({ id: params.payerId })
@@ -210,7 +217,7 @@ export default function EditBill() {
     });
     return total;
   }
-  const handleEditInvoice = () => {
+  const handleEditInvoice = async () => {
     let nullProduct = false;
     setLoading(true);
 
@@ -225,10 +232,12 @@ export default function EditBill() {
       setServerity("error");
       setTextSnackbar("Please add Product");
       setOpenSuccess(true);
+      setLoading(false);
     } else if (nullProduct === true) {
       setServerity("error");
       setTextSnackbar("Please fill Product");
       setOpenSuccess(true);
+      setLoading(false);
     } else {
       initValues.lists = allProduct;
       initValues.vat = vats;
@@ -236,31 +245,35 @@ export default function EditBill() {
       initValues.dueDate = value;
       initValues.totalAmountAddedTax = totalAmountAddedTax;
       console.log(initValues);
-      invoiceService
+      await invoiceService
         .invoice_status_update({
           id: invoiceInfo.id,
           status: "cancelled",
         })
         .then(function (response) {
           console.log(response);
-          invoiceService
-            .invoice_create(initValues)
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
         });
+      await invoiceService
+        .invoice_create(initValues)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      const noti = await notificationService.notification_unread_count_inquiry({
+        billerId: userId,
+      });
+      dispatch(setNotiCount(noti["unreadCount"]));
       setTimeout(() => {
         setServerity("success");
-        setTextSnackbar("Edit Successful");
+        setTextSnackbar("Edit successfully.");
         setOpenSuccess(true);
         setLoading(false);
       }, 2000);
 
       setTimeout(() => {
-        window.location.href = "/allbill";
+        navigate("/allbill");
       }, 4000);
 
       let tempData = {
@@ -309,6 +322,10 @@ export default function EditBill() {
   function currencyFormat(num) {
     return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  const fotmatDate = (date) => {
+    return new Date(date).toLocaleDateString("fr");
+  };
 
   return (
     <>
@@ -377,21 +394,23 @@ export default function EditBill() {
                               }
                             />
                           </Grid>
-                          <Grid item xs={12} md={8} pt={3}>
+                          <Grid item xs={12} md={12} pt={3}>
                             <TextField
                               id="outlined-name"
                               label="Date"
                               disabled
-                              value={today}
+                              value={fotmatDate(today)}
                             />
                           </Grid>
 
-                          <Grid item xs={12} md={8} pt={3}>
+                          <Grid item xs={12} md={12} pt={3}>
                             <DatePicker
-                              label="Expired Date"
+                              label="Due Date"
                               openTo="year"
                               views={["year", "month", "day"]}
                               value={value}
+                              disablePast
+                              inputFormat={"DD/MM/YYYY"}
                               onChange={(newValue) => {
                                 setValue(newValue);
                               }}
@@ -420,25 +439,27 @@ export default function EditBill() {
                           <Box paddingTop={3}>
                             <Grid container>
                               <Grid item xs={4} md={3}>
-                                <Typography>Subtotal</Typography>
+                                <Typography variant="h5">Subtotal</Typography>
                               </Grid>
                               <Grid item xs={8} md={9}>
-                                <Typography>
-                                  {currencyFormat(totalAmount)}
+                                <Typography variant="h5">
+                                  {currencyFormat(totalAmount)} Baht
                                 </Typography>
                               </Grid>
                               <Grid item xs={4} md={3}>
-                                Vats 7%
+                                <Typography variant="h5">Vats 7%</Typography>
                               </Grid>
                               <Grid item xs={8} md={9}>
-                                <Typography>{currencyFormat(vats)}</Typography>
+                                <Typography variant="h5">
+                                  {currencyFormat(vats)} Baht
+                                </Typography>
                               </Grid>
                               <Grid item xs={4} md={3}>
-                                Total
+                                <Typography variant="h5">Total</Typography>
                               </Grid>
                               <Grid item xs={8} md={9}>
-                                <Typography>
-                                  {currencyFormat(totalPrice)}
+                                <Typography variant="h5">
+                                  {currencyFormat(totalPrice)} Baht
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -539,12 +560,13 @@ export default function EditBill() {
                                           }></TextField>
                                       </TableCell>
                                       <TableCell align="center">
-                                        {currencyFormat(row.amount)}
+                                        {currencyFormat(row.amount)} Baht
                                       </TableCell>
                                       <TableCell
                                         id={labelId}
                                         component="th"
                                         scope="row"
+                                        align="center"
                                         padding="normal">
                                         <Button
                                           color="error"
@@ -560,23 +582,37 @@ export default function EditBill() {
                               </TableBody>
                             </Table>
                           </TableContainer>
+                          <Tooltip title="Add List" placement="right">
+                            <IconButton onClick={addProduct}>
+                              <Avatar sx={{ bgcolor: green[500] }}>
+                                <AddRoundedIcon />
+                              </Avatar>
+                            </IconButton>
+                          </Tooltip>
                         </Grid>
-                        <Button onClick={() => addProduct()}>
-                          + Add Product
-                        </Button>
-                        {/* <Button onClick={() => handleChange()}>mf]vsd</Button> */}
                       </Grid>
                     </Grid>
                   </Grid>
                 </Box>
               </MainCard>
             </Grid>
-            <Grid m={7}>
-              <Card>
-                <CardHeader title="Edit detail"></CardHeader>
-                <CardContent>{invoiceInfo.correctionRequest}</CardContent>
-              </Card>
-            </Grid>
+            {invoiceInfo.correctionRequest === null ? null : (
+              <Grid m={7}>
+                <Card>
+                  <CardContent>
+                    <Grid container direction="row" alignItems="center">
+                      <Grid item>
+                        <EditRoundedIcon />
+                      </Grid>
+                      <Grid item>
+                        <CardHeader title="Edit detail"></CardHeader>
+                      </Grid>
+                    </Grid>
+                    {invoiceInfo.correctionRequest}
+                  </CardContent>
+                </Card>
+              </Grid>
+            )}
           </Grid>
         </Box>
         <ResponsiveSnackbar
