@@ -114,6 +114,11 @@ export default function BillInfo() {
               setInfoQrcode(response);
             });
         }
+
+        // await invoiceService.invoice_status_update({
+        //   id: params.id,
+        //   status: "overdue",
+        // });
       });
   };
 
@@ -141,21 +146,28 @@ export default function BillInfo() {
         <Grid container sx={{ display: "flex", justifyContent: "center" }}>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
             <MainCard>
-              <Stack direction={{ xs: "column", sm: "row" }} margin={"auto"}>
+              <Stack direction={{ xs: "column", sm: "row" }}>
                 <ResponsiveHeader text="Invoice" />
-                <Button
-                  variant="outlined"
-                  color={
-                    invoiceInfo.status === "cancelled"
-                      ? "error"
-                      : invoiceInfo.status === "overdue"
-                      ? "warning"
-                      : invoiceInfo.status === "paid"
-                      ? "success"
-                      : "primary"
-                  }>
-                  {invoiceInfo.status}
-                </Button>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    color:
+                      invoiceInfo.status === "paid"
+                        ? "#4caf50"
+                        : invoiceInfo.status === "cancelled"
+                        ? "red"
+                        : invoiceInfo.status === "correctionRequested"
+                        ? "#9e9e9e"
+                        : invoiceInfo.status === "overdue"
+                        ? "#ff9800"
+                        : invoiceInfo.status === "processing"
+                        ? "#2196f3"
+                        : "black",
+                  }}>
+                  {invoiceInfo.status === "correctionRequested"
+                    ? "Correction requested"
+                    : invoiceInfo.status}
+                </Typography>
               </Stack>
 
               <Box padding={5} margin={"auto"}>
@@ -166,7 +178,7 @@ export default function BillInfo() {
                         <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
                           <Grid pt={3}>
                             <Typography variant="h5" sx={{ color: "purple" }}>
-                              Customer
+                              Payer
                             </Typography>
                             <Box>
                               {payerInfo.name} {payerInfo.lastname}
@@ -182,13 +194,13 @@ export default function BillInfo() {
                         <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
                           <Grid pt={3}>
                             <Typography sx={{ color: "purple" }} variant="h5">
-                              Original Invoice
+                              Invoice Information
                             </Typography>
                             <Divider />
                             <Box>
                               <Grid container>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>Bill ID</Typography>
+                                  <Typography>Invoice ID</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>{invoiceInfo.id}</Typography>
@@ -218,7 +230,7 @@ export default function BillInfo() {
                                   </Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>Phone</Typography>
+                                  <Typography>Phone number</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>{billerInfo.phone}</Typography>
@@ -257,7 +269,8 @@ export default function BillInfo() {
                                     <TableCell align="right">
                                       {currencyFormat(
                                         row.unitPrice * row.quantity
-                                      )} Baht
+                                      )}{" "}
+                                      Baht
                                     </TableCell>
                                   </TableRow>
                                 ))}
@@ -270,10 +283,10 @@ export default function BillInfo() {
                                   </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                  <TableCell>Vats </TableCell>
-                                  <TableCell align="right">{`${(
-                                    TAX_RATE * 100
-                                  ).toFixed(0)} %`} </TableCell>
+                                  <TableCell>Vat </TableCell>
+                                  <TableCell align="right">
+                                    {`${(TAX_RATE * 100).toFixed(0)} %`}{" "}
+                                  </TableCell>
                                   <TableCell align="right">
                                     {currencyFormat(invoiceTaxes)} Baht
                                   </TableCell>
@@ -309,7 +322,7 @@ export default function BillInfo() {
                       invoiceInfo={invoiceInfo}
                       billerInfo={billerInfo}
                       qrcode={infoQrcode}
-                      textButton="Paid"
+                      textButton="Pay"
                       requestEdit={false}></ResponsiveDialog>
                     <ResponsiveDialog
                       invoiceInfo={invoiceInfo}
@@ -319,7 +332,8 @@ export default function BillInfo() {
                   </Stack>
                 </Grid>
               ) : isPayerBill === false &&
-                invoiceInfo.status !== "cancelled" ? (
+                invoiceInfo.status !== "cancelled" &&
+                invoiceInfo.status !== "paid" ? (
                 <Box>
                   <Grid>
                     <Stack

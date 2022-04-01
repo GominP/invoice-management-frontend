@@ -110,7 +110,7 @@ const Payer = () => {
   const role = useSelector(getRole);
   const id = useSelector(getUserID);
   const dispatch = useDispatch();
-  const [textHeader, setTextHeader] = useState("All Payer");
+  const [textHeader, setTextHeader] = useState("All Payers");
   const [rows, setRows] = useState([{}]);
   const [isActive, setisActive] = useState(false);
 

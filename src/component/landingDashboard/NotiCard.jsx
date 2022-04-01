@@ -134,7 +134,7 @@ const NotiCard = ({ isLoading, notification }) => {
                       }}>
                       {notification === 0
                         ? "No notifications today"
-                        : notification + " Notification Today"}
+                        : notification + " Notifications Today"}
                     </Typography>
                   </Grid>
                   <Grid item></Grid>

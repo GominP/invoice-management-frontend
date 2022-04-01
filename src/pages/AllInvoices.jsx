@@ -57,6 +57,7 @@ import {
   getNotiCount,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { blue } from "@mui/material/colors";
 
 const useStyles = makeStyles((theme) => ({
   th: {
@@ -337,7 +338,7 @@ export default function AllInvoices() {
           <Box sx={{ flex: "1 100%" }}>
             <Stack direction={"row"} spacing={2}>
               <Typography variant="h6" id="tableTitle">
-                All Invoice
+                All Invoices
               </Typography>
               {statusFilter === "" || statusFilter === "All" ? null : (
                 <Chip
@@ -441,20 +442,25 @@ export default function AllInvoices() {
                         {currencyFormat(row.totalAmountAddedTax)}
                       </TableCell>
                       <TableCell align="right">
-                        <Button
-                          color={
-                            row.status === "cancelled"
-                              ? "error"
-                              : row.status === "overdue"
-                              ? "warning"
-                              : row.status === "paid"
-                              ? "success"
-                              : "primary"
-                          }>
+                        <Typography
+                          sx={{
+                            color:
+                              row.status === "paid"
+                                ? "#4caf50"
+                                : row.status === "cancelled"
+                                ? "red"
+                                : row.status === "correctionRequested"
+                                ? "#9e9e9e"
+                                : row.status === "overdue"
+                                ? "#ff9800"
+                                : row.status === "processing"
+                                ? "#2196f3"
+                                : "black",
+                          }}>
                           {row.status === "correctionRequested"
                             ? "Correction requested"
                             : row.status}
-                        </Button>
+                        </Typography>
                       </TableCell>
                     </TableRow>
                   );

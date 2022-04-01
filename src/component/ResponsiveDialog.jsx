@@ -146,9 +146,17 @@ function ResponsiveDialog(props) {
           console.log(temp);
         } else {
           console.log("cannot send false");
+          setServerity("error");
+          setTextSnackbar("Somthing Wrong with your transfer reference");
+          setOpenSuccess(true);
         }
 
         console.log(response);
+      })
+      .catch((err) => {
+        setServerity("error");
+        setTextSnackbar("Somthing Wrong");
+        setOpenSuccess(true);
       });
   };
 
@@ -192,16 +200,24 @@ function ResponsiveDialog(props) {
                       <img src={qrcodeInfo} />
                     </Box>
                   </Grid>
-                  <Grid item xs={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
+                  <Grid
+                    item
+                    xs={6}
+                    md={4}
+                    sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography>Biller :</Typography>
                   </Grid>
-                  <Grid item xs={6}  pb={2}>
+                  <Grid item xs={6} pb={2}>
                     <Typography>
                       {billerInfo.name} {billerInfo.lastname}
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
+                  <Grid
+                    item
+                    xs={6}
+                    md={4}
+                    sx={{ display: "flex", justifyContent: "center" }}>
                     <Typography>Total :</Typography>
                   </Grid>
                   <Grid item xs={6} pb={2}>
@@ -216,7 +232,7 @@ function ResponsiveDialog(props) {
                       required
                       fullWidth
                       name="slip"
-                      label="slip code"
+                      label="Transfer Reference"
                       id="slip"
                       autoComplete="slip"
                     />

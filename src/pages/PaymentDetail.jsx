@@ -62,16 +62,21 @@ export default function PaymentDetail() {
   const [billerInfo, setBillerInfo] = useState({});
   const [payerInfo, setPayerInfo] = useState({});
   const [invoiceInfo, setInvoiceInfo] = useState({});
+  const [paymentInfo, setPaymentInfo] = useState({  });
 
   //   const [name, setname] = useState("testname");
   //   const [amount, setamount] = useState(2000);
 
+  function formatDate(date) {
+    return new Date(date).toLocaleDateString("fr");
+  }
   useEffect(() => {
     async function fetchData() {
       const responsePayment = await paymentService.payment_detail_inquiry({
         id: params.id,
       });
       console.log(responsePayment);
+      setPaymentInfo(responsePayment);
 
       const promise1 = invoiceService.invoice_detail_inquiry({
         id: responsePayment.invoiceId,
@@ -85,6 +90,8 @@ export default function PaymentDetail() {
 
       Promise.all([promise1, promise2, promise3]).then(function (values) {
         console.log(values[0]);
+        console.log(values[1]);
+        console.log(values[2]);
         setInvoiceInfo(values[0]);
         setBillerInfo(values[1]);
         setPayerInfo(values[2]);
@@ -115,8 +122,8 @@ export default function PaymentDetail() {
                   title="Successful Payment"
                   className={classes.header}></CardHeader>
                 <Box className={classes.subHeader}>
-                  <Typography>{billInfo.transTime}</Typography>
-                  <Typography>Ref ID: {billInfo.transRef}</Typography>
+                  <Typography>{formatDate(paymentInfo.paidAt)}</Typography>
+                  <Typography>Ref ID: {paymentInfo.transRef}</Typography>
                 </Box>
                 <Divider />
                 <CardContent>
@@ -129,7 +136,7 @@ export default function PaymentDetail() {
                             FROM
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography>{billInfo.sender.name}</Typography>
+                            <Typography>{payerInfo.name+" "+ payerInfo.lastname}</Typography>
                           </Grid>
                         </Stack>
                         <Divider />
@@ -141,7 +148,7 @@ export default function PaymentDetail() {
                             TO
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography> {billInfo.receiver.name}</Typography>
+                            <Typography> {billerInfo.name +" "+ billerInfo.lastname}</Typography>
                           </Grid>
                         </Stack>
                       </Grid>
@@ -149,8 +156,9 @@ export default function PaymentDetail() {
                         <Stack direction={"row"}>
                           <Grid item xs={6}></Grid>
                           <Grid item xs={6}>
-                            {billInfo.receiver.proxy.type} :{" "}
-                            {billInfo.receiver.proxy.value}
+                            {/* ref1:
+                            {paymentInfo.ref1} 
+                            {paymentInfo.ref2} */}
                           </Grid>
                         </Stack>
                         <Divider />
@@ -164,7 +172,7 @@ export default function PaymentDetail() {
                           <Grid item xs={6}>
                             <Typography>
                               {" "}
-                              {invoiceInfo.totalAmountAddedTax}
+                              {invoiceInfo.totalAmountAddedTax} Baht
                             </Typography>
                           </Grid>
                         </Stack>

@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     role: "",
     userid: "",
     notiCount: 0,
+    name: "",
     info_slip_verification: {},
   },
   reducers: {
@@ -14,6 +15,9 @@ export const userSlice = createSlice({
     },
     setId: (state, action) => {
       state.userid = action.payload;
+    },
+    setName: (state, action) => {
+      state.name = action.payload;
     },
     setNotiCount: (state, action) => {
       state.notiCount = action.payload;
@@ -25,9 +29,12 @@ export const userSlice = createSlice({
 });
 export default userSlice.reducer;
 
-export const { setRole, setId, setNotiCount, setInfoSlip } = userSlice.actions;
+export const { setRole, setId, setNotiCount, setInfoSlip, setName } =
+  userSlice.actions;
 
 export const getRole = (state) => state.users.role;
+export const getName = (state) => state.users.name;
+
 export const getUserID = (state) => state.users.userid;
 export const getNotiCount = (state) => state.users.notiCount;
 export const get_info_slip_verification = (state) =>

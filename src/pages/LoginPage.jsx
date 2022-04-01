@@ -33,6 +33,7 @@ import RegisterCard from "../component/landingDashboard/RegisterCard";
 const theme = createTheme();
 
 const ContentStyle = styled("div")(({ theme }) => ({
+  fontFamily: ["Kanit", "sans-serif"].join(","),
   maxWidth: 480,
   margin: "auto",
   display: "flex",
@@ -56,16 +57,8 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      {/* <CssBaseline /> */}
-      <Box
-        sx={
-          {
-            // display: "flex",
-            // flexDirection: "column",
-            // alignItems: "center",
-          }
-        }>
+ 
+      <Box>
         <Container maxWidth="sm">
           <ContentStyle>
             <Card>
@@ -91,15 +84,12 @@ export default function SignIn() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  // ':hover': {
-                  //     boxShadow:  '0 2px 14px 0 rgb(32 40 45 / 8%)'
-                  // },
+
                   borderRadius: 3,
                 }}>
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                   <StickyNote2Icon />
                 </Avatar>
-                {/* <CardHeader title={"Not a member yet? Join us now"} /> */}
 
                 <CardActionArea onClick={() => navigate("/register/biller")}>
                   <CardContent
@@ -124,6 +114,6 @@ export default function SignIn() {
           </ContentStyle>
         </Container>
       </Box>
-    </ThemeProvider>
+
   );
 }

@@ -57,7 +57,7 @@ export default function DetailUser() {
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
 
-  const [textHeader, setTextHeader] = useState("Infomation Payer");
+  const [textHeader, setTextHeader] = useState("Payer Information ");
   const [dataInfo, setDataInfo] = useState({});
   const [relation_id, setRelation_id] = useState();
 
@@ -65,7 +65,7 @@ export default function DetailUser() {
     callApi();
 
     if (role === "payer") {
-      setTextHeader("Infomation Biller");
+      setTextHeader("Biller Information ");
     }
   }, []);
 

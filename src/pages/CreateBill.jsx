@@ -44,6 +44,7 @@ import {
   getRole,
   getUserID,
   getNotiCount,
+  getName
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -86,6 +87,7 @@ export default function CreateBill() {
 
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
+  const name_dispatch = useSelector(getName)
 
   const dispatch = useDispatch();
 
@@ -207,10 +209,12 @@ export default function CreateBill() {
       setServerity("error");
       setTextSnackbar("Please add Product");
       setOpenSuccess(true);
+      setLoading(false);
     } else if (nullProduct === true) {
       setServerity("error");
       setTextSnackbar("Please fill Product");
       setOpenSuccess(true);
+      setLoading(false);
     } else {
       initValues.lists = allProduct;
       initValues.vat = vats;
@@ -366,7 +370,7 @@ export default function CreateBill() {
                         </Grid>
 
                         <Grid item pt={3}>
-                          <TextField id="outlined-name" label="Biller" />
+                          <TextField id="outlined-name" label="Biller" value={name_dispatch}  disabled/>
                         </Grid>
                       </Grid>
 

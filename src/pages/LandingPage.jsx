@@ -28,9 +28,11 @@ import {
   setRole,
   setId,
   setNotiCount,
+  setName,
   getRole,
   getUserID,
   getNotiCount,
+  getName,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as authService from "../services/authService";
@@ -94,9 +96,17 @@ export default function LandingPage() {
         setIsBiller(true);
       }
 
+      console.log(response);
+
       setDataInfo(response.data[textRole]);
       dispatch(setRole(textRole));
       dispatch(setId(response.data[textRole]["id"]));
+      dispatch(
+        setName(
+          response.data[textRole]["name"] +" "+ response.data[textRole]["lastname"]
+        )
+      );
+
       dispatch(setNotiCount(response.data["unreadCount"]));
 
       setDayTotal(response.data[textTotal + "Today"]);
