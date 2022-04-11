@@ -222,7 +222,7 @@ export default function BillInfo() {
                                   </Typography>
                                 </Grid>
                                 <Grid item xs={4} md={3}>
-                                  <Typography>Biller</Typography>
+                                  <Typography>Creditor</Typography>
                                 </Grid>
                                 <Grid item xs={8} md={9}>
                                   <Typography>

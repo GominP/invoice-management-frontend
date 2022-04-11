@@ -55,7 +55,10 @@ export default function RegisterForm(props) {
     citizenId: Yup.string()
       .min(13, "Too Short!")
       .required("Citizen ID is required"),
-    taxId: Yup.string().min(13, "Too Short!").oneOf([Yup.ref("citizenId"), ""], "Tax id must match with citizen id").required("Tax ID is required"),
+    taxId: Yup.string()
+      .min(13, "Too Short!")
+      .oneOf([Yup.ref("citizenId"), ""], "Tax id must match with citizen id")
+      .required("Tax ID is required"),
     isCitizen: Yup.bool().required("Please Select "),
     addressDetail: Yup.string().required("Address detail is required"),
     road: Yup.string().required("Road is required"),
@@ -130,15 +133,6 @@ export default function RegisterForm(props) {
   const handleMouseDownConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  // const handleExist = (e) => {
-  //   console.log(e.target.value);
-  //   const checkUsername = authService.username_exists(e.target.value);
-  //   if (checkUsername === true) {
-  //     setFieldValue("name", e.target.value);
-  //   } else {
-  //     setFieldError("name", "Username is Exist");
-  //   }
-  // };
 
   return (
     <FormikProvider value={formik}>
@@ -146,13 +140,8 @@ export default function RegisterForm(props) {
         <Stack spacing={3}>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <TextField
-              // onChange={(e) => {
-              //   console.log("onChange", e.currentTarget.value);
-              //   handleExist(e);
-              // }}
               fullWidth
               label="Firstname"
-              // onChange={handleExist}
               {...getFieldProps("name")}
               error={Boolean(touched.name && errors.name)}
               helperText={touched.name && errors.name}
@@ -184,7 +173,6 @@ export default function RegisterForm(props) {
             label="Password"
             {...getFieldProps("password")}
             InputProps={{
-              // <-- This is where the toggle button is added.
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -210,7 +198,6 @@ export default function RegisterForm(props) {
             label="Confirm Password"
             {...getFieldProps("confirmPassword")}
             InputProps={{
-              // <-- This is where the toggle button is added.
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton

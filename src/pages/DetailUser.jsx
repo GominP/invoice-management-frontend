@@ -106,7 +106,6 @@ export default function DetailUser() {
             <Grid>
               <Box>
                 <CardContent>
-                  {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
                   <ResponsiveHeader text={textHeader}></ResponsiveHeader>
                   <Box>
                     <Grid container spacing={2}>

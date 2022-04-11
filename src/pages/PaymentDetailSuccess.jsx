@@ -83,7 +83,6 @@ export default function PaymentDetailSuccess() {
                 </Box>
                 <Divider />
                 <CardContent>
-                  {/* <CardHeader title={"ข้อมูลผู้จ่ายบิล"}/> */}
                   <Box className={classes.center}>
                     <Grid container>
                       <Grid item xs={12}>
@@ -135,13 +134,6 @@ export default function PaymentDetailSuccess() {
                 <CardActions></CardActions>
               </Box>
             </Grid>
-
-            {/* <CardMedia
-          component="img"
-          //   sx={{ width: 151 }}
-          image={img2}
-          alt="Live from space album cover"
-        /> */}
           </Card>
         </Grid>
       </Box>

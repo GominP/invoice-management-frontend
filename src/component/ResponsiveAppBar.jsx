@@ -35,8 +35,8 @@ const biller = ["INVOICE GUARD", "All Invoices", "All Payers", "All Payments"];
 const payer = [
   "INVOICE GUARD",
   "All Invoices",
-  "All Billers",
-  "Add Biller",
+  "All Creditors",
+  "Add Creditor",
   "All Payments",
 ];
 
@@ -153,7 +153,7 @@ const ResponsiveAppBar = () => {
         // window.location.href = "/allbill";
 
         break;
-      case "All Billers":
+      case "All Creditors":
         navigate("/payer");
         // window.location.href = "/payer";
         break;
@@ -166,7 +166,7 @@ const ResponsiveAppBar = () => {
         navigate("/landing");
         // window.location.href = "/landing";
         break;
-      case "Add Biller":
+      case "Add Creditor":
         navigate("/addBiller");
         // window.location.href = "/addBiller";
         break;

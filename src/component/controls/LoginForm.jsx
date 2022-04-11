@@ -56,14 +56,8 @@ export default function LoginForm() {
           if (err.response.status === 401) {
             setSubmitting(!isSubmitting);
             setShowError(true);
-            // touched.username = "wewdasdadad"
-            // window.location.href = "/";
           }
         });
-      // console.log(response)
-      //   console.log(values);
-
-      //   navigate("/dashboard", { replace: true });
     },
   });
 
@@ -126,26 +120,10 @@ export default function LoginForm() {
                 </InputAdornment>
               ),
             }}
-            // InputProps={{
-            //   endAdornment: (
-            //     <InputAdornment position="end">
-            //       <IconButton onClick={handleShowPassword} edge="end">
-            //         <Icon
-            //           icon={
-            //             showPassword
-            //               ? VisibilityOutlinedIcon
-            //               : VisibilityOffOutlinedIcon
-            //           }
-            //         />
-            //       </IconButton>
-            //     </InputAdornment>
-            //   ),
-            // }}
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
           />
         </Stack>
-        {/* <ErrorMessage name="username"  /> */}
 
         <Stack
           direction="row"

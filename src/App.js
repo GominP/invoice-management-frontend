@@ -26,6 +26,7 @@ import PaymentDetail from "./pages/PaymentDetail";
 import EditBill from "./pages/EditBill";
 import NewRegister from "./pages/newRegister";
 import RegisterOld from "./pages/Register";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
 const theme = createTheme(
   {
@@ -42,41 +43,47 @@ const theme = createTheme(
   // thTH
 );
 const path = window.location.pathname;
+const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {}, []);
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {path === "/" || path.includes("/register") ? (
-          <box></box>
-        ) : (
-          <ResponsiveAppBar></ResponsiveAppBar>
-        )}
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {path === "/" || path.includes("/register") ? (
+            <box></box>
+          ) : (
+            <ResponsiveAppBar></ResponsiveAppBar>
+          )}
 
-        <Routes>
-          {/* <Route path="/" element={<LoginPage />} /> */}
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/landing" element={<LandingPage />} />
-          <Route path="/addBiller" element={<AddBiller />} />
-          <Route path="/paymentDetail/:id" element={<PaymentDetail />} />
-          <Route path="/payer" element={<Payer />} />
-          <Route path="/allget" element={<TotalIncome />} />
-          <Route path="/allbill" element={<AllInvoices />} />
-          <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
-          <Route path="/detailUser/:id/:status" element={<DetailUser />} />
-          <Route path="/register/:role" element={<NewRegister />} />
-          <Route path="/editprofile/:role" element={<EditProfile />} />
-          <Route path="/payer/bill/:id" element={<CreateBill />} />
-          <Route path="/allbill/editBill/:id/:payerId" element={<EditBill />} />
-          <Route path="/new" element={<RegisterOld />} />
+          <Routes>
+            {/* <Route path="/" element={<LoginPage />} /> */}
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/addBiller" element={<AddBiller />} />
+            <Route path="/paymentDetail/:id" element={<PaymentDetail />} />
+            <Route path="/payer" element={<Payer />} />
+            <Route path="/allget" element={<TotalIncome />} />
+            <Route path="/allbill" element={<AllInvoices />} />
+            <Route path="/allbill/billinfo/:id" element={<BillInfo />} />
+            <Route path="/detailUser/:id/:status" element={<DetailUser />} />
+            <Route path="/register/:role" element={<NewRegister />} />
+            <Route path="/editprofile/:role" element={<EditProfile />} />
+            <Route path="/payer/bill/:id" element={<CreateBill />} />
+            <Route
+              path="/allbill/editBill/:id/:payerId"
+              element={<EditBill />}
+            />
+            <Route path="/new" element={<RegisterOld />} />
 
-          <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
-          <Route path="/payment" element={<AllPayment />} />
-        </Routes>
-      </ThemeProvider>
+            <Route path="/paymentsuccess" element={<PaymentDetailSuccess />} />
+            <Route path="/payment" element={<AllPayment />} />
+          </Routes>
+        </ThemeProvider>
+      </QueryClientProvider>
     </div>
   );
 }

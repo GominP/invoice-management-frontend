@@ -116,7 +116,7 @@ const Payer = () => {
 
   useEffect(() => {
     if (role === "payer") {
-      setTextHeader("All Billers");
+      setTextHeader("All Creditors");
     }
     callApi();
   }, []);

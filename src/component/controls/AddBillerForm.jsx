@@ -61,7 +61,7 @@ export default function AddBillerForm(props) {
           const addBiller = await relationService
             .relationship_create(values)
             .then(function (test) {
-              textSnackbar("Add biller successfully.");
+              textSnackbar("Add creditor successfully.");
               serverity("success");
 
               setTimeout(() => {
@@ -113,7 +113,7 @@ export default function AddBillerForm(props) {
             type="submit"
             variant="contained"
             loading={isSubmitting}>
-            Add biller
+            Add Creditor
           </LoadingButton>
         </Stack>
       </Form>

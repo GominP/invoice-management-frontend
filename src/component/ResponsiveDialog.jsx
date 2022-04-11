@@ -150,8 +150,6 @@ function ResponsiveDialog(props) {
           setTextSnackbar("Somthing Wrong with your transfer reference");
           setOpenSuccess(true);
         }
-
-        console.log(response);
       })
       .catch((err) => {
         setServerity("error");

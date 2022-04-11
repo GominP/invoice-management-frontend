@@ -53,7 +53,7 @@ export default function AddBiller() {
   const [checkNull, setCheckNull] = useState("กรุณาใส่รหัสผู้ออกใบแจ้งหนี้");
   const [textError, setTextError] = useState("Somthing Wrong !");
 
-  const [textSnackbar, setTextSnackbar] = useState("Add Biller Successful");
+  const [textSnackbar, setTextSnackbar] = useState("Add creditor Successful");
   const [severity, setServerity] = useState("success");
   const [openSuccess, setOpenSuccess] = useState(false);
 
@@ -73,7 +73,7 @@ export default function AddBiller() {
         component="h1"
         p={4}
         sx={{ display: "flex", justifyContent: "center" }}>
-        Add New Biller
+        Add New Creditor
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Grid>
@@ -88,7 +88,7 @@ export default function AddBiller() {
                       "& .MuiTextField-root": { m: 0, width: "100%" },
                     }}>
                     <Typography variant="h6" p={0}>
-                      Add biller from code
+                      Add creditor from code
                     </Typography>
 
                     <Typography variant="h7">

@@ -134,7 +134,7 @@ function EnhancedTableHead(props) {
       id: "customerName",
       numeric: false,
       disablePadding: false,
-      label: role === "biller" ? "Payers" : "Biller",
+      label: role === "biller" ? "Payers" : "Creditor",
     },
     {
       id: "dueDate",

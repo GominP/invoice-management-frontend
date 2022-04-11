@@ -57,63 +57,58 @@ export default function SignIn() {
   };
 
   return (
- 
-      <Box>
-        <Container maxWidth="sm">
-          <ContentStyle>
-            <Card>
-              <CardContent>
-                <Stack sx={{ mb: 5 }}>
-                  <Typography variant="h4" gutterBottom>
-                    Sign in to Invoice Guard
-                  </Typography>
-                  <Typography sx={{ color: "text.secondary" }}>
-                    Enter your details below.
-                  </Typography>
-                </Stack>
-                {/* <AuthSocial /> */}
-                <LoginForm />
-              </CardContent>
-            </Card>
+    <Box>
+      <Container maxWidth="sm">
+        <ContentStyle>
+          <Card>
+            <CardContent>
+              <Stack sx={{ mb: 5 }}>
+                <Typography variant="h4" gutterBottom>
+                  Sign in to Invoice Guard{" "}
+                </Typography>{" "}
+                <Typography sx={{ color: "text.secondary" }}>
+                  Enter your details below.{" "}
+                </Typography>{" "}
+              </Stack>{" "}
+              {/* <AuthSocial /> */} <LoginForm />
+            </CardContent>{" "}
+          </Card>{" "}
+          <Grid item sx={{ mt: 3 }}>
+            <Card
+              sx={{
+                border: "1px solid",
+                borderColor: blue[600],
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
 
-            <Grid item sx={{ mt: 3 }}>
-              <Card
-                sx={{
-                  border: "1px solid",
-                  borderColor: blue[600],
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-
-                  borderRadius: 3,
-                }}>
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                  <StickyNote2Icon />
-                </Avatar>
-
-                <CardActionArea onClick={() => navigate("/register/biller")}>
-                  <CardContent
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}>
-                    <Stack direction={"column"}>
-                      <RegisterCard
-                        headText="Register to create invoice"
-                        handleNavigate="biller"
-                      />
-                      <RegisterCard
-                        headText="Register to pay invoice"
-                        handleNavigate="payer"
-                      />
-                    </Stack>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          </ContentStyle>
-        </Container>
-      </Box>
-
+                borderRadius: 3,
+              }}>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <StickyNote2Icon />
+              </Avatar>{" "}
+              <CardActionArea onClick={() => navigate("/register/biller")}>
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}>
+                  <Stack direction={"column"}>
+                    <RegisterCard
+                      headText="Register to create invoice"
+                      handleNavigate="biller"
+                    />
+                    <RegisterCard
+                      headText="Register to pay invoice"
+                      handleNavigate="payer"
+                    />
+                  </Stack>{" "}
+                </CardContent>{" "}
+              </CardActionArea>{" "}
+            </Card>{" "}
+          </Grid>{" "}
+        </ContentStyle>{" "}
+      </Container>{" "}
+    </Box>
   );
 }
