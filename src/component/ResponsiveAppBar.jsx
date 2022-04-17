@@ -125,7 +125,7 @@ const ResponsiveAppBar = () => {
 
   const currentTab = () => {
     let tabSelect = 0;
-    if (path.pathname === "/") {
+    if (path.pathname === "/landing" ) {
     } else if (path.pathname.includes("/allbill")) {
       tabSelect = 1;
     } else if (

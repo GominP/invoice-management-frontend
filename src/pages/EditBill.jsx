@@ -101,6 +101,8 @@ export default function EditBill() {
   // const [isTax, setIsTax] = useState("Yes");
   const [totalAmountAddedTax, setTotalAmountAddedTax] = useState(0);
   const [invoiceInfo, setInvoiceInfo] = useState({});
+  const [invoice_id, setInvoice_id] = useState();
+
   //-------------------SnackBar-------------------------------------->
   const [textSnackbar, setTextSnackbar] = useState("Edit Success");
   const [severity, setServerity] = useState("success");
@@ -114,6 +116,7 @@ export default function EditBill() {
   const TAX_RATE = 0.07;
 
   const initValues = {
+    invoiceId: null,
     payerId: +params.payerId,
     billerId: userId,
     totalAmount: 0.0,
@@ -139,7 +142,7 @@ export default function EditBill() {
       .then(function (response) {
         console.log(response);
         setInvoiceInfo(response);
-
+        setInvoice_id(response["id"])
         setAllProduct(response["lists"]);
         setTotalAmount(response["totalAmount"]);
         setTotalPrice(response["totalAmountAddedTax"]);
@@ -239,6 +242,7 @@ export default function EditBill() {
       setOpenSuccess(true);
       setLoading(false);
     } else {
+      initValues.invoiceId = +invoice_id;
       initValues.lists = allProduct;
       initValues.vat = vats;
       initValues.totalAmount = totalAmount;
@@ -307,6 +311,11 @@ export default function EditBill() {
     console.log(allProduct);
   };
 
+  const handleInvoiceID = (e) => {
+    setInvoice_id(e.target.value);
+    console.log(e.target.value);
+  };
+
   const handleDeleteProduct = (index) => {
     setAllProduct(
       allProduct.filter(function (item) {
@@ -360,7 +369,19 @@ export default function EditBill() {
                     <Grid item xs={12}>
                       <Grid container spacing={3}>
                         <Grid item md={6} xs={12}>
+                        <Grid pt={3}>
                           <TextField
+                            id="outlined"
+                            label="Invoice ID"
+                            value={invoice_id}
+                            // value={invoiceInfo.id}
+                            type={"number"}
+                            onChange={handleInvoiceID}
+                            required
+                          />
+                        </Grid>
+                        <Grid pt={3}>
+                        <TextField
                             id="outlined"
                             label="Customer"
                             value={
@@ -371,6 +392,8 @@ export default function EditBill() {
                             onChange={handleChange}
                             disabled
                           />
+                        </Grid>
+                 
 
                           <Grid pt={3}>
                             <TextField

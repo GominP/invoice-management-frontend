@@ -44,7 +44,7 @@ import {
   getRole,
   getUserID,
   getNotiCount,
-  getName
+  getName,
 } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -87,7 +87,7 @@ export default function CreateBill() {
 
   const role = useSelector(getRole);
   const userId = useSelector(getUserID);
-  const name_dispatch = useSelector(getName)
+  const name_dispatch = useSelector(getName);
 
   const dispatch = useDispatch();
 
@@ -103,6 +103,7 @@ export default function CreateBill() {
   const [vats, setVats] = useState(0.0);
   const [totalAmountAddedTax, setTotalAmountAddedTax] = useState(0.0);
   const [totalAmount, setTotalAmount] = useState(0.0);
+  const [invoice_id, setInvoice_id] = useState();
 
   //------Snackbar----------------------------------------------------------->
   const [textSnackbar, setTextSnackbar] = useState("Edit Success");
@@ -115,6 +116,7 @@ export default function CreateBill() {
   const TAX_RATE = 0.07;
 
   const initValues = {
+    invoiceId: null,
     payerId: +params.id,
     billerId: userId,
     totalAmount: 0.0,
@@ -216,6 +218,7 @@ export default function CreateBill() {
       setOpenSuccess(true);
       setLoading(false);
     } else {
+      initValues.invoiceId = +invoice_id;
       initValues.lists = allProduct;
       initValues.vat = vats;
       initValues.totalAmount = totalAmount;
@@ -260,6 +263,11 @@ export default function CreateBill() {
     setUnit(null);
 
     console.log(allProduct);
+  };
+
+  const handleInvoiceID = (e) => {
+    setInvoice_id(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleDeleteProduct = (index) => {
@@ -311,17 +319,29 @@ export default function CreateBill() {
                   <Grid spacing={3}>
                     <Grid container spacing={3}>
                       <Grid item md={6} xs={12}>
-                        <TextField
-                          id="outlined"
-                          label="Customer"
-                          value={
-                            dataCustomerInfo.name +
-                            " " +
-                            dataCustomerInfo.lastname
-                          }
-                          onChange={handleChange}
-                          disabled
-                        />
+                        <Grid pt={3}>
+                          <TextField
+                            id="outlined"
+                            label="Invoice ID"
+                            value={invoice_id}
+                            type={"number"}
+                            onChange={handleInvoiceID}
+                            required
+                          />
+                        </Grid>
+                        <Grid pt={3}>
+                          <TextField
+                            id="outlined"
+                            label="Customer"
+                            value={
+                              dataCustomerInfo.name +
+                              " " +
+                              dataCustomerInfo.lastname
+                            }
+                            onChange={handleChange}
+                            disabled
+                          />
+                        </Grid>
 
                         <Grid pt={3}>
                           <TextField
@@ -370,7 +390,12 @@ export default function CreateBill() {
                         </Grid>
 
                         <Grid item pt={3}>
-                          <TextField id="outlined-name" label="Biller" value={name_dispatch}  disabled/>
+                          <TextField
+                            id="outlined-name"
+                            label="Biller"
+                            value={name_dispatch}
+                            disabled
+                          />
                         </Grid>
                       </Grid>
 
